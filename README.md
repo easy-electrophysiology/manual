@@ -28,17 +28,22 @@ quarto render    # one-off build into _site/
 ## Publishing
 
 The site keeps the newest manual at the root URL and stores each released
-manual under `/versions/<version>/`. Add the release to `versions.json`, commit
-the source changes, then run from the repo root:
+manual under `/versions/<version>/`.
 
-```powershell
-.\scripts\publish.ps1 -Version 2.7.3
+- Pushes to `main` render and publish **Latest**.
+- Publishing a GitHub Release whose tag is `manual-vX.Y.Z` creates or updates
+	`/versions/X.Y.Z/` and adds that release to the version dropdown.
+- Existing versioned snapshots are preserved by later deployments.
+
+For example, after committing the documentation for version 2.8.0:
+
+```bash
+git tag manual-v2.8.0
+git push origin manual-v2.8.0
 ```
 
-The script renders the book, updates the root site, snapshots that render under
-the requested version, and pushes the `gh-pages` branch. Existing versioned
-snapshots are preserved.
+Then create and publish a GitHub Release from `manual-v2.8.0`. The release event
+performs the versioned deployment; creating the tag alone does not publish it.
 
-**One-time setup:** after the first publish, open *Settings → Pages*, choose
-**Deploy from a branch**, select `gh-pages` and `/ (root)`, then save. The site
-is served at the live URL above.
+The site is served at the live URL above. Deployment status is visible under
+the repository's **Actions** tab.
