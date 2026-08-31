@@ -18,6 +18,7 @@ book:
   site-url: https://easy-electrophysiology.github.io/manual/
   repo-url: https://github.com/easy-electrophysiology/manual
   repo-branch: main
+  repo-subdir: book
   repo-actions: [edit, issue]
   sidebar:
     logo: assets/logo.jpg

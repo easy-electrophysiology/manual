@@ -1,11 +1,8 @@
 name: Publish manual
 
 on:
-  push:
-    branches: [main]
   release:
     types: [published]
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -28,12 +25,11 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Render website
-        run: quarto render
+        run: quarto render book
 
       - name: Prepare latest and versioned sites
         shell: bash
         env:
-          EVENT_NAME: ${{ github.event_name }}
           RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
           set -euo pipefail
@@ -46,28 +42,25 @@ jobs:
             fi
           fi
 
-          cp -a _site/. publish/
+          cp -a book/_site/. publish/
           if [ -f previous/versions.json ]; then
             cp previous/versions.json publish/versions.json
           fi
 
-          if [ "$EVENT_NAME" = "release" ]; then
-            if [[ ! "$RELEASE_TAG" =~ ^manual-v([0-9]+\.[0-9]+\.[0-9]+([+-][0-9A-Za-z.-]+)?)$ ]]; then
-              echo "Release tag must match manual-vX.Y.Z (received: $RELEASE_TAG)" >&2
-              exit 1
-            fi
-
-            version="${RELEASE_TAG#manual-v}"
-            jq --arg version "$version" \
-              '[{version: $version, label: $version}] + [.[] | select(.version != $version)]' \
-              publish/versions.json > publish/versions.tmp
-            mv publish/versions.tmp publish/versions.json
-
-            rm -rf "publish/versions/$version"
-            mkdir -p "publish/versions/$version"
-            cp -a _site/. "publish/versions/$version/"
+          if [[ ! "$RELEASE_TAG" =~ ^manual-v([0-9]+\.[0-9]+\.[0-9]+([+-][0-9A-Za-z.-]+)?)$ ]]; then
+            echo "Release tag must match manual-vX.Y.Z (received: $RELEASE_TAG)" >&2
+            exit 1
           fi
 
+          version="${RELEASE_TAG#manual-v}"
+          jq --arg version "$version" \
+            '[{version: $version, label: $version}] + [.[] | select(.version != $version)]' \
+            publish/versions.json > publish/versions.tmp
+          mv publish/versions.tmp publish/versions.json
+
+          rm -rf "publish/versions/$version"
+          mkdir -p "publish/versions/$version"
+          cp -a book/_site/. "publish/versions/$version/"
           touch publish/.nojekyll
 
       - name: Deploy to gh-pages
