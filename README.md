@@ -27,8 +27,18 @@ quarto render    # one-off build into _site/
 
 ## Publishing
 
-Pushing to `main` triggers `.github/workflows/publish.yml`, which renders the
-book and publishes it to the `gh-pages` branch.
+The site keeps the newest manual at the root URL and stores each released
+manual under `/versions/<version>/`. Add the release to `versions.json`, commit
+the source changes, then run from the repo root:
 
-**One-time setup:** in *Settings → Pages*, set the source to the `gh-pages`
-branch (root). The site is then served at the live URL above.
+```powershell
+.\scripts\publish.ps1 -Version 2.7.3
+```
+
+The script renders the book, updates the root site, snapshots that render under
+the requested version, and pushes the `gh-pages` branch. Existing versioned
+snapshots are preserved.
+
+**One-time setup:** after the first publish, open *Settings → Pages*, choose
+**Deploy from a branch**, select `gh-pages` and `/ (root)`, then save. The site
+is served at the live URL above.

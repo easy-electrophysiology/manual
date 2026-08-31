@@ -3,6 +3,9 @@ project:
   output-dir: _site
   render:
     - "*.qmd"
+  resources:
+    - assets/**
+    - versions.json
 
 book:
   title: "Easy Electrophysiology"
@@ -52,6 +55,7 @@ format:
     theme:
       - cosmo
       - styles.scss
+    include-after-body: assets/version-selector.html
     toc: true
     toc-depth: 3
     number-sections: false
