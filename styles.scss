@@ -1,0 +1,22 @@
+/*-- scss:defaults --*/
+// Easy Electrophysiology brand tweaks
+$primary: #2c6e9b;
+$font-size-root: 17px;
+
+/*-- scss:rules --*/
+// Constrain very large manual screenshots so pages stay readable.
+.quarto-title-block .quarto-title .title {
+  font-weight: 600;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  margin: 0.5rem auto;
+}
+
+figure {
+  text-align: center;
+}

@@ -1,0 +1,27 @@
+---
+title: "Analysis"
+---
+
+## Kolmogorov-Smirnov Tests
+
+Kolmogorov-Smirnov (KS) tests for comparing the distribution of one sample (against the normal distribution) or two samples (against each other) are available at 'Analysis' \> 'Kolmogorov-Smirnov'. Raw data can be copied directly into the input data table (it is not necessary to calculate the cumulative distribution first).
+
+The KS test compares two distributions by taking the maximum absolute difference of their cumulative (or empirical; Fig. 30) distribution functions (CDF), termed *D*. Hypothesis testing is performed against the Kolmogorov distribution.
+
+For one-sample tests, the empirical CDF of the entered data is compared against the normal (i.e. Gaussian) CDF. Where the mean and standard deviation of this Gaussian in estimated from the data, Lilliefors correction is used.
+
+To plot the empirical CDF, click 'Plot Data' and select 'Empirical CDF' from the drop-down menu.
+
+Easy Electrophysiology uses the SciPy module 'kstest' for Kolmogorov-Smirnvov tests, except for the case in which Lilliefors correction, where the statsmodel package function 'lilliefors' is used.
+
+![](images/media/image34.png){width="4.147222222222222in" height="3.9875in"}
+
+## Summary Statistics
+
+Summary statistics can be calculated from data displayed on the results table. Clicking the 'summary statistics' checkbox on the table tab panel will display (by default) the mean, standard deviation and standard error of each parameter, for each file analyzed.
+
+To change the calculated parameters, click 'Analysis' \> 'Table Options'. Parameters with meaningless summary statistics (e.g. record number, event times) are not calculated. )). In Addition, a 'count' column is shown that displays the number of rows that were summarized. For *Events* and *AP Kinetics,* this will equal the number of events / action potentials summarized. For all other analyses, this will equal the number of records summarized.
+
+This window (Fig. 31 ) also provides the option to display results with analyzed files stacked vertically ('per row') rather than horizontally ('per column').
+
+![A screenshot of a computer Description automatically generated](images/media/image35.PNG){width="3.229617235345582in" height="4.615227471566055in"}

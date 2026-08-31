@@ -1,0 +1,17 @@
+---
+title: "Saving Data and Analysis Results"
+---
+
+## Copy / Save Data
+
+Options to copy and save the displayed Vm and Im data are available under 'Save Data' on the top menubar.
+
+Data from the currently selected record can be copied ('Copy Im Trace', 'Copy Vm Trace'). Alternatively, all records in the file can be saved to file in .xlsx or .csv formats ('Save All Records (Im)', 'Save All Records (Vm)'.
+
+Saving to .csv is faster than to .xlsx and may significantly decrease saving times for large datasets.
+
+## Save Analysis
+
+The displayed results in the 'Table' tab table can be saved to .xlsx or .csv. Saving to excel includes additional formatting around the cell borders (e.g. between different files when in batch mode). Typically with the analysis results table displayed data size is small enough that the difference in save times for .xlsx and .csv is negligible.
+
+Data can also be copied directly from the analysis results table (select data to copy and right-click).

@@ -1,0 +1,9 @@
+# Quarto build artifacts
+/_site/
+/.quarto/
+
+# Staging files from docx conversion (safe to delete)
+_full.md
+_split.py
+
+**/*.quarto_ipynb

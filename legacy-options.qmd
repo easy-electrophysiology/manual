@@ -1,0 +1,13 @@
+---
+title: "Legacy Options"
+---
+
+Options from previous versions (\< v2.3.0) of Easy Electrophysiology are provided to allow backwards compatibility with previously analyzed datasets. This also functions to provide additional options that may work better in some specific situations.
+
+*Legacy baseline -- no enhanced position based on rise time:* This option estimates the event baseline, and is the first stage if baseline detection method in the current version. When this option is selected, the second stage will not be run (in which the event baseline is shifted to the event foot as calculated by Jonas et al., (1993), as the intersection between the baseline and a straight line drawn through the 20-80 rise time) (see *Baseline Options (Analyze windows only)*). This is how baseline detection was implemented prior to v2.3.0-beta.
+
+*Legacy baseline -- no adjustment for prior events:* Since v2.3.0-beta, the event baseline is adjusted if the previous event peak is after the current event baseline. This can sometimes occur for very closely spaced events. Selecting this option will turn this feature off.
+
+*Legacy decay detection -- closest point to baseline:* Selecting this option will use the previous decay endpoint detection method, in which the closest point to the baseline within the *decay search period (ms)* is used. No adjustment is made for the position of the next event.
+
+*Legacy frequency data bin-sizing:* prior to version v2.3.0-beta, a data range slightly larger than the true range was used for cumulative probability data. This was removed to make bin-sizing clearer to the user.

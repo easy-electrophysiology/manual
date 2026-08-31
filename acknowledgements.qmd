@@ -1,0 +1,51 @@
+---
+title: "Acknowledgements"
+---
+
+For those using Easy Electrophysiology in published research, our RRID is RRID:SCR_021190.
+
+## Neo
+
+Easy Electrophysiology uses Neo (Garcia et al., 2014), a data-loading package that handles many electrophysiological filetypes.
+
+*Garcia, S., Guarino, D., Jaillet, F., Jennings, T., Pröpper, R., Rautenberg, P. L., Rodgers, C. C., Sobolev, A., Wachtler, T., Yger, P., & Davison, A. P. (2014). Neo: An object model for handling electrophysiology data in multiple formats. Frontiers in Neuroinformatics, 8:10.*
+
+We also thank the contributing authors of the relevant Neo submodules including Forrest Collman, Harald Hentschke (Axon files) and Jeffrey Gill (AxoGraph files).
+
+## Events -- Template Matching
+
+The template matching event detection algorithm with a biexponential template and correlation coefficient threshold was first described by:
+
+*Jonas, P., Major, G., & Sakmann, B. (1993). Quantal components of unitary EPSCs at the mossy fibre synapse on CA3 pyramidal cells of rat hippocampus. Journal of Physiology, 472, 615-663.*
+
+The Detection Criterion thresholding method was introduced by:
+
+*Clements, J. D., & Bekkers, J. M. (1997). Detection of spontaneous synaptic events with an optimally selected template. Biophysical Journal, 73(1), 220-229.*
+
+The deconvolution method for template event detection was introduced by:
+
+*Pernia-Andrade, A., Goswami, S. P., Stickler, Y., Frobe, U. Schlogl, A., & Jonas, P. (2012). A Deconvolution-Based Method with High Sensitivity and Temporal Resolution for Detection of Spontaneous Synaptic Currents In Vitro and In Vivo. Biophysical Journal. 103(7), 1429-1439.*
+
+## Action Potential Threshold Detection
+
+Easy Electrophysiology provides a number of options for threshold estimation in *Action Potential Kinetics* analysis, including Method I and II from Sekerli et al. (2004):
+
+*Sekerli, M., Del Negro, C. A., Lee, R. H., & Butera, R. J. (2004). Estimating action potential thresholds from neuronal time-series: New metrics and evaluation of methodologies. IEEE Transactions on Biomedical Engineering, 51(9), 1665--1672.*
+
+and maximum curvature threshold detection:
+
+### *Rossokhin, A. V., & Saakian, I. Z. (1992). Dependence of the nerve pulse generation threshold on the ability of forming an input signal based on the Hodgkin-Huxley model. Biofizika, 37(6), 1071--1075.*
+
+### Spike Frequency Accommodation -- Local Variance
+
+### The Local Variance measure for spike frequency accommodation from Shinomoto et al., (2003):
+
+*Shinomoto S, Shima K, Tanji J. (2003). Differences in spiking patterns among cortical neurons. Neural Computation, 15, 2823--2842.*
+
+## LogISI
+
+The logISI method was introduced, and extensively detailed, by Pasquale et al., 2010:
+
+### PyQtGraph
+
+### We would also like to thank Luke Campagnola and the PyQtGraph team for their work on the excellent PyQtGraph package (http://www.pyqtgraph.org) that provides high performance, flexible graphing.

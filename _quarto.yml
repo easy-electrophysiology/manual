@@ -1,0 +1,59 @@
+project:
+  type: book
+  output-dir: _site
+  render:
+    - "*.qmd"
+
+book:
+  title: "Easy Electrophysiology"
+  subtitle: "User Manual"
+  favicon: assets/favicon.jpg
+  cover-image: assets/logo.jpg
+  search: true
+  reader-mode: true
+  page-navigation: true
+  site-url: https://easy-electrophysiology.github.io/manual/
+  repo-url: https://github.com/easy-electrophysiology/manual
+  repo-branch: main
+  repo-actions: [edit, issue]
+  sidebar:
+    logo: assets/logo.jpg
+    style: docked
+    collapse-level: 1
+  page-footer:
+    left: "Easy Electrophysiology User Manual"
+    right: "Built with [Quarto](https://quarto.org)."
+  chapters:
+    - index.qmd
+    - acknowledgements.qmd
+    - graphical-interface-overview.qmd
+    - loading-files.qmd
+    - analysis-overview.qmd
+    - curve-fitting.qmd
+    - event-detection-and-analysis.qmd
+    - action-potential-counting.qmd
+    - input-resistance.qmd
+    - action-potential-kinetics.qmd
+    - data-tools.qmd
+    - analysis.qmd
+    - burst-analysis.qmd
+    - analyzing-in-batch-mode.qmd
+    - saving-data-and-analysis-results.qmd
+    - saving-and-resetting-default-options.qmd
+    - graph-options.qmd
+    - plot-exporter.qmd
+    - legacy-options.qmd
+    - keyboard-shortcuts.qmd
+    - license.qmd
+    - references.qmd
+
+format:
+  html:
+    theme:
+      - cosmo
+      - styles.scss
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    fig-align: center
+    link-external-newwindow: true
