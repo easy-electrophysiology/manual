@@ -1,27 +1,27 @@
 ---
-title: "Keyboard Shortcuts"
+title: "Keyboard shortcuts"
 ---
 
-ESC -- will close any open window (except the main window)
+## General shortcuts
 
-U -- undo the zoom
+These shortcuts provide quick access to common window, plot-navigation and event-editing actions.
 
-Z -- Pan the graph one window right (useful when zoomed in)
+| Key | Action |
+|---|---|
+| **Esc** | Closes any open window except the main window. |
+| **U** | Undoes the zoom. |
+| **Z** | Pans the graph one window to the left (useful when zoomed in). |
+| **X** | Pans the graph one window to the right (useful when zoomed in). |
+| **A** or **S** | Hold while clicking the plot zoom buttons for axis-specific zooming (**A**: x-axis, **S**: y-axis). |
+| **D** | In *Events* mode, hold while selecting a region on the plot to delete multiple events at once. |
 
-X -- Pan the graph one window left (useful when zoomed in)
+## Events-specific shortcuts
 
-A or S -- hold while clicking plot zoom buttons for axis specific zooming (A: x-axis, S: y-axis)
+In the *Events* [Analysis]{.ui-label} or [Refine Events]{.ui-label} windows, keyboard shortcuts are available for navigating to and deleting detected events:
 
-D -- (in *Events* mode) holding D while selecting a region on plot allows deletion of multiple events at once.
-
-## Events Refine / Analysis Window
-
-When an analysis has been run, keyboard shortcuts are available for scrolling through, moving to and deleting events. When the Refine / Events Analyze window is open:
-
-Right arrow -- scroll to the next event
-
-Left arrow -- scroll to the previous event
-
-Up -- go to the event (the main plot will be moved so that the selected event is in the center)
-
-Space -- delete the selected event from analysis
+| Key | Action |
+|---|---|
+| **Right arrow** | Scrolls to the next event. |
+| **Left arrow** | Scrolls to the previous event. |
+| **Up arrow** | Moves the main plot to center the selected event. |
+| **Space** | Deletes the selected event from the analysis. |

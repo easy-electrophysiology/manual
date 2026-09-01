@@ -2,12 +2,12 @@
 title: "Welcome"
 ---
 
-Welcome to Easy Electrophysiology. Our aim is to provide a platform for quick and easy patch-clamp analysis -- with extensive opportunity for checking and manual adjustment.
+This documentation provides detail on available options, analysis routines, underlying algorithms and formulas. All file-loading and analysis code is [open source][1] and we are happy to answer questions on implementation and code.
 
-This documentation provides detail on available options, analysis routines, underlying algorithms and formulas. All file-loading and analysis code is open source \[1\] and we are happy to answer questions on implementation and code.
+We hope you will find our software a useful tool in your patch-clamp electrophysiology analysis. Please don't hesitate to contact us at [support@easyelectrophysiology.com](mailto:support@easyelectrophysiology.com) with any questions, suggestions or feedback.
 
-We hope you will find our software a useful tool in your patch-clamp electrophysiology analysis. Please don't hesitate to contact us at support@easyelectrophysiology.com with any questions, suggestions or feedback.
+The [Easy Electrophysiology license](https://www.easyelectrophysiology.com/license) is available on our website.
 
 Happy Analyzing!
 
-\[1\] https://github.com/easy-electrophysiology/easy-electrophysiology-analysis
+[1]: https://github.com/easy-electrophysiology/easy-electrophysiology-analysis

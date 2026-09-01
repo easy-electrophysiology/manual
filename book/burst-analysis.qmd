@@ -1,95 +1,95 @@
 ---
-title: "Burst Analysis"
+title: "Burst analysis"
 ---
 
-Burst Analysis is available for both Events (*Events Template, Events Thresholding)* and AP (*AP Kinetics*) analysis. After running an *Events* or *AP* *Kinetics* analysis, burst analysis can be accessed by 'Analysis' \> 'Burst Analysis' from the top menu bar.
+Burst Analysis is available for both Events (*Events Template, Events Thresholding)* and AP (*AP Kinetics*) analysis. After running an *Events* or *AP* *Kinetics* analysis, burst analysis can be accessed by [Analysis]{.ui-label} › [Burst Analysis]{.ui-label} from the top menu bar.
 
 Two methods for Burst Analysis are provided, the LogISI and MaxInterval method, the two best performing methods as described in Cotterill et al. (2016).
 
-## Burst Analysis Parameters
+## [Burst Analysis Parameters]{.ui-label}
 
-'Run Burst Analysis' will auto-detect bursts in the data (Fig. 32) (see below for details of burst detection methods) and calculate burst summary.
+[Run Burst Analysis]{.ui-label} will auto-detect bursts in the data (see below for details of burst detection methods) and calculate burst summary.
 
-When burst analysis is run, the main plot will update to display the detected bursts. To switch between main plot views, toggle *Show Burst on Main Plot.*
+When burst analysis is run, the main plot will update to display the detected bursts. To switch between main plot views, toggle [Show Burst on Main Plot]{.ui-label}.
 
-Note that in the software, a detected spike or event is called 'spike' in *AP Kinetics* mode (Fig. 33) and an 'event' in *Events* mode (Fig. 32). In this documentation, we will use the term 'spike' to cover both cases. The inter-spike interval (ISI) is defined as the time period between two consecutive spikes.
+Note that in the software, a detected spike or event is called 'spike' in *AP Kinetics* mode and an 'event' in *Events* mode. In this documentation, we will use the term 'spike' to cover both cases. The inter-spike interval (ISI) is defined as the time period between two consecutive spikes.
 
-![](images/media/image36.png){width="6.263888888888889in" height="3.389676290463692in"}
+![Burst Detection Events. Detected bursts are shown in different colours with automatically generated labels. Colours are assigned randomly to distinguish nearby bursts.](images/media/image36.png){width="6.263888888888889in" height="3.389676290463692in"}
 
 *Summary Statistics*
 
-The burst summary statistics are displayed on the left-hand panel of the burst analysis window (Fig. 34), as well as in the results table ('Show Full Results Table').
+The burst summary statistics are displayed on the left-hand panel of the burst analysis window, as well as in the results table ([Show Full Results Table]{.ui-label}).
 
-[Number of bursts:]{.underline} Total number of detected bursts in the dataset (where the dataset is the number of detected APs or events).
+[Number of bursts:]{.ui-label} Total number of detected bursts in the dataset (where the dataset is the number of detected APs or events).
 
-[Fraction of spikes in burst:]{.underline} Proportion of detected spikes that are in a burst. Calculated as (total spikes in a burst / total detected spikes).
+[Fraction of spikes in burst:]{.ui-label} Proportion of detected spikes that are in a burst. Calculated as (total spikes in a burst / total detected spikes).
 
 *Averages*
 
-[Number of spikes in burst:]{.underline} Average number of spikes in a burst (calculated as the average 'Num. Spikes in Burst' across all bursts).
+[Number of spikes in burst:]{.ui-label} Average number of spikes in a burst (calculated as the average [Num. Spikes in Burst]{.ui-label} across all bursts).
 
-[Burst length (ms):]{.underline} Average length of a burst in milliseconds (calculated as the average 'Burst Length (ms)' across all bursts).
+[Burst length (ms):]{.ui-label} Average length of a burst in milliseconds (calculated as the average [Burst Length (ms)]{.ui-label} across all bursts).
 
-[Within-burst inter-spike interval (ms):]{.underline} Average inter-spike interval of spikes found in a burst (calculated as the average 'Mean Inter-event Interval (ms)' across all bursts)
+[Within-burst inter-spike interval (ms):]{.ui-label} Average inter-spike interval of spikes found in a burst (calculated as the average [Mean Inter-event Interval (ms)]{.ui-label} across all bursts)
 
-[Inter-burst interval (ms):]{.underline} Average time interval between successive bursts (in milliseconds).
+[Inter-burst interval (ms):]{.ui-label} Average time interval between successive bursts (in milliseconds).
 
-![](images/media/image37.png){width="6.263888888888889in" height="3.3965277777777776in"}
+![Burst Detection AP Kinetics. Detected action-potential bursts are shown in different colours with automatically generated labels.](images/media/image37.png){width="6.263888888888889in" height="3.3965277777777776in"}
 
 *Per-Burst Statistics*
 
-The parameters calculated for each burst are displayed in the results table. These include the number of spikes (Num. Spikes in Burst), burst length (Burst Length (ms), and average inter-spike interval within that burst (Mean Inter-event Interval (ms).
+The parameters calculated for each burst are displayed in the results table. These include the number of spikes ([Num. Spikes in Burst]{.ui-label}), burst length ([Burst Length (ms)]{.ui-label}), and average inter-spike interval within that burst ([Mean Inter-event Interval (ms)]{.ui-label}).
 
-Further, the results table displays for each detected spike: the record, peak time and burst it belongs to ('In Burst', N/A if spike is not in a burst).
+Further, the results table displays for each detected spike: the record, peak time and burst it belongs to ([In Burst]{.ui-label}, N/A if spike is not in a burst).
 
-![](images/media/image38.png){width="6.213888888888889in" height="3.765277777777778in"}
+![Burst Analysis Window in Log ISI detection mode. The burst-results summary is shown on the left and a logISI histogram on the right. The red and grey points mark histogram peaks, and the green cross marks the long-ISI threshold.](images/media/image38.png){width="6.213888888888889in" height="3.765277777777778in"}
 
-## Burst Detection Methods
+## Burst detection methods
 
 ## Log ISI
 
 The Log ISI method (Pasquale et al., 2016) extends burst analysis to hard-to-detect burst boundaries by calculating an additional inter-spike interval threshold from the data, using the logarithmically-scaled histogram of ISIs.
 
-The algorithm proceeds by using a manually set, short ISI ('Max. short ISI (ms)', typically 100 ms) and a long ISI ('Max. long ISI (ms)') generated from the logISI histogram. The short ISI is used to detect burst cores, while the long ISI is used to extend these cores to the burst boundaries. If the long ISI is smaller than the short ISI, the long ISI is used as both.
+The algorithm proceeds by using a manually set, short ISI ([Max. short ISI (ms)]{.ui-label}, typically 100 ms) and a long ISI ([Max. long ISI (ms)]{.ui-label}) generated from the logISI histogram. The short ISI is used to detect burst cores, while the long ISI is used to extend these cores to the burst boundaries. If the long ISI is smaller than the short ISI, the long ISI is used as both.
 
-'Calculate LogISI Threshold' will calculate and plot the logISI histogram used for long ISI calculation (Fig. 34). The detected threshold will be displayed with a green cross and the long ISI updated to the thresholded value (see below for more details on threshold detection).
+[Calculate LogISI Threshold]{.ui-label} will calculate and plot the logISI histogram used for long ISI calculation. The detected threshold will be displayed with a green cross and the long ISI updated to the thresholded value (see below for more details on threshold detection).
 
 *Primary Settings:*
 
-[Max. short ISI (ms):]{.underline} The short ISI used to detect burst cores in the first-pass analysis. This is set manually, typical value used is 100 ms.
+[Max. short ISI (ms):]{.ui-label} The short ISI used to detect burst cores in the first-pass analysis. This is set manually, typical value used is 100 ms.
 
-[Max. long ISI (ms):]{.underline} The long ISI used to detect the burst boundaries, extending the burst cores. This is calculated from the data (logISI histogram), or can be set manually.
+[Max. long ISI (ms):]{.ui-label} The long ISI used to detect the burst boundaries, extending the burst cores. This is calculated from the data (logISI histogram), or can be set manually.
 
-[Min. spikes per burst:]{.underline} The minimum number of spikes in a burst. Bursts detected from ISI analysis with less than this number of spikes will be excluded.
+[Min. spikes per burst:]{.ui-label} The minimum number of spikes in a burst. Bursts detected from ISI analysis with less than this number of spikes will be excluded.
 
 *LogISI Threshold Settings*
 
-The long ISI is calculated from the LogISI histogram using a peak / trough--finding algorithm. First, the intra-burst peak (expected to be dominated by the short ISI of spikes in bursts) is detected. This is expected to be the smallest peak (i.e. within-burst ISI), and so the search range is usually small (e.g. default 100 ms).
+The long ISI is calculated from the LogISI histogram using a peak and trough-finding algorithm. First, the intra-burst peak (expected to be dominated by the short ISI of spikes in bursts) is detected. This is expected to be the smallest peak (i.e. within-burst ISI), and so the search range is usually small (e.g. default 100 ms).
 
 Next, all other peaks of the logISI histogram are found. A 'void parameter' is computed between the intra-burst peak and all other peaks, capturing the depth of the trough in between the two peaks. The trough with the highest void parameter (i.e. ISI that best separates the peaks) is taken as the new long ISI threshold (see Pasquale et al., (2016) for equations).
 
-[Min. void parameter:]{.underline} This sets the minimum acceptable void parameter, lowering it will increase chances of finding local minimum.
+[Min. void parameter:]{.ui-label} This sets the minimum acceptable void parameter, lowering it will increase chances of finding local minimum.
 
-Intraburst peak cutoff (ms): The time window over which to search for the intraburst peak (the intraburst peak, consisting of the smallest ISIs, will be searched for between 0 and the intraburst peak cutoff (ms)).
+[Intraburst peak cutoff (ms):]{.ui-label} The time window over which to search for the intraburst peak (the intraburst peak, consisting of the smallest ISIs, will be searched for between 0 and the intraburst peak cutoff (ms)).
 
-[Min. samples between peaks:]{.underline} The minimum number of samples used in the peak-detection algorithm when searching for all additional (i.e. non-intraburst) logISI histogram peaks.
+[Min. samples between peaks:]{.ui-label} The minimum number of samples used in the peak-detection algorithm when searching for all additional (i.e. non-intraburst) logISI histogram peaks.
 
-[Bins per decade:]{.underline} Sets the logISI histogram bin-size. Increasing the number of bins per decade increases the sampling of the histogram and can improve threshold detection.
+[Bins per decade:]{.ui-label} Sets the logISI histogram bin-size. Increasing the number of bins per decade increases the sampling of the histogram and can improve threshold detection.
 
-[Histogram smoothing:]{.underline} If set, LOWESS smoothing will be used to smooth the histogram.
+[Histogram smoothing:]{.ui-label} If set, LOWESS smoothing will be used to smooth the histogram.
 
-[Lowess fraction:]{.underline} Sets the number of points used in the local regression for LOWESS smoothing. Determines the smoothness (increasing will increase smoothness).
+[Lowess fraction:]{.ui-label} Sets the number of points used in the local regression for LOWESS smoothing. Determines the smoothness (increasing will increase smoothness).
 
-## Max Interval
+## Max interval
 
-The 'MaxInterval' method, as it is commonly described in the literature, is an inter-spike interval thresholding approach proceeds based the following thresholds:
+The [MaxInterval]{.ui-label} method, as it is commonly described in the literature, is an inter-spike interval thresholding approach that proceeds based on the following thresholds:
 
-[Max. Interval (ms):]{.underline} Maximum ISI at which the first ISI in a burst must not exceed.
+[Max. Interval (ms):]{.ui-label} Maximum ISI at which the first ISI in a burst must not exceed.
 
-[Max. end interval (ms):]{.underline} Maximum ISI at which the last ISI in a burst must not exceed.
+[Max. end interval (ms):]{.ui-label} Maximum ISI at which the last ISI in a burst must not exceed.
 
-[Min. burst interval (ms):]{.underline} Minimum ISI at which the inter-burst interval between two successive bursts must not exceed.
+[Min. burst interval (ms):]{.ui-label} Minimum ISI at which the inter-burst interval between two successive bursts must not exceed.
 
-[Min. burst duration (ms):]{.underline} Minimum duration in time a burst must be to be detected.
+[Min. burst duration (ms):]{.ui-label} Minimum duration in time a burst must be to be detected.
 
-[Min. spikes per burst:]{.underline} Minimum number of spikes a burst must have to be included in the analysis.
+[Min. spikes per burst:]{.ui-label} Minimum number of spikes a burst must have to be included in the analysis.

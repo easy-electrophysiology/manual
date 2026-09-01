@@ -1,0 +1,11 @@
+---
+title: "Remove baseline"
+---
+
+![[Remove Baseline]{.ui-label} window. The shaded region defines the interval used to calculate the baseline before subtraction.](images/media/data-tools-remove-baseline.png)
+
+Removing the baseline is accomplished by subtracting a baseline value from the data. The baseline is calculated as the average within a specified time window (indicated by the period within the boundary region that appears on screen).
+
+Clicking [Apply]{.ui-label} will apply baseline removal for every record in the file. For each record, the baseline is calculated and subtracted separately.
+
+If your file has two channels (i.e. Vm and Im) clicking the checkbox option will also calculate and remove the baseline from the second data channel (across the time window specified on the primary data channel).

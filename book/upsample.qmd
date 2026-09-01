@@ -1,0 +1,15 @@
+---
+title: "Upsample"
+---
+
+![[Upsample]{.ui-label} options.](images/media/data-tools-upsample.png)
+
+Data upsampling increases the resolution of the data by interpolating between samples. The following methods of upsampling are available:
+
+- **Nearest Neighbor** -- the simplest method of interpolation, in which the interpolants are chosen as the nearest datapoint.
+
+- **Linear Interpolation** -- a coarse interpolation method in which the interpolants are chosen to lie on a straight line between adjacent datapoints.
+
+- **Cubic Spline Interpolation** -- a sophisticated interpolation technique in which interpolants are chosen to lie on 3^rd^-order piecewise polynomials between adjacent data points. The polynomial coefficients are set to ensure the interpolated function is continuous at the first and second derivative.
+
+For most purposes cubic spline interpolation is optimal as it produces the smoothest interpolation.

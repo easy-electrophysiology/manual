@@ -1,17 +1,17 @@
 ---
-title: "Saving Data and Analysis Results"
+title: "Saving data and results"
 ---
 
-## Copy / Save Data
+## Save recorded data
 
-Options to copy and save the displayed Vm and Im data are available under 'Save Data' on the top menubar.
+Use [Save Data]{.ui-label} on the top menu bar to copy or save the displayed channel data.
 
-Data from the currently selected record can be copied ('Copy Im Trace', 'Copy Vm Trace'). Alternatively, all records in the file can be saved to file in .xlsx or .csv formats ('Save All Records (Im)', 'Save All Records (Vm)'.
+Data from the currently selected record can be copied using [Copy Channel 1]{.ui-label} or [Copy Channel 2]{.ui-label}. Alternatively, all records in the file can be saved in `.xlsx` or `.csv` format using [Save All (Channel 1)]{.ui-label} or [Save All (Channel 2)]{.ui-label}.
 
-Saving to .csv is faster than to .xlsx and may significantly decrease saving times for large datasets.
+Saving to `.csv` is faster than to `.xlsx` and may significantly decrease saving times for large datasets.
 
-## Save Analysis
+## Save analysis results
 
-The displayed results in the 'Table' tab table can be saved to .xlsx or .csv. Saving to excel includes additional formatting around the cell borders (e.g. between different files when in batch mode). Typically with the analysis results table displayed data size is small enough that the difference in save times for .xlsx and .csv is negligible.
+Use [Save Events Analysis]{.ui-label} to save the results displayed in the [Table]{.ui-label} tab as an `.xlsx` or `.csv` file. Saving to Excel includes additional formatting around cell borders, such as between different files in batch mode. Analysis results tables are typically small enough that the difference in saving time between `.xlsx` and `.csv` is negligible.
 
 Data can also be copied directly from the analysis results table (select data to copy and right-click).

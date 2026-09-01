@@ -1,0 +1,5 @@
+---
+title: "Reset to raw data"
+---
+
+To restore the current file to its original state, click [Data]{.ui-label} › [Reset to Raw Data]{.ui-label}. This reloads the data from the original file, undoing all data-processing steps and clearing any analysis results for that file. The original file must still exist in the same location.

@@ -9,18 +9,12 @@ project:
 
 book:
   title: "Easy Electrophysiology"
-  subtitle: "User Manual"
   favicon: assets/favicon.jpg
-  cover-image: assets/logo.jpg
   search: true
-  reader-mode: true
   page-navigation: true
   site-url: https://easy-electrophysiology.github.io/manual/
-  repo-url: https://github.com/easy-electrophysiology/manual
-  repo-branch: main
-  repo-subdir: book
-  repo-actions: [edit, issue]
   sidebar:
+    title: "Easy Electrophysiology<br>Manual"
     logo: assets/logo.jpg
     style: docked
     collapse-level: 1
@@ -29,27 +23,49 @@ book:
     right: "Built with [Quarto](https://quarto.org)."
   chapters:
     - index.qmd
-    - acknowledgements.qmd
-    - graphical-interface-overview.qmd
-    - loading-files.qmd
-    - analysis-overview.qmd
-    - curve-fitting.qmd
-    - event-detection-and-analysis.qmd
-    - action-potential-counting.qmd
-    - input-resistance.qmd
-    - action-potential-kinetics.qmd
-    - data-tools.qmd
-    - analysis.qmd
-    - burst-analysis.qmd
-    - analyzing-in-batch-mode.qmd
-    - saving-data-and-analysis-results.qmd
+    - part: "Get started"
+      chapters:
+        - loading-files.qmd
+        - graphical-interface-overview.qmd
+        - analysis-overview.qmd
+    - part: "Analysis"
+      chapters:
+        - curve-fitting.qmd
+        - event-detection-and-analysis.qmd
+        - href: action-potential-counting.qmd
+          text: "AP counting"
+        - href: action-potential-kinetics.qmd
+          text: "AP kinetics"
+        - input-resistance.qmd
+        - burst-analysis.qmd
+        - analysis.qmd
+        - analyzing-in-batch-mode.qmd
+    - part: "Data tools"
+      chapters:
+        - upsample.qmd
+        - downsample.qmd
+        - filter.qmd
+        - detrend.qmd
+        - remove-baseline.qmd
+        - average-records.qmd
+        - record-arithmetic.qmd
+        - stimulus-artefact-removal.qmd
+        - reshape-records.qmd
+        - normalize-time.qmd
+        - cut-trace-length.qmd
+        - reset-to-raw-data.qmd
+    - part: "Saving and export"
+      chapters:
+        - saving-data-and-analysis-results.qmd
+        - plot-exporter.qmd
     - saving-and-resetting-default-options.qmd
     - graph-options.qmd
-    - plot-exporter.qmd
     - legacy-options.qmd
     - keyboard-shortcuts.qmd
-    - license.qmd
+    - acknowledgements.qmd
     - references.qmd
+  appendices:
+    - mathematical-formulas.qmd
 
 format:
   html:
@@ -59,6 +75,7 @@ format:
     include-after-body: assets/version-selector.html
     toc: true
     toc-depth: 3
+    toc-expand: true
     number-sections: false
     fig-align: center
     link-external-newwindow: true

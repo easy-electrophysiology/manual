@@ -1,0 +1,131 @@
+---
+title: "Mathematical formulas"
+---
+
+## Curve fitting functions
+
+### Monoexponential
+
+$$
+f(x) = b_0 + b_1 e^{-x / \tau}
+$$
+
+### Biexponential (decay)
+
+$$
+f(x) = b_0 + b_1 e^{-x / \tau_1} + b_2 e^{-x / \tau_2}
+$$
+
+### Biexponential (event)
+
+$$
+f(x) = b_0 + b_1 \left(1 - e^{-x / \mathrm{rise}}\right)e^{-x / \mathrm{decay}}
+$$
+
+### Triexponential
+
+$$
+f(x) = b_0 + b_1 e^{-x / \tau_1} + b_2 e^{-x / \tau_2} + b_3 e^{-x / \tau_3}
+$$
+
+Here, $x$ is a vector of times normalized by subtracting the first time point.
+
+### Starting estimates for exponential fits
+
+$$
+b_0 = \frac{1}{n}\sum_{i=1}^{n} D_i
+$$
+
+$$
+b_1 = D_1 - D_n
+$$
+
+$$
+\tau = \frac{t_{\mathrm{half}}}{\log(2)}
+$$
+
+Here, $D_1$ and $D_n$ are the first and last data values in the region being fitted, respectively, and $t_{\mathrm{half}}$ is the time from $D_1$ to half-amplitude.
+
+For biexponential (decay) fits, the starting estimates are weighted as follows:
+
+$$
+\tau_1 = 0.1\tau, \qquad \tau_2 = 0.9\tau
+$$
+
+For triexponential fits:
+
+$$
+\tau_1 = \tau_2 = \tau_3 = \frac{\tau}{3}
+$$
+
+## Action potential threshold methods
+
+Here, $v$ is a vector of recorded membrane-potential samples; $v'$, $v''$, and $v'''$ are its first, second, and third derivatives, respectively; $V_{\mathrm{thr}}$ is the estimated action-potential threshold; and $LB$ is a lower bound set by the user.
+
+### Method I
+
+Introduced by Sekerli et al. (2004):
+
+$$
+V_{\mathrm{thr}} = \underset{v}{\arg\max}\, f(v) \quad \text{where } v' \ge LB
+$$
+
+$$
+f(v) = \frac{v''}{v'}
+$$
+
+### Method II
+
+Introduced by Sekerli et al. (2004):
+
+$$
+V_{\mathrm{thr}} = \underset{v}{\arg\max}\, f(v) \quad \text{where } v' \ge LB
+$$
+
+$$
+f(v) = \frac{v'''v' - (v'')^2}{(v')^3}
+$$
+
+### Leading inflection
+
+$$
+V_{\mathrm{thr}} = \arg\min_v v'
+$$
+
+### Maximum curvature
+
+Introduced by Rossokhin and Saakian (1992):
+
+$$
+V_{\mathrm{thr}} = \arg\max_v f(v)
+$$
+
+$$
+f(v) = v''\left(1 + (v')^2\right)^{-3/2}
+$$
+
+## Polynomials for detrending
+
+The polynomial equations used for detrending and *Events* detection, such as [Curve]{.ui-label} thresholding, have the standard form:
+
+$$
+a_0 + a_1x + \cdots + a_nx^n
+$$
+
+## Spike frequency accommodation
+
+Spike frequency accommodation ($SFA$) is calculated from the inter-spike intervals in a train of action potentials. $ISI_{\mathrm{first}}$ is the first inter-spike interval in the spike train, and $ISI_{\mathrm{last}}$ is the final inter-spike interval.
+
+### Divisor method
+
+$$
+SFA_{\mathrm{divisor}} = \frac{ISI_{\mathrm{first}}}{ISI_{\mathrm{last}}}
+$$
+
+### Local variance
+
+The local variance ($LV$) method was introduced by Shinomoto et al. (2003):
+
+$$
+SFA_{LV} = \frac{1}{n - 1}\sum_{i=1}^{n-1}\frac{3\left(ISI_i - ISI_{i+1}\right)^2}{\left(ISI_i + ISI_{i+1}\right)^2}
+$$

@@ -1,20 +1,20 @@
 ---
-title: "Action Potential Counting"
+title: "Action potential counting"
 ---
 
 *Action Potential Counting* analysis provides automatic detection of action potentials (APs) and calculation of the rheobase, first-spike latency, inter-spike interval and spike-frequency accommodation.
 
-## Run Spike Counting Analysis
+## Run spike counting analysis
 
-Clicking the 'Count AP's button on the *Action Potential Counting* analysis panel will run the analysis (Fig. 20). By default, every record in the file is analyzed. To select specific records to analyze set the 'Records to Analyze' box at the bottom of the analysis panel.
+Clicking the [Count AP's]{.ui-label} button on the *Action Potential Counting* analysis panel will run the analysis. By default, every record in the file is analyzed. To select specific records to analyze set the [Records to Analyze]{.ui-label} box at the bottom of the analysis panel.
 
-To restrict the analysis to a specific time period, click 'Set Bounds' (Fig. 21). To change the spike-detection algorithm, use the drop-down menu in the 'Thresholding' box on the analysis panel. More detail on these detection algorithms is given below.
+To restrict the analysis to a specific time period, click [Set Bounds]{.ui-label}. To change the spike-detection algorithm, use the drop-down menu in the [Thresholding]{.ui-label} box on the analysis panel. More detail on these detection algorithms is given below.
 
-To calculate the rheobase, Im input is required. This can be initialized by clicking the 'Im' checkbox. See the *Input Resistance* section for more detail on Im measurement.
+To calculate the rheobase, Im input is required. This can be initialized by clicking the [Im]{.ui-label} checkbox. See the *Input Resistance* section for more detail on Im measurement.
 
-![](images/media/image24.png)
+![Action Potential Counting. Detected action potentials are marked with filled red circles at their peaks. Double-click a peak to discard it, or use [Manual Select]{.ui-label} to add an undetected action potential.](images/media/image24.png)
 
-## Spike Detection Methods
+## Spike detection methods
 
 Three spike-detection algorithms are provided -- *Auto-threshold Record*, *Auto-threshold Spike* and *Manual Threshold* which differ in their sensitivity and approach.
 
@@ -30,7 +30,7 @@ iv. *Width (ms)* -- Period to search for a sample crossing the negative first de
 
 v.  *Min Distance Between APs (ms)* -- The minimum distance that two action potentials must be from each other. When two APs are closer than this distance, the smaller will be excluded.
 
-These parameters can be adjusted through the 'Options' \> 'Action Potential Counting Options' menu.
+These parameters can be adjusted through [Options]{.ui-label} › [Action Potential Counting Options]{.ui-label}.
 
 *Auto-Threshold Spike*
 
@@ -38,7 +38,7 @@ The option detects action potentials using the threshold parameters described ab
 
 *Auto-Threshold Record*
 
-Auto-threshold record Fig. 20). provides a robust alternative to individual action potential detection, averaging across all detected spikes to generate an absolute threshold.
+Auto-threshold record provides a robust alternative to individual action potential detection, averaging across all detected spikes to generate an absolute threshold.
 
 First, an *Auto-Threshold Spike* approach is used to detect action potentials. Then, the median amplitude mid-point Vm is calculated from all detected action potentials. This is used as a straight-line threshold over which any spike crossing is considered an action potential.
 
@@ -46,23 +46,23 @@ This method reduces the number of erroneously detected action potentials, partic
 
 *Manual Threshold*
 
-The *Manual Threshold* method is the simplest -- if selected, a red threshold bar will appear on the plot (Fig. 21). Any spike which rises above then falls below this threshold will be counted as an action potential.
+The *Manual Threshold* method is the simplest -- if selected, a red threshold bar will appear on the plot. Any spike which rises above then falls below this threshold will be counted as an action potential.
 
-## Manual Spike Selection / Editing
+## Manual spike selection and editing
 
 Following AP counting, detected events may be discarded or undetected events manually selected.
 
-To select an AP, click the 'Manual Select' button on the *Action Potential Counting* panel. The cursor will change to a crosshair and click / dragging on the graph will draw a circle allowing selection of an AP peak. To allow maximum flexibility, these selections are not thresholded and the maximum Vm in the selected region will be taken as the new spike peak.
+To select an AP, click the [Manual Select]{.ui-label} button on the *Action Potential Counting* panel. The cursor will change to a crosshair and clicking and dragging on the graph will draw a circle allowing selection of an AP peak. To allow maximum flexibility, these selections are not thresholded and the maximum Vm in the selected region will be taken as the new spike peak.
 
 To discard detected APs, click twice on the filled red circle at the peak of an AP. The first click will prime the AP for deletion (the peak circle will turn blue) and the second click will delete the event from analysis.
 
 Manual editing of detected action potentials will update all existing results (e.g. rheobase, first-spike latency, mean inter-spike interval, spike-frequency accommodation).
 
-## Action Potential Counting Options
+## [Action Potential Counting Options]{.ui-label}
 
 *Rheobase*
 
-Rheobase refers to the smallest current injection that elicits an action potential. Rheobase analysis is enabled when the Im checkbox is active (see *Input Resistance* for details on Im calculation in current-clamp mode).
+Rheobase refers to the smallest current injection that elicits an action potential. Rheobase analysis is enabled when the [Im]{.ui-label} checkbox is active (see *Input Resistance* for details on Im calculation in current-clamp mode).
 
 The rheobase can be calculated as:
 
@@ -74,7 +74,7 @@ The rheobase can be calculated as:
 
 The first spike latency is defined as the time from the start of the Im injection to the peak of the first action potential. If selected, users will be prompted to input the time (in seconds) that
 
-the Im injection starts. First spike latency will be calculated for all records that contains action potentials.
+the Im injection starts. First spike latency will be calculated for all records that contain action potentials.
 
 *Mean Inter-Spike Interval*
 
@@ -88,4 +88,4 @@ Spike frequency accommodation (SFA) refers to a reduction in firing rate during 
 
 -   *Local Variance --* Introduced in Shinomoto et al., (2003), this measure captures the degree of irregularity of neuronal firing from the local variation of inter-spike intervals across the spike train (see *Appendix I*).
 
-![](images/media/image25.png)
+![Action Potential Counting Options. Analysis using a manual threshold and restricted to a selected region. [More Analysis]{.ui-label} provides first-spike latency, inter-spike interval, and spike-frequency accommodation options.](images/media/image25.png)

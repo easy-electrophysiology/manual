@@ -1,9 +1,9 @@
 ---
-title: "Saving and Resetting Default Options"
+title: "Saving settings"
 ---
 
-Easy Electrophysiology has the convenient option to save the current analysis settings for later use. Default options can be overwritten using the 'Save as Default' button that appears on certain options panels and windows. Clicking this button will save the settings on this panel / window to file. These settings will be remembered across sessions (i.e. if you close and re-start the software).
+Easy Electrophysiology can save the current settings for later use. Default options can be overwritten using the [Save as Default]{.ui-label} button that appears on certain options panels and windows. Clicking this button will save the settings on this panel or window to file. These settings will be remembered across sessions (i.e. if you close and re-start the software).
 
-Clicking 'Reset to Default' will reset all options on the relevant panel / window to their default settings (e.g. if they were changed after starting the software).
+Clicking [Reset to Default]{.ui-label} will reset all options on the relevant panel or window to their default settings (e.g. if they were changed after starting the software).
 
-To reset settings to the Easy Electrophysiology defaults (that are set when the software is first downloaded), click 'Options' \> 'Reset to Factory Defaults' and choose the options to reset.
+To reset settings to the Easy Electrophysiology defaults (that are set when the software is first downloaded), click [Options]{.ui-label} › [Reset to Factory Defaults]{.ui-label} and choose the options to reset.

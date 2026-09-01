@@ -2,4 +2,4 @@
 title: "License"
 ---
 
-License is available at https://www.easyelectrophysiology.com/license and packaged with the Easy Electrophysiology distribution.
+The [Easy Electrophysiology license](https://www.easyelectrophysiology.com/license) is also packaged with the Easy Electrophysiology distribution.

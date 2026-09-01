@@ -9,6 +9,26 @@ $font-size-root: 17px;
   font-weight: 600;
 }
 
+.sidebar-title > a {
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.ui-label {
+  font-weight: 500;
+  padding: 0.02em 0.2em;
+  border-radius: 2px;
+  background-color: rgba(44, 110, 155, 0.15);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.reference-list > p {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  text-indent: -1.5rem;
+}
+
 img {
   max-width: 100%;
   height: auto;
