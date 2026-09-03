@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Events detection and kinetics – Easy Electrophysiology</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./events-analysis.html" rel="next">
+<link href="./curve-fitting.html" rel="prev">
+<link href="./assets/favicon.jpg" rel="icon" type="image/jpeg">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-857e7eec2b1af0d3b3176fc700a544de.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./curve-fitting.html">Analysis</a></li><li class="breadcrumb-item"><a href="./event-detection-and-analysis.html"><span class="chapter-title">Events detection and kinetics</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      <img src="./assets/logo.jpg" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./assets/logo.jpg" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Easy Electrophysiology<br>Manual</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Welcome!</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Get started</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./loading-files.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Loading files</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./graphical-interface-overview.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">GUI overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analysis-overview.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Analysis overview</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./curve-fitting.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Curve fitting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./event-detection-and-analysis.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Events detection and kinetics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./events-analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Events analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./action-potential-counting.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">AP counting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./action-potential-kinetics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">AP kinetics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./input-resistance.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Input resistance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./burst-analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Burst analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Statistics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analyzing-in-batch-mode.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Batch mode</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Data tools</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./upsample.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Upsample</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./downsample.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Downsample</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./filter.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Filter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./detrend.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Detrend</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./remove-baseline.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Remove baseline</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./average-records.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Average records</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./record-arithmetic.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Record arithmetic</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stimulus-artefact-removal.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Stimulus artefact removal</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reshape-records.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Reshape records</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./normalize-time.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Normalize time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cut-trace-length.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Cut trace length</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reset-to-raw-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Reset to raw data</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Saving and export</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./saving-data-and-analysis-results.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Saving data and results</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./plot-exporter.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Exporting plots</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./saving-and-resetting-default-options.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Saving settings</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./graph-options.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Graph options</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./legacy-options.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Legacy options</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./keyboard-shortcuts.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Keyboard shortcuts</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./acknowledgements.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mathematical-formulas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Mathematical formulas</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#event-detection" id="toc-event-detection" class="nav-link" data-scroll-target="#event-detection">Event detection</a>
+  <ul>
+  <li><a href="#template-matching" id="toc-template-matching" class="nav-link" data-scroll-target="#template-matching">Template matching</a>
+  <ul>
+  <li><a href="#generating-a-template" id="toc-generating-a-template" class="nav-link" data-scroll-target="#generating-a-template">Generating a template</a>
+  <ul class="collapse">
+  <li><a href="#fitting-the-event" id="toc-fitting-the-event" class="nav-link" data-scroll-target="#fitting-the-event">Fitting the event</a></li>
+  <li><a href="#storing-templates-for-later-use" id="toc-storing-templates-for-later-use" class="nav-link" data-scroll-target="#storing-templates-for-later-use">Storing templates for later use</a></li>
+  <li><a href="#generation-of-multiple-templates-for-simultaneous-analysis" id="toc-generation-of-multiple-templates-for-simultaneous-analysis" class="nav-link" data-scroll-target="#generation-of-multiple-templates-for-simultaneous-analysis">Generation of multiple templates for simultaneous analysis</a></li>
+  </ul></li>
+  <li><a href="#refining-a-template" id="toc-refining-a-template" class="nav-link" data-scroll-target="#refining-a-template">Refining a template</a>
+  <ul class="collapse">
+  <li><a href="#assessing-event-detection" id="toc-assessing-event-detection" class="nav-link" data-scroll-target="#assessing-event-detection">Assessing event detection</a></li>
+  <li><a href="#deconvolution-options" id="toc-deconvolution-options" class="nav-link" data-scroll-target="#deconvolution-options">Deconvolution options</a></li>
+  </ul></li>
+  <li><a href="#events-thresholding" id="toc-events-thresholding" class="nav-link" data-scroll-target="#events-thresholding">Events Thresholding</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#kinetics" id="toc-kinetics" class="nav-link" data-scroll-target="#kinetics">Kinetics</a>
+  <ul>
+  <li><a href="#event-kinetics-overview" id="toc-event-kinetics-overview" class="nav-link" data-scroll-target="#event-kinetics-overview">Event kinetics overview</a></li>
+  </ul></li>
+  <li><a href="#events-options" id="toc-events-options" class="nav-link" data-scroll-target="#events-options">Events options</a>
+  <ul>
+  <li><a href="#event-detection-window-options" id="toc-event-detection-window-options" class="nav-link" data-scroll-target="#event-detection-window-options">Event detection window options</a>
+  <ul>
+  <li><a href="#lower-threshold" id="toc-lower-threshold" class="nav-link" data-scroll-target="#lower-threshold"><span class="ui-label">Lower Threshold</span></a></li>
+  <li><a href="#baseline-options-analyze-windows-only" id="toc-baseline-options-analyze-windows-only" class="nav-link" data-scroll-target="#baseline-options-analyze-windows-only"><span class="ui-label">Baseline Options (Analyze windows only)</span></a></li>
+  <li><a href="#upper-threshold" id="toc-upper-threshold" class="nav-link" data-scroll-target="#upper-threshold"><span class="ui-label">Upper Threshold</span></a></li>
+  <li><a href="#omit-time-periods" id="toc-omit-time-periods" class="nav-link" data-scroll-target="#omit-time-periods"><span class="ui-label">Omit Time Periods</span></a></li>
+  <li><a href="#template-to-use" id="toc-template-to-use" class="nav-link" data-scroll-target="#template-to-use"><span class="ui-label">Template to use</span></a></li>
+  </ul></li>
+  <li><a href="#event-fitting-analysis-panel-options" id="toc-event-fitting-analysis-panel-options" class="nav-link" data-scroll-target="#event-fitting-analysis-panel-options">Event fitting analysis panel options</a>
+  <ul>
+  <li><a href="#peak-direction-events-threshold-only" id="toc-peak-direction-events-threshold-only" class="nav-link" data-scroll-target="#peak-direction-events-threshold-only"><span class="ui-label">Peak Direction (Events Threshold only)</span></a></li>
+  <li><a href="#minimum-iei-ms" id="toc-minimum-iei-ms" class="nav-link" data-scroll-target="#minimum-iei-ms"><span class="ui-label">Minimum IEI (ms)</span></a></li>
+  <li><a href="#decay-search-period-ms" id="toc-decay-search-period-ms" class="nav-link" data-scroll-target="#decay-search-period-ms"><span class="ui-label">Decay Search Period (ms)</span></a></li>
+  <li><a href="#amplitude-threshold-pa" id="toc-amplitude-threshold-pa" class="nav-link" data-scroll-target="#amplitude-threshold-pa"><span class="ui-label">Amplitude Threshold (pA)</span></a></li>
+  <li><a href="#average-peak-ms" id="toc-average-peak-ms" class="nav-link" data-scroll-target="#average-peak-ms"><span class="ui-label">Average Peak (ms)</span></a></li>
+  <li><a href="#auc-min.-pa-ms" id="toc-auc-min.-pa-ms" class="nav-link" data-scroll-target="#auc-min.-pa-ms"><span class="ui-label">AUC min. (pA ms)</span></a></li>
+  <li><a href="#baseline-search-period-ms" id="toc-baseline-search-period-ms" class="nav-link" data-scroll-target="#baseline-search-period-ms"><span class="ui-label">Baseline – Search Period (ms)</span></a></li>
+  <li><a href="#average-baseline-ms" id="toc-average-baseline-ms" class="nav-link" data-scroll-target="#average-baseline-ms"><span class="ui-label">Average Baseline (ms)</span></a></li>
+  </ul></li>
+  <li><a href="#events-options-window" id="toc-events-options-window" class="nav-link" data-scroll-target="#events-options-window">Events options window</a>
+  <ul>
+  <li><a href="#decay-endpoint-search-method" id="toc-decay-endpoint-search-method" class="nav-link" data-scroll-target="#decay-endpoint-search-method"><span class="ui-label">Decay Endpoint search method</span></a></li>
+  <li><a href="#interpolate-to-200-khz" id="toc-interpolate-to-200-khz" class="nav-link" data-scroll-target="#interpolate-to-200-khz"><span class="ui-label">Interpolate to 200 kHz</span></a></li>
+  <li><a href="#rise-time-cutoffs" id="toc-rise-time-cutoffs" class="nav-link" data-scroll-target="#rise-time-cutoffs"><span class="ui-label">Rise-time Cutoffs</span></a></li>
+  <li><a href="#decay-time" id="toc-decay-time" class="nav-link" data-scroll-target="#decay-time"><span class="ui-label">Decay time</span></a></li>
+  <li><a href="#calculate-max-rise-decay-slope" id="toc-calculate-max-rise-decay-slope" class="nav-link" data-scroll-target="#calculate-max-rise-decay-slope"><span class="ui-label">Calculate Max Rise / Decay Slope</span></a></li>
+  <li><a href="#event-curve-fitting" id="toc-event-curve-fitting" class="nav-link" data-scroll-target="#event-curve-fitting"><span class="ui-label">Event Curve Fitting</span></a></li>
+  <li><a href="#frequency-data" id="toc-frequency-data" class="nav-link" data-scroll-target="#frequency-data"><span class="ui-label">Frequency Data</span></a></li>
+  <li><a href="#plots" id="toc-plots" class="nav-link" data-scroll-target="#plots"><span class="ui-label">Plots</span></a></li>
+  <li><a href="#other-options" id="toc-other-options" class="nav-link" data-scroll-target="#other-options"><span class="ui-label">Other Options</span></a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#manual-editing" id="toc-manual-editing" class="nav-link" data-scroll-target="#manual-editing">Manual editing</a>
+  <ul>
+  <li><a href="#select-events" id="toc-select-events" class="nav-link" data-scroll-target="#select-events">Select events</a></li>
+  <li><a href="#reject-events" id="toc-reject-events" class="nav-link" data-scroll-target="#reject-events">Reject events</a></li>
+  <li><a href="#edit-kinetics" id="toc-edit-kinetics" class="nav-link" data-scroll-target="#edit-kinetics">Edit kinetics</a></li>
+  </ul></li>
+  <li><a href="#grouping-detected-events" id="toc-grouping-detected-events" class="nav-link" data-scroll-target="#grouping-detected-events">Grouping detected events</a></li>
+  <li><a href="#saving" id="toc-saving" class="nav-link" data-scroll-target="#saving">Saving</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./curve-fitting.html">Analysis</a></li><li class="breadcrumb-item"><a href="./event-detection-and-analysis.html"><span class="chapter-title">Events detection and kinetics</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Events detection and kinetics</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>Easy Electrophysiology provides two options for events detection, <em>Events Template Matching</em> and <em>Events Thresholding</em>. For simplicity, all relevant options, graphs and results tables are shared between these <em>Events</em> detection methods (e.g.&nbsp;running an events analysis with <em>Template Matching</em> will overwrite a previous analysis with <em>Thresholding</em>).</p>
+</section>
+<section id="event-detection" class="level2">
+<h2 class="anchored" data-anchor-id="event-detection">Event detection</h2>
+<p>Both event-detection approaches share a range of settings that control event detection and exclusion. These are described in <a href="#events-options">Events options</a> below.</p>
+<section id="template-matching" class="level3">
+<h3 class="anchored" data-anchor-id="template-matching">Template matching</h3>
+<p>Template matching relies on the generation of a <em>template</em> event in the form of a biexponential function <span class="citation" data-cites="jonas1993 guzman2014">(<a href="references.html#ref-jonas1993" role="doc-biblioref">Jonas et al. 1993</a>; see also <a href="references.html#ref-guzman2014" role="doc-biblioref">Guzman et al. 2014</a>)</span>. The template is generated by fitting a biexponential function to an exemplar event from the recorded data (the key parameters to fit are the <em>rise</em> and <em>decay</em> coefficients; see <a href="./mathematical-formulas.html"><em>Appendix I</em></a>). This ensures the biexponential rise, decay, and fitting window are tailored to the shape of the post-synaptic events to be detected. This initial event template can be further improved by fitting to the average of all detected events (see <a href="#refining-a-template"><em>Refine Template</em></a> for details).</p>
+<p>Easy Electrophysiology implements three template-matching algorithms: the <strong>correlation method</strong> <span class="citation" data-cites="jonas1993">(<a href="references.html#ref-jonas1993" role="doc-biblioref">Jonas et al. 1993</a>)</span>, the <strong>detection criterion method</strong> <span class="citation" data-cites="clements1997">(<a href="references.html#ref-clements1997" role="doc-biblioref">Clements and Bekkers 1997</a>)</span>, and the <strong>deconvolution method</strong> <span class="citation" data-cites="pernia2012">(<a href="references.html#ref-pernia2012" role="doc-biblioref">Pernia-Andrade et al. 2012</a>)</span>.</p>
+<p>The correlation and detection criterion methods compare the template with the data using a sliding window, but have limited temporal resolution and may fail to detect high-frequency, closely spaced events. In contrast, deconvolution is performed in the Fourier domain and can reliably detect closely spaced events.</p>
+<p>Each approach produces a detection measure across the recording. Applying the relevant cutoff identifies contiguous regions as detected events. The interactive plots in <a href="#refining-a-template"><em>Refine Template</em></a> can be used to inspect the detection measure and assess performance.</p>
+<section id="generating-a-template" class="level4">
+<h4 class="anchored" data-anchor-id="generating-a-template">Generating a template</h4>
+<p>The first step in template matching is to generate the template event. Click <span class="ui-label">1. Generate Template</span> on the <span class="ui-label">Events Template Matching</span> analysis panel for template generation. A biexponential event template is shown on the graph with sliders and input boxes for manual adjustment of template coefficients. It is possible to increase the coefficients outside the slider range by typing the values directly into the input boxes. The coefficients that define the template shape are:</p>
+<ul>
+<li><p><strong>b0 and b1</strong> – the offset and amplitude scaling parameters. These coefficients are left free during event detection and so are not important for template generation.</p></li>
+<li><p><strong>Rise</strong> – the biexponential rise time constant (defaults to <span class="math inline">\(0.5\ \mathrm{ms}\)</span> from <span class="citation" data-cites="jonas1993">Jonas et al. (<a href="references.html#ref-jonas1993" role="doc-biblioref">1993</a>)</span>)</p></li>
+<li><p><strong>Decay</strong> – the biexponential decay time constant (defaults to <span class="math inline">\(5\ \mathrm{ms}\)</span> from <span class="citation" data-cites="jonas1993">Jonas et al. (<a href="references.html#ref-jonas1993" role="doc-biblioref">1993</a>)</span>)</p></li>
+<li><p><strong>Width</strong> – the width (in <span class="math inline">\(\mathrm{ms}\)</span>) of the event template.</p></li>
+</ul>
+<p>The best way to generate a template event is to fit the biexponential function to a recorded event from the dataset. An event from the data can be selected by clicking <span class="ui-label">Select Data</span> and drawing around an event to fit. When selecting an event it is helpful to change the graph zoom settings to <span class="ui-label">Two Button (Pan Left, Zoom Right)</span> by right-clicking on the plot and choosing <span class="ui-label">Mouse Mode</span> › <span class="ui-label">Two Button (Pan Left, Zoom Right)</span>. This allows the left button to zoom while selecting data with the right button.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/media/image9.png" class="img-fluid figure-img"></p>
+<figcaption>Generate Template. Selected data are shown in red and the current template fit in black. Coefficients for the fit are displayed in the input boxes.</figcaption>
+</figure>
+</div>
+<section id="fitting-the-event" class="level5">
+<h5 class="anchored" data-anchor-id="fitting-the-event">Fitting the event</h5>
+<p>Once an event from the data is selected it will appear on the graph (red). The start of the event to fit can be shifted with the buttons in the <span class="ui-label">Trim Left Edge</span> box – the start point is critical for optimal fitting. The event from the data can also be filtered prior to fitting (8<sup>th</sup> order Bessel).</p>
+<p>Clicking <span class="ui-label">Fit Curve</span> will fit the biexponential function to the event. This will change the coefficients in the top panel. These coefficients are now saved until Easy Electrophysiology is closed. To save these for the next session, click the <span class="ui-label">Save</span> button (see <a href="./saving-and-resetting-default-options.html"><em>Saving and Resetting Option Defaults</em></a> for details).</p>
+</section>
+<section id="storing-templates-for-later-use" class="level5">
+<h5 class="anchored" data-anchor-id="storing-templates-for-later-use">Storing templates for later use</h5>
+<p>Templates may be stored for later use and loaded by clicking the <span class="ui-label">Store Template</span> button in the top left of the <span class="ui-label">Generate Template</span> menu. This will bring up another window allowing the current template to be saved with an identifying name.</p>
+<p>To save the current template, first enter the name in the <span class="ui-label">Save Template Name</span> text box and click <span class="ui-label">Save Template</span>.</p>
+<p>To load a template as the current template, click on the template name (the row will become highlighted) and press <span class="ui-label">Load Template</span>. Note this will overwrite the coefficients in the current template.</p>
+<p>To delete a stored template, click on the template name and press <span class="ui-label">Delete Selected Template</span>.</p>
+</section>
+<section id="generation-of-multiple-templates-for-simultaneous-analysis" class="level5">
+<h5 class="anchored" data-anchor-id="generation-of-multiple-templates-for-simultaneous-analysis">Generation of multiple templates for simultaneous analysis</h5>
+<p>Up to three templates can be used simultaneously for event detection (see <a href="#template-to-use" class="ui-label">Template to use</a> for how to run analysis with multiple templates). The three templates can be accessed using the drop-down menu (<span class="ui-label">Template 1 – 3</span>) in the <span class="ui-label">Generate Template</span> menu.</p>
+<p>The displayed template is the currently selected template and will be used for analysis when <span class="ui-label">Selected</span> is chosen in <span class="ui-label">Analyze Events</span>. When fitting a template to the data or loading one from <span class="ui-label">Stored Templates</span>, the coefficients will be stored in the currently selected template (e.g.&nbsp;<span class="ui-label">Template 2</span>). The <a href="./events-analysis.html#average-event"><em>Average Event</em></a> will always be fit using the currently selected template.</p>
+</section>
+</section>
+<section id="refining-a-template" class="level4">
+<h4 class="anchored" data-anchor-id="refining-a-template">Refining a template</h4>
+<p>The <a href="#refining-a-template"><em>Refine Template</em></a> window is used for i) assessing the fit of an event template and ii) generating a refined template by fitting to the average of all events detected with the initial template.</p>
+<p>Clicking <span class="ui-label">Fit All Events</span> detects events using the currently selected template. Detected events are displayed on the graph with a filled yellow circle at the peak and their baseline in blue. The average of all detected event is plot on the graph in red. Options to align by <span class="ui-label">Rise half-width (half-way up the event rise)</span>, <span class="ui-label">Peak</span>, and <span class="ui-label">Baseline</span> are provided in the <span class="ui-label">Alignment Method</span> drop-down box. The process of fitting to the average event is identical to fitting in <a href="#generating-a-template"><em>Generate Template</em></a>.</p>
+<p>The dropdown menu at the top of the window can be used to select the event detection method. If <span class="ui-label">Correlation</span> or <span class="ui-label">Detection Criterion</span> is chosen, the desired cutoff value can be entered in the box next to the drop-down menu. Alternatively, if <span class="ui-label">Deconvolution</span> is selected, the cutoff can be adjusted by clicking <span class="ui-label">Options</span> (detailed below).</p>
+<section id="assessing-event-detection" class="level5">
+<h5 class="anchored" data-anchor-id="assessing-event-detection">Assessing event detection</h5>
+<p>Clicking the <span class="ui-label">Show (detection method name)</span> button will show the detection measure overlaid on the plot. The cutoff value is shown as a horizontal line. This option is very useful for assisting in choosing a cutoff value, as its position in relation to the detected peaks can be observed. The detection measure units are scaled to fit to the plot for visualization purposes and cannot be interpreted directly.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/media/image10.PNG" style="width:8.6in;height:4.7in" class="figure-img"></p>
+<figcaption>Refine Template analysis. The filtered deconvolution is displayed in orange with the current cutoff as a horizontal line. The average detected event is shown in red and can be fitted using <span class="ui-label">Fit Curve</span>.</figcaption>
+</figure>
+</div>
+<p>For correlation and detection criterion methods, the <span class="ui-label">Show Window Fit</span> button will display the best-fit biexponential overlaid on the data of the main plot. When zoomed in, scrolling will move the biexponential along the data, allowing inspection of the fit at every timepoint. For this, it is convenient to use <span class="ui-label">Two Button (Pan Left, Zoom Right)</span> by right-clicking on the plot and choosing <span class="ui-label">Mouse Mode</span> › <span class="ui-label">Two Button (Pan Left, Zoom Right)</span>.</p>
+</section>
+<section id="deconvolution-options" class="level5">
+<h5 class="anchored" data-anchor-id="deconvolution-options">Deconvolution options</h5>
+<p>In <span class="ui-label">Deconvolution Options</span>, a cutoff can be specified in the <span class="ui-label">Standard Dev</span> box. The cutoff is expressed in standard deviations of the detection-measure amplitude distribution. The default value of 3.5 selects events with a detection measure more than 3.5 standard deviations above the mean.</p>
+<p>Additionally, the cutoff measure undergoes bandpass filtering which can affect its shape. Default values are 0.1 for the <span class="ui-label">Low Cutoff (Hz)</span> and 200 for <span class="ui-label">High Cutoff (Hz)</span>. Changing the high cutoff will influence the height and sharpness of the detection measure peaks and is useful to adjust when selecting optimal values for your data. The best way to choose values is to show the deconvolution on the plot (click <span class="ui-label">Show Deconvolution</span>) and visually inspect how it changes when the filter settings are adjusted and analysis re-run.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/media/image11.png" class="img-fluid figure-img"></p>
+<figcaption>Deconvolution Options. The amplitude histogram for all points in the deconvolution is fitted with a Gaussian function. The cutoff is defined using the standard deviation of this distribution; low and high filter cutoffs can also be specified.</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="events-thresholding" class="level4">
+<h4 class="anchored" data-anchor-id="events-thresholding">Events Thresholding</h4>
+<p><em>Events Thresholding</em> is a simpler method of event detection in which any datapoint that crosses a set threshold is considered an event. This method is less precise than the template matching method (e.g.&nbsp;a noise spike over threshold would be considered an event) but is less computationally demanding.</p>
+</section>
+</section>
+</section>
+<section id="kinetics" class="level2">
+<h2 class="anchored" data-anchor-id="kinetics">Kinetics</h2>
+<section id="event-kinetics-overview" class="level3">
+<h3 class="anchored" data-anchor-id="event-kinetics-overview">Event kinetics overview</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/media/image13.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption>Event Kinetics. An analyzed event with <span class="math inline">\(200\ \mathrm{kHz}\)</span> interpolation for rise time, decay time, and half-width.</figcaption>
+</figure>
+</div>
+<p><span class="figure-key">A</span> <strong>Baseline</strong> – The event baseline (filled blue circle) acts as both the baseline value and timepoint considered the start of the event. The baseline calculation method is set in <a href="#baseline-options-analyze-windows-only" class="ui-label">Baseline Options (Analyze windows only)</a> and modified with <a href="#baseline-search-period-ms" class="ui-label">Baseline – Search Period (ms)</a> and <a href="#average-baseline-ms" class="ui-label">Average Baseline (ms)</a>.</p>
+<p><span class="figure-key">B &amp; F</span> <strong>Max rise and decay slopes</strong> – The maximum slope on the rise or decay, calculated as a linear regression over <span class="math inline">\(n\)</span> points (specified in <a href="#calculate-max-rise-decay-slope" class="ui-label">Calculate Max Rise / Decay Slope</a>).</p>
+<p><span class="figure-key">C</span> <strong>Half-width</strong> – The half-width is calculated as the full-width at half-maximum (FWHM). This is the time between two half-amplitude samples (on the rise and decay; displayed on the plot with filled yellow circles). The nearest samples to the ‘true’ half-amplitude are used to calculate the FWHM; as such <a href="#interpolate-to-200-khz" class="ui-label">Interpolate to 200 kHz</a> can greatly improve accuracy. If a monoexponential curve is fit to the decay, or biexponential to the event, this will be used to find the decay, and rise and decay respectively for half-width calculation.</p>
+<p><span class="figure-key">D</span> <strong>Rise-time</strong> – The rise time is measured as the time between two timepoints (filled green circles), specified as the percentage of the event amplitude (peak minus baseline). These ‘percentage cut-offs’ can be changed using the <a href="#rise-time-cutoffs" class="ui-label">Rise-time Cutoffs</a> setting (10-90 rise-time is default, <em>shown</em>).</p>
+<p><span class="figure-key">E</span> <strong>Peak</strong> – The peak of the event can be smoothed using <a href="#average-peak-ms" class="ui-label">Average Peak (ms)</a>.</p>
+<p><span class="figure-key">G</span> <strong>Decay time</strong> – By default, this is the time between the event peak and the first sample at which the event has decayed to a specified percentage of the event amplitude (default 37%). The sample used is displayed on the graph with a purple cross. Alternatively, this can be set in <span class="ui-label">Options</span> › <a href="#decay-time" class="ui-label">Events</a> to a second method that uses two points similar to the rise-time calculation. If a monoexponential or biexponential curve is fit to the data, this will be used to find the decay time and half-width.</p>
+<p>The percentages are set with the <a href="#decay-time" class="ui-label">Decay time</a> setting. The period to search for the decay-time values can be set using <a href="#decay-search-period-ms" class="ui-label">Decay Search Period (ms)</a>.</p>
+<p><span class="figure-key">H</span> <strong>Decay fit</strong> – A monoexponential fit to the decay is displayed with a purple line. The tau of this fit is reported in the Events results table (if this fit is good, this result should closely match the decay time calculated with the first method when set to 37%).</p>
+<p><span class="figure-key">I</span> <strong>Decay endpoint</strong> – If a monoexponential decay is fit, the automatically detected end of the event is used as the fit endpoint (shown with a filled purple circle). See <a href="#decay-search-period-ms" class="ui-label">Decay Search Period (ms)</a> for details.</p>
+</section>
+</section>
+<section id="events-options" class="level2">
+<h2 class="anchored" data-anchor-id="events-options">Events options</h2>
+<section id="event-detection-window-options" class="level3">
+<h3 class="anchored" data-anchor-id="event-detection-window-options">Event detection window options</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/media/image12.PNG" style="width:8.6in;height:4.7in" class="figure-img"></p>
+<figcaption>Event Detection Options. The Analyze Events window contains options for customizing event detection. The lower linear threshold is displayed on the main plot; putative events that do not pass it are excluded.</figcaption>
+</figure>
+</div>
+<section id="lower-threshold" class="level4">
+<h4 class="anchored" data-anchor-id="lower-threshold"><span class="ui-label">Lower Threshold</span></h4>
+<p>This is the minimum value that an event must pass to be considered within threshold, specified in <span class="math inline">\(\mathrm{pA}\)</span>. It is dependent on the direction of events (e.g.&nbsp;for a threshold of <span class="math inline">\(5\ \mathrm{pA}\)</span>, positive events must contain a datapoint <span class="math inline">\(&gt; 5\ \mathrm{pA}\)</span>, negative events must contain a datapoint <span class="math inline">\(&lt; 5\ \mathrm{pA}\)</span>). The <span class="ui-label">Lower Threshold</span> is displayed on the graph in red. Using the dropdown menu, it can be specified as:</p>
+<ul>
+<li><p><span class="ui-label">Linear</span> – A straight horizontal line across the trace. This can be moved up and down with the mouse, or the desired threshold value typed into the input box.</p></li>
+<li><p><span class="ui-label">Curve</span> – A polynomial is fit to the data and used as the threshold. This can be moved up or down by typing the desired offset into the input box. The order of polynomial fit can be changed by clicking <span class="ui-label">Options</span> › <span class="ui-label">Events Analysis – Misc. Options</span> › <span class="ui-label">Dynamic Curve polynomial order</span> (under <span class="ui-label">Other Options</span>). Note fitting of higher-order polynomials slows performance.</p></li>
+<li><p><span class="ui-label">Drawn</span> – Setting the drop-down menu to <span class="ui-label">Draw</span> then clicking the <span class="ui-label">Draw Threshold</span> button will enter threshold drawing mode. The cursor will change to a pointed hand; clicking the graph will begin drawing a baseline. The first click will draw a horizontal line from the left edge of the record to the cursor. Subsequent clicks will draw a straight line from the previous point to the cursor. To finish drawing the threshold, click the right edge of the graph past the final plot datapoint. This mode is particularly useful when there are large, sudden changes in the data’s baseline.</p></li>
+</ul>
+<p>Note that if a new file is loaded which is longer than the currently drawn threshold, the threshold will be extended as a straight line to the new end timepoint.</p>
+<ul>
+<li><p><span class="ui-label">RMS</span> – The root mean squared error (RMS) of the data, multiplied by a scalar <span class="math inline">\(n\)</span>, can also be used as a minimum threshold. The minimum threshold is the baseline minus <span class="math inline">\(n \times \mathrm{RMS}\)</span> for negative events, or the baseline plus <span class="math inline">\(n \times \mathrm{RMS}\)</span> for positive events, and is shown on the plot in red. The baseline to which the RMS is added is determined by the choice of event baseline (if <span class="ui-label">Auto.</span> is selected, the mean of the data will be used separately for each record).</p>
+<p>When selecting <span class="ui-label">RMS</span> from the drop-down menu, clicking <span class="ui-label">Settings</span> will open a window allowing choice of settings for calculating the RMS. The multiplier <span class="math inline">\(n\)</span> used to scale the RMS (e.g.&nbsp;<span class="math inline">\(2 \times \mathrm{RMS}\)</span>) can be typed into the input box.</p>
+<p>If <span class="ui-label">All Data (Per Record)</span> is selected, the RMS will be calculated separately for each record, using the mean of the record as calculation baseline. Alternatively, selecting <span class="ui-label">Within Selected Region</span> will allow calculation of the RMS within a movable region on the graph.</p>
+<p>Selecting the option <span class="ui-label">Baseline used: mean</span> will use the mean of the data within this region as the calculation baseline for the RMS. Otherwise, if <span class="ui-label">Baseline used: selected baseline</span> then the currently selected baseline will be used as the calculation baseline during RMS calculation. In <span class="ui-label">Baseline used: selected baseline</span> mode, for <span class="ui-label">Linear</span>, <span class="ui-label">Curve</span>, and <span class="ui-label">Drawn</span> baselines, the RMS is calculated as the root mean square error between the baseline and data. For <span class="ui-label">Auto.</span>, the calculation baseline is the mean of the entire record (not the data within the bounds).</p></li>
+</ul>
+</section>
+<section id="baseline-options-analyze-windows-only" class="level4">
+<h4 class="anchored" data-anchor-id="baseline-options-analyze-windows-only"><span class="ui-label">Baseline Options (Analyze windows only)</span></h4>
+<p>The event baseline can be detected automatically (<span class="ui-label">Auto.</span>) or set as the first sample at which the data crosses a pre-defined baseline value. The baseline datapoint acts as both the baseline <span class="math inline">\(I_\mathrm{m}\)</span> value and the event foot (i.e.&nbsp;the timepoint at which the event starts).</p>
+<p>For automatic detection, the baseline is first estimated per-event (see <a href="./legacy-options.html"><em>Legacy options</em></a>). Next, the method of <span class="citation" data-cites="jonas1993">Jonas et al. (<a href="references.html#ref-jonas1993" role="doc-biblioref">1993</a>)</span> (the intersection between the baseline and a straight line drawn through the 20-80 rise time) is used to shift the x-axis position of the baseline to the point of the event foot. Together, these methods result in robust simultaneous estimation of the event baseline and foot.</p>
+<p>This baseline value can also be specified in a similar way as <span class="ui-label">Lower Threshold</span> (i.e.&nbsp;<span class="ui-label">Linear</span>, <span class="ui-label">Curve</span>, or <span class="ui-label">Drawn</span>). This will search the <em>baseline search region</em> for the first datapoint that has crossed this baseline threshold and set it as the baseline. If no datapoint crosses the baseline threshold within the search region, the closest value to the threshold is used.</p>
+</section>
+<section id="upper-threshold" class="level4">
+<h4 class="anchored" data-anchor-id="upper-threshold"><span class="ui-label">Upper Threshold</span></h4>
+<p>The <em>upper threshold</em> is defined as the maximum value an event can pass before it is excluded from analysis (e.g.&nbsp;for a <span class="math inline">\(100\ \mathrm{pA}\)</span> threshold, any positive event <span class="math inline">\(&gt; 100\ \mathrm{pA}\)</span> or negative event <span class="math inline">\(&lt; 100\ \mathrm{pA}\)</span> will be excluded). This option can be specified by typing the absolute value in the input box. This is particularly useful for excluding large noise spikes e.g.&nbsp;stimulus artefacts.</p>
+</section>
+<section id="omit-time-periods" class="level4">
+<h4 class="anchored" data-anchor-id="omit-time-periods"><span class="ui-label">Omit Time Periods</span></h4>
+<p>Omitting time periods from analysis can be useful for event recordings with interleaved stimulation. The <span class="ui-label">Omit Time Period</span> button opens a table for inputting time periods to omit from analysis. Add the start time of the period to exclude in the first column and the end time in the second column. Multiple time periods to exclude can be input, one on each row.</p>
+<p>When set to <span class="ui-label">absolute</span>, the events are excluded based on the absolute value of the omit times. When set to <span class="ui-label">relative</span>, the events are excluded based on the omit times relative to the start of the record on which the event occurs.</p>
+</section>
+<section id="template-to-use" class="level4">
+<h4 class="anchored" data-anchor-id="template-to-use"><span class="ui-label">Template to use</span></h4>
+<p>Event detection may be run with up to three different templates simultaneously. The <span class="ui-label">Templates to Use</span> specifies the templates to use for the analysis (<span class="ui-label">Selected</span>, <span class="ui-label">Template 1 and 2</span>, or <span class="ui-label">Template 1, 2 and 3</span>). See <a href="#generation-of-multiple-templates-for-simultaneous-analysis"><em>Generation of Multiple Templates for Simultaneous Analysis</em></a> for details on generating the three templates. The <a href="./events-analysis.html#average-event"><em>Average Event</em></a> and manually selected events are always fit using the currently selected template.</p>
+<p>If set to <span class="ui-label">Selected</span>, the currently selected template (in <span class="ui-label">Generate Template</span>) is used. The coefficients of the currently selected template can be seen directly underneath the drop-down menu. Otherwise, templates 1 and 2, or 1, 2 and 3 are used depending on the selected option.</p>
+<p>Analysis with multiple templates is run in the same way as a normal analysis. On the plot, the events detected by different templates can be distinguished by the peak color (Template 1: red, Template 2: pale blue, Template 3: pale orange). In the results table, the column <span class="ui-label">Template</span> holds the number of the template that was used to detect the event. To set the behavior in the case that the same event is detected by two different templates, see <a href="#multi-template-event-assignment" class="ui-label">Multi-template event assignment</a>.</p>
+</section>
+</section>
+<section id="event-fitting-analysis-panel-options" class="level3">
+<h3 class="anchored" data-anchor-id="event-fitting-analysis-panel-options">Event fitting analysis panel options</h3>
+<p>This panel contains detection and kinetics options which are shared between <em>Events Template Matching</em> and <em>Events Thresholding</em>.</p>
+<section id="peak-direction-events-threshold-only" class="level4">
+<h4 class="anchored" data-anchor-id="peak-direction-events-threshold-only"><span class="ui-label">Peak Direction (Events Threshold only)</span></h4>
+<p>Direction of the events to detect.</p>
+</section>
+<section id="minimum-iei-ms" class="level4">
+<h4 class="anchored" data-anchor-id="minimum-iei-ms"><span class="ui-label">Minimum IEI (ms)</span></h4>
+<p>The minimum inter-event interval (IEI) between event peaks in milliseconds. For example, if set to <span class="math inline">\(1000\ \mathrm{ms}\)</span>, detected events will be at least <span class="math inline">\(1\ \mathrm{s}\)</span> apart. Detected events that are closer than the local minimum period (i.e.&nbsp;<span class="math inline">\(1\ \mathrm{s}\)</span> in our example) will be excluded, with smallest events excluded first.</p>
+</section>
+<section id="decay-search-period-ms" class="level4">
+<h4 class="anchored" data-anchor-id="decay-search-period-ms"><span class="ui-label">Decay Search Period (ms)</span></h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/media/image14.PNG" style="width:8.6in;height:4.7in" class="figure-img"></p>
+<figcaption>Event Detection Results. Detected event peaks are marked with filled red circles. The lower threshold is shown in red and the baseline in blue. Event baselines and decay endpoints can be adjusted in <span class="ui-label">Edit Kinetics</span> mode.</figcaption>
+</figure>
+</div>
+<p>When fitting a monoexponential function to the event decay, the end of the event is estimated as the closest datapoint to the baseline (using a weighting and smoothing algorithm to account for noise and complex waveforms). This end-of-event point is indicated with a closed purple circle on the graph. The monoexponential function is fit between the event peak and the end-of-event datapoint. Here, the <em>decay search period</em> indicates the period to search for the end-of-event datapoint.</p>
+<p>If a monoexponential curve is not fit to the decay, <span class="ui-label">Decay Search Period (ms)</span> defines the search region, starting at the event peak, for the <em>Decay</em> times value.</p>
+</section>
+<section id="amplitude-threshold-pa" class="level4">
+<h4 class="anchored" data-anchor-id="amplitude-threshold-pa"><span class="ui-label">Amplitude Threshold (pA)</span></h4>
+<p>Sets the minimum amplitude (event peak minus baseline; absolute value) for detected events. Any events with an amplitude smaller than this threshold are excluded.</p>
+</section>
+<section id="average-peak-ms" class="level4">
+<h4 class="anchored" data-anchor-id="average-peak-ms"><span class="ui-label">Average Peak (ms)</span></h4>
+<p>Period to smooth around the event peak. The intuitive method of peak averaging is to simply average around the peak detected from unsmoothed data. However, this method often detects the peak at off-center noise spikes (i.e.&nbsp;not centered on the natural peak of the event).</p>
+<p>In Easy Electrophysiology, the event is first detected without smoothing. Then, the event is smoothed with a window of size specified with <span class="ui-label">Average Peak (ms)</span>. Finally, the new peak is determined from the smoothed data in a small region around the previously detected peak (±3 * <span class="ui-label">Average Peak (ms)</span>). This method simultaneously smooths the peak <span class="math inline">\(I_\mathrm{m}\)</span> value as an average of surrounding points and adjusts the position to reduce noise bias.</p>
+</section>
+<section id="auc-min.-pa-ms" class="level4">
+<h4 class="anchored" data-anchor-id="auc-min.-pa-ms"><span class="ui-label">AUC min. (pA ms)</span></h4>
+<p>Area Under Curve (AUC) threshold can be set to exclude putative events with small areas. Note this is the absolute value (as for negative events area is defined as negative area) (e.g.&nbsp;if set to <span class="math inline">\(5\)</span>, negative events with area <span class="math inline">\(-10\ \mathrm{pA\,ms}\)</span> will be included, but <span class="math inline">\(-3\ \mathrm{pA\,ms}\)</span> excluded).</p>
+</section>
+<section id="baseline-search-period-ms" class="level4">
+<h4 class="anchored" data-anchor-id="baseline-search-period-ms"><span class="ui-label">Baseline – Search Period (ms)</span></h4>
+<p>The time period before the event peak to search for the baseline. When baseline detection method is set to <span class="ui-label">Auto.</span> (in the <span class="ui-label">Analyze Events</span> window), this specifies the search period for automated baseline detection. For all other baseline options (<span class="ui-label">Linear</span>, <span class="ui-label">Curve</span>, <span class="ui-label">Drawn</span>) this is the search period for the first datapoint that crosses the baseline (see <a href="#baseline-options-analyze-windows-only" class="ui-label">Baseline Options (Analyze windows only)</a>).</p>
+</section>
+<section id="average-baseline-ms" class="level4">
+<h4 class="anchored" data-anchor-id="average-baseline-ms"><span class="ui-label">Average Baseline (ms)</span></h4>
+<p>The period over which to average the event baseline. First, the event baseline is detected with the selected method (<span class="ui-label">Auto.</span>, <span class="ui-label">Linear</span>, <span class="ui-label">Curve</span>, or <span class="ui-label">Drawn</span>). Then, the baseline value is set to the average of a window before the baseline. <span class="ui-label">Average Baseline (ms)</span> sets the size of this averaging window.</p>
+</section>
+</section>
+<section id="events-options-window" class="level3">
+<h3 class="anchored" data-anchor-id="events-options-window">Events options window</h3>
+<p>Additional event detection and analysis options can be found by clicking <span class="ui-label">Options</span> › <span class="ui-label">Events</span>. These options are shared between <em>Events Template Matching</em>, <em>Events Thresholding</em>, <a href="./events-analysis.html#average-event"><em>Average Event</em></a> and <a href="./curve-fitting.html"><em>Curve Fitting</em></a> (biexponential event) analysis.</p>
+<section id="decay-endpoint-search-method" class="level4">
+<h4 class="anchored" data-anchor-id="decay-endpoint-search-method"><span class="ui-label">Decay Endpoint search method</span></h4>
+<p>This option selects the method used to calculate the endpoint of the event (i.e.&nbsp;when the event is considered to have finished). This is the period across which the decay times parameter will be searched, and act at the endpoint for monoexponentially and biexponential fits. A third, older event endpoint detection method is available in <a href="./legacy-options.html"><em>Legacy options</em></a>.</p>
+<p><span class="ui-label">Entire Search Region</span>, the event endpoint will be at the exact time after the peak specified in <a href="#decay-search-period-ms" class="ui-label">Decay Search Period (ms)</a> (e.g.&nbsp;if <a href="#decay-search-period-ms" class="ui-label">Decay Search Period (ms)</a> is <span class="math inline">\(30\ \mathrm{ms}\)</span>, and the peak is detected at <span class="math inline">\(100\ \mathrm{ms}\)</span>, the decay endpoint will be at timepoint <span class="math inline">\(130\ \mathrm{ms}\)</span>). However, if another event occurs before this decay endpoint, the decay endpoint will be moved to one sample prior to the next event baseline.</p>
+<p><span class="ui-label">First Baseline Cross</span>, the first datapoint that crosses the baseline is used as the event endpoint. The data is smoothed slightly (3 samples) to avoid large noise spikes that may occur during the decay period. If no sample in the search period crosses the baseline, the datapoint closest to the baseline is used. Similar to <span class="ui-label">Entire Search Region</span>, if the next events baseline is before the detected decay endpoint, the decay endpoint will be moved.</p>
+</section>
+<section id="interpolate-to-200-khz" class="level4">
+<h4 class="anchored" data-anchor-id="interpolate-to-200-khz"><span class="ui-label">Interpolate to 200 kHz</span></h4>
+<p>Interpolate the event to <span class="math inline">\(200\ \mathrm{kHz}\)</span> prior to decay-time, rise-time and half-width analysis (linear interpolation). First, the event peak, baseline and event end-point is calculated. Then the event (i.e.&nbsp;the period between the baseline and event end-point) is interpolated before decay, rise and half-width analysis.</p>
+</section>
+<section id="rise-time-cutoffs" class="level4">
+<h4 class="anchored" data-anchor-id="rise-time-cutoffs"><span class="ui-label">Rise-time Cutoffs</span></h4>
+<p>Specifies the cutoffs for rise-time calculation (by default, the 10-90 rise-time is used).</p>
+</section>
+<section id="decay-time" class="level4">
+<h4 class="anchored" data-anchor-id="decay-time"><span class="ui-label">Decay time</span></h4>
+<p>These options specify the method used to calculate the decay time, and their exact percentages. By default, the time from peak to a value at some specified % of the amplitude is the decay time. Alternatively, the second method (<span class="ui-label">between points</span>) is calculated similar to the rise time.</p>
+</section>
+<section id="calculate-max-rise-decay-slope" class="level4">
+<h4 class="anchored" data-anchor-id="calculate-max-rise-decay-slope"><span class="ui-label">Calculate Max Rise / Decay Slope</span></h4>
+<p>The maximum rise and decay slopes for each event will be calculated if this option is on. It is not calculated by default as it may increase analysis time, particularly if the slope is calculated over many samples.</p>
+<p>The maximum slope is calculated as a regression over <span class="math inline">\(n\)</span> points. The number of samples to calculate the regression over can be specified separately for the rise and decay. If the number of samples to calculate the regression is larger than the number of samples in the rise / decay, this parameter will not be calculated for the event.</p>
+<p>In some cases, noise spikes can bias the calculation of the maximum slope. As such, an option to smooth the rise / decay before calculation of maximum slope is provided.</p>
+<p>Finally, it is recommended to select <span class="ui-label">Always use baseline crossing as max slope search endpoint</span>. This ensures that the algorithm will stop searching for the maximum slope close to the point when the decay returns to baseline. Otherwise if this is unchecked and <span class="ui-label">Decay Endpoint search method</span> is set to <span class="ui-label">Entire Search Region</span>, the entire <a href="#decay-search-period-ms" class="ui-label">Decay Search Period (ms)</a> will be searched for regression, leading to poorer accuracy and increased analysis time.</p>
+</section>
+<section id="event-curve-fitting" class="level4">
+<h4 class="anchored" data-anchor-id="event-curve-fitting"><span class="ui-label">Event Curve Fitting</span></h4>
+<p>Event curve fitting provides options for fitting a biexponential function to the entire event (<span class="ui-label">Biexponential</span>), monoexponential function to the decay period (<span class="ui-label">Monoexponential to Decay</span>), or not fitting (<span class="ui-label">Don’t Fit Event</span>).</p>
+<p>If a biexponential is fit, half-width and decay times will be calculated on the fit. If a monoexponential is fit, the decay part of the half-width and decay times will be calculated from the fit. If <span class="ui-label">Don’t Fit Event</span> is selected it is recommended to slightly smooth the decay period for calculation of decay times and half-width to reduce the influence of noise spikes that may occur after the true decay mid-point, as shown in the examples below.</p>
+<p>Options are provided to ensure only optimal fits are included in the results. Two measures to assess the fit are provided as a basis to exclude or attempt to improve the fit – the R<sup>2</sup> or fitted-coefficient.</p>
+<p>If excluding based on R<sup>2</sup> or bounds, any event with a fit lower than the R<sup>2</sup> value or outside of the coefficient bounds will be excluded from the results. Alternatively, it is possible to try and improve the fit by adjusting the first sample of the data the function is fit to.</p>
+<p>Both biexponential and monoexponential fitting are extremely sensitive to the position of the event foot and peak, respectively. For monoexponential fits, new-start-points both to the right and left of the peak will be attempted. For biexponential fits, samples only to the right of the baseline will be attempted, as choosing samples further from the natural foot of the event typically worsens biexponential fitting. If improvement is not sufficient such that the fits are within threshold, the event will be excluded.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/media/fitting-kinetics.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption>Event Fitting. A: monoexponential fit to event decay. B: biexponential fit to an event. C: without fitting, noise spikes can distort decay-time and half-width measurements. D: slight decay smoothing reduces the influence of noise spikes.</figcaption>
+</figure>
+</div>
+<p>For biexponential fits, the starting estimate for the coefficients will be taken from the template used to detect the event in <em>Events Template Matching</em> analysis. Otherwise, for <em>Events Thresholding</em> and <em>Curve Fitting</em> analysis the default coefficients specified in <a href="#template-matching-initial-coefficients" class="ui-label">Template Matching – Initial Coefficients</a> will be used.</p>
+<p>These options can also be useful for excluding erroneously detected events. The most typical cause of poor fits is that the putative event is in fact a noise spike.</p>
+</section>
+<section id="frequency-data" class="level4">
+<h4 class="anchored" data-anchor-id="frequency-data"><span class="ui-label">Frequency Data</span></h4>
+<p>The <span class="ui-label">Type</span> menu sets frequency-data plots to <span class="ui-label">Cumulative Probability</span> or <span class="ui-label">Histogram</span>.</p>
+<p>Clicking <span class="ui-label">More Options</span> opens the <span class="ui-label">Frequency Options</span> window. <span class="ui-label">Binning Method</span> can be set to <span class="ui-label">Auto.</span>, <span class="ui-label">Custom Bin Number</span>, <span class="ui-label">Custom Bin Size</span>, or <span class="ui-label">Num events divided by</span>. When using custom bin sizes, select the event parameter and enter its bin size. <span class="ui-label">Fix bin start values</span> sets a fixed starting value for that parameter’s bins. <span class="ui-label">X axis display</span> places plotted values at the <span class="ui-label">Bin Centre</span>, <span class="ui-label">Left Edge</span>, or <span class="ui-label">Right Edge</span>.</p>
+</section>
+<section id="plots" class="level4">
+<h4 class="anchored" data-anchor-id="plots"><span class="ui-label">Plots</span></h4>
+<p><span class="ui-label">Show Area Under Curve (AUC) (may slow performance)</span> displays the area under each event on the plot. Plotting the AUC may reduce performance.</p>
+</section>
+<section id="other-options" class="level4">
+<h4 class="anchored" data-anchor-id="other-options"><span class="ui-label">Other Options</span></h4>
+<ul>
+<li><p><span id="threshold-manually-selected-events" class="ui-label">Threshold manually selected events</span> – selected by default. When selected, <span class="ui-label">Amplitude Threshold (pA)</span>, <span class="ui-label">Omit Start Times</span>, <span class="ui-label">Threshold – Lower</span>, and <span class="ui-label">Threshold – Upper</span> are applied to manually selected events. Turn this option off to prevent these exclusion criteria from being applied to manually selected events.</p></li>
+<li><p><span class="ui-label">Dynamic curve polynomial order</span> specifies the order of the polynomial used in <span class="ui-label">Lower Threshold</span> and <span class="ui-label">Baseline</span> curves. Fitting high-order polynomials will increase computation time.</p></li>
+<li><p><span id="multi-template-event-assignment" class="ui-label">Multi-template event assignment</span> – If set to <span class="ui-label">To best fitting template</span>, the template with the highest value of the detection measure (see <em>Events Template Matching</em>) is used. If set to <span class="ui-label">To first template used 1 &gt; 2 &gt; 3</span>, the first template that detects the event (in the order 1, 2, 3) will be used.</p></li>
+<li><p><span id="template-matching-initial-coefficients" class="ui-label">Template Matching – Initial Coefficients</span> specifies the default coefficients for the <em>Events Template Matching</em> template generation, <a href="./curve-fitting.html"><em>Curve Fitting</em></a> (biexponential event), and biexponential fitting to events in <em>Events Thresholding</em>.</p></li>
+</ul>
+<p><span class="ui-label">Reset to Defaults</span> restores the default <em>Events</em> options. <span class="ui-label">Save as Default</span> saves the current <em>Events</em> options as the defaults for future use.</p>
+</section>
+</section>
+</section>
+<section id="manual-editing" class="level2">
+<h2 class="anchored" data-anchor-id="manual-editing">Manual editing</h2>
+<p>Easy Electrophysiology offers a high degree of flexibility when it comes to manual adjustment of event detection and analysis. Erroneously detected events may be discarded, or undetected events manually selected. Furthermore, the position of event baseline and foot, and endpoint can be easily adjusted.</p>
+<section id="select-events" class="level3">
+<h3 class="anchored" data-anchor-id="select-events">Select events</h3>
+<p>To manually select an event, click the <span class="ui-label">Manually Select Events</span> option on the <span class="ui-label">Analysis Panel</span> (for both <em>Events Template Matching</em> and <em>Events Thresholding</em>). The cursor will change to a crosshair and clicking-and-dragging on the graph will draw a circle. The peak (minimum for negative events, maximum for positive events) in this region will be taken as the new event peak.</p>
+<p>All current settings (e.g., smoothing and search periods) apply to manually selected events; see <a href="#threshold-manually-selected-events" class="ui-label">Threshold manually selected events</a> for the exclusion criteria that can be disabled. However, the fitting method must be the same for every event in an analysis, as such the fit of a manually selected event will always match the analysis used.</p>
+</section>
+<section id="reject-events" class="level3">
+<h3 class="anchored" data-anchor-id="reject-events">Reject events</h3>
+<p>To discard detected events, click twice on the filled circle at the peak of an event. The first click will prime the event for deletion (the circle will turn blue) and the second click will delete the event from analysis. Alternatively, holding <span class="ui-label">D</span> while selecting multiple event peaks by click-and-dragging the mouse on the main plot will delete multiple events at once.</p>
+</section>
+<section id="edit-kinetics" class="level3">
+<h3 class="anchored" data-anchor-id="edit-kinetics">Edit kinetics</h3>
+<p>The position of the event baseline and decay endpoint can be manually adjusted. Clicking <span class="ui-label">Edit Kinetics</span> will enter <span class="ui-label">Edit Kinetics</span> mode, indicated by the cursor changing to a pointing hand. To edit a kinetic in this mode, first click on the baseline (light blue circle) or event endpoint (purple circle). Next, the cursor will change to a crosshair. Click on the desired position for the kinetic, and the kinetic will be moved and the other event parameters re-analyzed.</p>
+</section>
+</section>
+<section id="grouping-detected-events" class="level2">
+<h2 class="anchored" data-anchor-id="grouping-detected-events">Grouping detected events</h2>
+<p>Event grouping makes it possible to select subsets of detected events and restrict results display to these subsets (or, excluding a subset of events). To group selected events following event detection, click the peak of an event holding the group number you would like to assign to the event on the keyboard. The group number can range from 1 to 5.</p>
+<p>To selectively view grouped events on the main <span class="ui-label">Table</span> tab table, click <span class="ui-label">Analysis</span> › <span class="ui-label">Table Options</span>. In the <span class="ui-label">Show Events by Group</span> section, the group to selectively display can be chosen from the drop-down menu. To display all events excluding the selected group, click the <span class="ui-label">Exclude group</span> button.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/media/image19.png" style="width:7.8in;height:4.6in" class="figure-img"></p>
+<figcaption>Grouping Detected Events. Events can be grouped by clicking an event peak while holding the desired group number on the keyboard. Here, the large event is assigned to Group 1 and the other events to Group 2.</figcaption>
+</figure>
+</div>
+</section>
+<section id="saving" class="level2">
+<h2 class="anchored" data-anchor-id="saving">Saving</h2>
+<p>Events analysis (all detected events, plots and tabular results) can be saved for later use. To save the current analysis, click <span class="ui-label">Save Data</span> and <span class="ui-label">Save Events Analysis</span>. The events analysis is stored as a <code>.json</code> file.</p>
+<p>To re-load the events analysis, click <span class="ui-label">Save Data</span> › <span class="ui-label">Load Events Analysis</span> and select the previously saved JSON file. Note that the file name, number of records and number of samples of the data file are saved with the analysis results to ensure the event analysis matches the recording file. As such, the recording filename should not be changed in between saving and loading events results.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-clements1997" class="csl-entry" role="listitem">
+Clements, J. D., and J. M. Bekkers. 1997. <span>“Detection of Spontaneous Synaptic Events with an Optimally Selected Template.”</span> <em>Biophysical Journal</em> 73 (1): 220–29.
+</div>
+<div id="ref-guzman2014" class="csl-entry" role="listitem">
+Guzman, S. J., A. Schlögl, and C. Schmidt-Hieber. 2014. <span>“Stimfit: Quantifying Electrophysiological Data with Python.”</span> <em>Frontiers in Neuroinformatics</em> 8: 16.
+</div>
+<div id="ref-jonas1993" class="csl-entry" role="listitem">
+Jonas, P., G. Major, and B. Sakmann. 1993. <span>“Quantal Components of Unitary <span>EPSCs</span> at the Mossy Fibre Synapse on <span>CA3</span> Pyramidal Cells of Rat Hippocampus.”</span> <em>The Journal of Physiology</em> 472: 615–63.
+</div>
+<div id="ref-pernia2012" class="csl-entry" role="listitem">
+Pernia-Andrade, A., S. P. Goswami, Y. Stickler, U. Fröbe, A. Schlögl, and P. Jonas. 2012. <span>“A Deconvolution-Based Method with High Sensitivity and Temporal Resolution for Detection of Spontaneous Synaptic Currents in Vitro and in Vivo.”</span> <em>Biophysical Journal</em> 103 (7): 1429–39.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script defer="" src="assets/version-selector.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/easy-electrophysiology\.github\.io\/manual\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./curve-fitting.html" class="pagination-link" aria-label="Curve fitting">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Curve fitting</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./events-analysis.html" class="pagination-link" aria-label="Events analysis">
+        <span class="nav-page-text"><span class="chapter-title">Events analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Easy Electrophysiology User Manual</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

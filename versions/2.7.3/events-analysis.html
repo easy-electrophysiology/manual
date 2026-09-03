@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Events analysis – Easy Electrophysiology</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./action-potential-counting.html" rel="next">
+<link href="./event-detection-and-analysis.html" rel="prev">
+<link href="./assets/favicon.jpg" rel="icon" type="image/jpeg">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-857e7eec2b1af0d3b3176fc700a544de.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./curve-fitting.html">Analysis</a></li><li class="breadcrumb-item"><a href="./events-analysis.html"><span class="chapter-title">Events analysis</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      <img src="./assets/logo.jpg" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./assets/logo.jpg" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Easy Electrophysiology<br>Manual</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Welcome!</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Get started</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./loading-files.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Loading files</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./graphical-interface-overview.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">GUI overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analysis-overview.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Analysis overview</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./curve-fitting.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Curve fitting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./event-detection-and-analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Events detection and kinetics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./events-analysis.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Events analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./action-potential-counting.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">AP counting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./action-potential-kinetics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">AP kinetics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./input-resistance.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Input resistance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./burst-analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Burst analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Statistics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analyzing-in-batch-mode.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Batch mode</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Data tools</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./upsample.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Upsample</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./downsample.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Downsample</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./filter.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Filter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./detrend.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Detrend</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./remove-baseline.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Remove baseline</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./average-records.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Average records</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./record-arithmetic.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Record arithmetic</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stimulus-artefact-removal.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Stimulus artefact removal</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reshape-records.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Reshape records</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./normalize-time.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Normalize time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cut-trace-length.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Cut trace length</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reset-to-raw-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Reset to raw data</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Saving and export</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./saving-data-and-analysis-results.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Saving data and results</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./plot-exporter.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Exporting plots</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./saving-and-resetting-default-options.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Saving settings</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./graph-options.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Graph options</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./legacy-options.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Legacy options</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./keyboard-shortcuts.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Keyboard shortcuts</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./acknowledgements.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mathematical-formulas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Mathematical formulas</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#average-event" id="toc-average-event" class="nav-link active" data-scroll-target="#average-event">Average event</a>
+  <ul>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a>
+  <ul>
+  <li><a href="#generate-an-average-event" id="toc-generate-an-average-event" class="nav-link" data-scroll-target="#generate-an-average-event">Generate an Average Event</a></li>
+  <li><a href="#analyze-the-average-event" id="toc-analyze-the-average-event" class="nav-link" data-scroll-target="#analyze-the-average-event">Analyze the Average Event</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#events-overlay" id="toc-events-overlay" class="nav-link" data-scroll-target="#events-overlay">Events overlay</a>
+  <ul>
+  <li><a href="#the-selected-event-and-average-event" id="toc-the-selected-event-and-average-event" class="nav-link" data-scroll-target="#the-selected-event-and-average-event">The Selected Event and Average Event</a></li>
+  <li><a href="#shift-and-scale" id="toc-shift-and-scale" class="nav-link" data-scroll-target="#shift-and-scale">Shift and scale</a>
+  <ul>
+  <li><a href="#shift" id="toc-shift" class="nav-link" data-scroll-target="#shift"><span class="ui-label">Shift</span></a></li>
+  <li><a href="#scale" id="toc-scale" class="nav-link" data-scroll-target="#scale"><span class="ui-label">Scale</span></a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#cumulative-probability-and-histograms" id="toc-cumulative-probability-and-histograms" class="nav-link" data-scroll-target="#cumulative-probability-and-histograms">Cumulative probability and histograms</a>
+  <ul>
+  <li><a href="#frequency-data-plots" id="toc-frequency-data-plots" class="nav-link" data-scroll-target="#frequency-data-plots">Frequency Data Plots</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./curve-fitting.html">Analysis</a></li><li class="breadcrumb-item"><a href="./events-analysis.html"><span class="chapter-title">Events analysis</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Events analysis</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="average-event" class="level2">
+<h2 class="anchored" data-anchor-id="average-event">Average event</h2>
+<section id="analysis" class="level3">
+<h3 class="anchored" data-anchor-id="analysis">Analysis</h3>
+<p>Following events analysis an average event may be generated and analyzed. To generate an average event, click the <span class="ui-label">Average All Events</span> button in the <a href="./event-detection-and-analysis.html#event-detection-window-options"><em>Analyze Events</em></a> popup window (for both <a href="./event-detection-and-analysis.html#template-matching"><em>Template Matching</em></a> and <a href="./event-detection-and-analysis.html#events-thresholding"><em>Thresholding</em></a> analysis).</p>
+<section id="generate-an-average-event" class="level4">
+<h4 class="anchored" data-anchor-id="generate-an-average-event">Generate an Average Event</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/media/image21.PNG" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Average Event Analysis. Following event detection, an average event can be generated and its kinetics calculated. Average event data can be copied or saved, and results displayed in a table.</figcaption>
+</figure>
+</div>
+<p>To generate an average event, a point on each event is chosen to align (<span class="ui-label">Peak</span>, <span class="ui-label">Rise half-width</span>, or <span class="ui-label">Baseline</span>). The data around this point is windowed and displayed in the <em>Average Events</em> window. If a window around an event extends further than the limits of the data, the event is excluded from analysis. This means that events to the extreme edge of the record are not included.</p>
+<p>Click <span class="ui-label">Copy Event to Clipboard</span> and <span class="ui-label">Save Average Event</span> to copy or save (to <code>.xlsx</code> or <code>.csv</code>) the displayed data, respectively.</p>
+<p>The averaged event can be filtered prior to analysis with the <span class="ui-label">Filter (Hz)</span> box (8<sup>th</sup> order Bessel). The averaged event can also be normalized using <span class="ui-label">Scale</span> › <span class="ui-label">Amplitude to 1</span> and <span class="ui-label">Shift</span> › <span class="ui-label">Demean</span>.</p>
+</section>
+<section id="analyze-the-average-event" class="level4">
+<h4 class="anchored" data-anchor-id="analyze-the-average-event">Analyze the Average Event</h4>
+<p>Click the <span class="ui-label">Find Peak and Calculate Event Kinetics</span> button to start <em>Average Event</em> analysis. This will bring up a region on the plot that defines the analysis space.</p>
+<p>The dropdown box to the right of the <span class="ui-label">Calculate Kinetics</span> button can be used to set the baseline detection method. Set <span class="ui-label">Auto.</span> for automatic baseline detection, or <span class="ui-label">Use Baseline</span> to manually set the baseline. If <span class="ui-label">Use Baseline</span> is selected, a baseline region will appear and can be moved to set the baseline for the data (This is analogous to the <span class="ui-label">Linear</span> baseline during event detection).</p>
+<p>To fit a biexponential function to the average event and calculate the kinetics on the function, select <span class="ui-label">Fit biexponential curve, calculate kinetics on fit</span>. The region displayed on the graph can be used to define the fit start and end points.</p>
+<p>The results of average event analysis can be viewed by clicking <span class="ui-label">Display Results Table</span> and copied to the clipboard with the mouse and keyboard.</p>
+</section>
+</section>
+</section>
+<section id="events-overlay" class="level2">
+<h2 class="anchored" data-anchor-id="events-overlay">Events overlay</h2>
+<p>The <em>Events Overlay</em> window displays all detected events on the same plot, providing a convenient way to find and remove outliers.</p>
+<p><em>Events Overlay</em> can be opened (after event detection has been performed) by clicking the <span class="ui-label">Overlay</span> button on the <span class="ui-label">Events Analyze</span> window. All detected events are shown overlaid on the plot in black. The display of the overlaid events can be adjusted with the <span class="ui-label">Alignment method</span> and <span class="ui-label">Window size (ms)</span> settings:</p>
+<ul>
+<li><p><span class="ui-label">Alignment method</span> determines the point of the event used for alignment (e.g.&nbsp;the event peak).</p></li>
+<li><p><span class="ui-label">Window size (ms)</span> controls the size of the window used to display the events (the displayed period prior to the peak is fixed, this setting controls the window from the peak to the right edge of the data).</p></li>
+</ul>
+<section id="the-selected-event-and-average-event" class="level3">
+<h3 class="anchored" data-anchor-id="the-selected-event-and-average-event">The Selected Event and Average Event</h3>
+<p>In the <em>Events Overlay</em> window, the currently selected individual event is shown in blue. When the window first opens, the individual event mode is set to <span class="ui-label">Selected</span>. Clicking the left or right arrow buttons in <span class="ui-label">Selected</span> mode will scroll through all events in numerical order. Changing the selected event through the <em>Events Overlay</em> window also scrolls through the individual events shown on the <em>Events Analysis</em> window, and vice versa.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/media/image20.PNG" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Events Overlay. All detected events are overlaid in black. The selected event is shown in blue in Most Distant mode and has the greatest L2 distance from the average event.</figcaption>
+</figure>
+</div>
+<p>Alternatively, individual events can be scrolled through in <span class="ui-label">Most Distant</span> mode. The selected event will become the most distant event; here, distance is measured as the L2 norm from the average of all events. Clicking the left or right buttons will scroll through selected events based on their distance (in the order most to least distant). This can be a very useful way to detect and remove outlier events.</p>
+<p>Further, individual events can be selected by clicking on them directly on the plot.</p>
+<p>To remove an event from the analysis the <span class="ui-label">Del.</span> button can be clicked on the <em>Events Overlay</em> window or the <span class="ui-label">Delete</span> keyboard button pressed. The currently selected event will be removed from all analyses.</p>
+<p>The average of all detected events can be displayed instead of the currently selected event by clicking <span class="ui-label">Show Average Event</span>. Then, clicking <span class="ui-label">Analyze Average Event</span> will open the analyze event dialog window, allowing analysis of the average event kinetics. This provides the possibility to shift and scale individual events prior to analysis of the average event.</p>
+</section>
+<section id="shift-and-scale" class="level3">
+<h3 class="anchored" data-anchor-id="shift-and-scale">Shift and scale</h3>
+<p>The <span class="ui-label">Shift</span> and <span class="ui-label">Scale</span> options shift (add a constant) and scale (multiply by a constant) the individual events prior to presentation. When shift and scale operations are applied to data, scale operations are applied prior to shift operations.</p>
+<section id="shift" class="level4">
+<h4 class="anchored" data-anchor-id="shift"><span class="ui-label">Shift</span></h4>
+<ul>
+<li><p><span class="ui-label">Demean</span> – The mean of the event is subtracted (so the mean of the event becomes zero).</p></li>
+<li><p><span class="ui-label">Aligned param to zero</span> – The parameter used to align the events (e.g.&nbsp;rise half-width) is subtracted from the event (so that the aligned parameter value becomes zero).</p></li>
+<li><p><span class="ui-label">First sample to zero</span> – The first datapoint value of the event is subtracted (so the first sample of the event is zero).</p></li>
+</ul>
+</section>
+<section id="scale" class="level4">
+<h4 class="anchored" data-anchor-id="scale"><span class="ui-label">Scale</span></h4>
+<ul>
+<li><p><span class="ui-label">Amplitude to 1</span> – The event is multiplied by a constant such that the amplitude (from most negative to most positive sample) becomes 1.</p></li>
+<li><p><span class="ui-label">Std. Dev. to 1</span> – The event is multiplied by a constant such that the standard deviation of the event becomes 1.</p></li>
+</ul>
+<p>Note that the shift and scale operations are identical to those in the <a href="#average-event"><em>Average Event</em></a> window.</p>
+</section>
+</section>
+</section>
+<section id="cumulative-probability-and-histograms" class="level2">
+<h2 class="anchored" data-anchor-id="cumulative-probability-and-histograms">Cumulative probability and histograms</h2>
+<p>Frequency data (as Histograms or Cumulative Probabilities) for all analyzed parameters can be calculated by selecting the check boxes on the Events <span class="ui-label">Table</span> tab.</p>
+<p>To specify how the frequency data is calculated click <span class="ui-label">Options</span> › <span class="ui-label">Events</span>. In the <span class="ui-label">Frequency Data</span> section it is possible to select <span class="ui-label">Cumulative Probability</span> or <span class="ui-label">Histogram</span> format. Clicking <span class="ui-label">More Options</span> will provide options for binning. These options will come into effect from the next analysis run (that is, re-run the analysis for the new options to take effect).</p>
+<p>In the <span class="ui-label">More Options</span> window, the binning method can be selected from the top drop-down menu. If <span class="ui-label">Auto.</span>, the maximum of the Sturges or Freedman-Diaconis Estimation methods is used, as implemented in the NumPy method <code>histogram_bin_edges()</code>. In some instances, depending on the scaling and units of the data, this will erroneously return a very large number of bins – in this case the square root method is used instead.</p>
+<p>Alternatively, the number of bins can be set manually (<span class="ui-label">Custom Bin number</span>), the size of the bins in the units of the relevant parameter can be set (<span class="ui-label">Custom Bin Size</span>) or the number of bins can be a function of the total number of events (<span class="ui-label">total number of events divided by</span>). Finally, the bin edges can be chosen as <span class="ui-label">Bin Centre</span>, <span class="ui-label">Left Edge</span>, or <span class="ui-label">Right Edge</span> from the <span class="ui-label">X axis display</span> drop-down menu.</p>
+<p>For example, for bins spanning <span class="math inline">\(0\)</span>–<span class="math inline">\(1\)</span>, <span class="math inline">\(1\)</span>–<span class="math inline">\(2\)</span>, and <span class="math inline">\(2\)</span>–<span class="math inline">\(3\)</span>, the x-axis values are:</p>
+<ul>
+<li><p><span class="ui-label">Bin Centre</span> – <span class="math inline">\(0.5\)</span>, <span class="math inline">\(1.5\)</span>, <span class="math inline">\(2.5\)</span></p></li>
+<li><p><span class="ui-label">Left Edge</span> – <span class="math inline">\(0\)</span>, <span class="math inline">\(1\)</span>, <span class="math inline">\(2\)</span></p></li>
+<li><p><span class="ui-label">Right Edge</span> – <span class="math inline">\(1\)</span>, <span class="math inline">\(2\)</span>, <span class="math inline">\(3\)</span></p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/media/image22.png" class="img-fluid figure-img"></p>
+<figcaption>Events Frequency Plots. Cumulative probability and histogram plots of decay-time frequency data. Line and fill colour, line thickness, marker size, axis limits, and grid lines can be customized.</figcaption>
+</figure>
+</div>
+<p>Note that when calculating inter-event interval for multi-record files, the IEI between the last event of a record and first event of the following record will be ignored unless records are time-contiguous.</p>
+<p>By default, frequency data is sorted on the table by value (e.g.&nbsp;smallest to largest amplitude). To sort by event number, right click the table header and select <span class="ui-label">Sort by Event Num.</span>. At the bottom of the result table, the summary statistics for each column are shown.</p>
+<section id="frequency-data-plots" class="level3">
+<h3 class="anchored" data-anchor-id="frequency-data-plots">Frequency Data Plots</h3>
+<p>On the table tab, clicking <span class="ui-label">Plot Frequency Data</span> will bring up the events frequency plots. Note that changing any of these options only changes the current display of the plot and not how the data is binned and presented in the table.</p>
+<p>The data can be displayed as a histogram or cumulative probability plot, and any event parameter selected for display. If analysis is run in Batch Mode, any analyzed file can be selected for display. Finally, clicking <span class="ui-label">Plot Options</span> allows customization of the plot, including removing the gridlines, setting marker and line color, size and X axis limits.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script defer="" src="assets/version-selector.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/easy-electrophysiology\.github\.io\/manual\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./event-detection-and-analysis.html" class="pagination-link" aria-label="Events detection and kinetics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Events detection and kinetics</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./action-potential-counting.html" class="pagination-link" aria-label="AP counting">
+        <span class="nav-page-text"><span class="chapter-title">AP counting</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Easy Electrophysiology User Manual</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -1,0 +1,929 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Easy Electrophysiology",
+    "section": "",
+    "text": "Welcome!\nThis manual provides details on the available options, analysis routines and underlying algorithms used in Easy Electrophysiology. All file-loading and analysis code is open source and we are happy to answer questions on implementation and code.\nWe hope you will find our software a useful tool in your patch-clamp electrophysiology analysis. Please don’t hesitate to contact us at support@easyelectrophysiology.com with any questions, suggestions or feedback.\nHappy Analyzing!",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Welcome!</span>"
+    ]
+  },
+  {
+    "objectID": "loading-files.html",
+    "href": "loading-files.html",
+    "title": "Loading files",
+    "section": "",
+    "text": "Select channels to load\nEasy Electrophysiology supports the following file types:\nPlease get in contact if you have another file type you would like to see supported.\nFiles can be dragged and dropped directly onto the main window or loaded by selecting File › Open File. Note that the sampling frequency must be identical for all records in the file. Multiple files can also be loaded at once, and they will be concatenated together. A window for selecting the order and method by which the files are concatenated will appear.\nFor some .abf files, all records may be erroneously concatenated to a single record (typically if exported from software that is not pClamp). If this occurs, see Reshape Records or Large File Settings in this manual.\nThe following default file-loading options can be set under File › File Loading Options:\nData from up to two channels can be loaded at once. The Primary data channel is used for all analysis and displayed in the upper graph. By default, the first channel in the file is selected as the primary data channel. The Secondary data channel is typically used for current or voltage injection protocols. In Action Potential Counting and Input Resistance analysis, \\(I_\\mathrm{m}\\) values are calculated from the secondary data channel.\nIf the file contains more than two channels, default channels to load can be selected from the dropdown. To load only one channel, set Secondary data channel to None.\nGenerate Axon Im protocol from header will generate the secondary data channel from Axon files in which the stimulus protocol is stored in the header rather than in raw data. This option is only available in current-clamp mode.",
+    "crumbs": [
+      "Get started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Loading files</span>"
+    ]
+  },
+  {
+    "objectID": "loading-files.html#specify-default-units",
+    "href": "loading-files.html#specify-default-units",
+    "title": "Loading files",
+    "section": "Specify default units",
+    "text": "Specify default units\nAnalysis routines expect units in seconds (\\(\\mathrm{s}\\)), picoamperes (\\(\\mathrm{pA}\\)) and millivolts (\\(\\mathrm{mV}\\)). If time units are detected as milliseconds (\\(\\mathrm{ms}\\)) in the file header, they will be automatically converted to seconds. If units are not in \\(\\mathrm{mV}\\) or \\(\\mathrm{pA}\\), a window will warn that the file contains unexpected units. To load the file, select Specify default values and choose the source units from the dropdown (e.g. if the file units are in \\(\\mathrm{A}\\), select conversion from \\(\\mathrm{A}\\)).\nIn some cases, the units specified in the file header do not match the true values. In this case, the dialog will also show a warning and an estimate of the true unit scaling. Again select Specify default values and choose the appropriate source units, or select Assume pA / mV (e.g. if the file header is in units \\(\\mathrm{A}\\) and \\(\\mathrm{V}\\) but the data is scaled to \\(\\mathrm{pA}\\) or \\(\\mathrm{mV}\\)).\nThese options only have an effect when the file header is not in \\(\\mathrm{pA}\\) or \\(\\mathrm{mV}\\).\n\n\n\nChannel Units Error. The warning shown when the units in the file header are not pA or mV.",
+    "crumbs": [
+      "Get started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Loading files</span>"
+    ]
+  },
+  {
+    "objectID": "loading-files.html#normalize-cumulative-record-times",
+    "href": "loading-files.html#normalize-cumulative-record-times",
+    "title": "Loading files",
+    "section": "Normalize cumulative record times",
+    "text": "Normalize cumulative record times\nEnable Always normalize time on file load when time is recorded as cumulatively increasing across records. See Normalize Time in this manual for more details.",
+    "crumbs": [
+      "Get started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Loading files</span>"
+    ]
+  },
+  {
+    "objectID": "loading-files.html#correct-non-zero-time-offsets",
+    "href": "loading-files.html#correct-non-zero-time-offsets",
+    "title": "Loading files",
+    "section": "Correct non-zero time offsets",
+    "text": "Correct non-zero time offsets\nEnable Always correct time offset on load to correct a non-zero starting timepoint automatically. On some recording setups, a small offset is added (e.g. Record 1 starts at \\(0.02\\ \\mathrm{s}\\)); if detected, a window will warn the user. Automatic correction is recommended because an unnoticed offset can introduce errors when user-input times are required. For example, a stimulus entered as starting at \\(0.1\\ \\mathrm{s}\\) may occur on the trace at \\(0.12\\ \\mathrm{s}\\).",
+    "crumbs": [
+      "Get started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Loading files</span>"
+    ]
+  },
+  {
+    "objectID": "loading-files.html#force-analysis-mode-voltage-or-current-clamp",
+    "href": "loading-files.html#force-analysis-mode-voltage-or-current-clamp",
+    "title": "Loading files",
+    "section": "Force analysis mode (voltage or current clamp)",
+    "text": "Force analysis mode (voltage or current clamp)\nBy default, Recording type (current-clamp or voltage-clamp) is automatically detected from the primary and secondary channel units in the file header. This determines which analyses are available to run; for example, action-potential analysis is only possible for current-clamp recordings.\nHere automatic detection can be overridden and the selected analysis options will be available no matter the loaded filetype. Note that this may result in undefined behavior if incorrect analyses are conducted (e.g. Action Potential Counting on voltage-clamp data).",
+    "crumbs": [
+      "Get started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Loading files</span>"
+    ]
+  },
+  {
+    "objectID": "loading-files.html#improve-performance-for-large-files",
+    "href": "loading-files.html#improve-performance-for-large-files",
+    "title": "Loading files",
+    "section": "Improve performance for large files",
+    "text": "Improve performance for large files\nUse Large File Settings to reshape a large single-record file into multiple smaller records on loading. Large single-record files may run slowly, and splitting them can significantly improve performance:\n\n\n\nThe Large File Settings window. Options configure how a single-record file is reshaped on loading.\n\n\nTo keep large files as a single record, turn off reshaping by unchecking Split single long recording into multiple records.\nSet how large a file must be before it is reshaped using Only when data is larger than.\nThe method used to determine the number of records that the file is reshaped into can be selected from the drop-down menu. The options include:\n\nSamples per record: The number of samples each record in the file will have after reshaping (default 500k).\nNum. records: The number of records the file will have after reshaping.\nOptimal performance: Find the record size closest to 500k samples (within the 400–700k range) that minimizes the number of discarded samples.\nTime (s) per record: The length of each record (in seconds) after reshaping.\n\nBy default, a warning is shown whenever a file’s records are reshaped on loading. This can be turned off using Show warning each time a large file is loaded.",
+    "crumbs": [
+      "Get started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Loading files</span>"
+    ]
+  },
+  {
+    "objectID": "loading-files.html#load-csv-files",
+    "href": "loading-files.html#load-csv-files",
+    "title": "Loading files",
+    "section": "Load CSV files",
+    "text": "Load CSV files\nUse Load CSV Settings to describe the layout of a comma-separated value (.csv) file. Because CSV layouts vary, this window is shown when configuring CSV loading to help determine the file layout:\n\n\n\nThe Load CSV Settings window. Options configure CSV loading to match the layout of the file.\n\n\nThe first step is to indicate the data types in the file and their order. The file may contain voltage, current or time data. For each selected data type, use Units to specify the source units used in the CSV file. If the file does not contain time data, select Time from fs and enter the sampling rate in Sampling Rate (fs).\nThe order in which the channel data are arranged must also be specified (for example if the voltage channel data is first, then current channel data, the order will be voltage then current):\n\nInterleaved or consecutive: Specifies whether channel data are interleaved across records or arranged consecutively in groups. For example, a five-record recording with voltage, current, and time channels would be interleaved as \\(v_1\\), \\(c_1\\), \\(t_1\\), \\(v_2\\), \\(c_2\\), \\(t_2\\), …, \\(v_5\\), \\(c_5\\), \\(t_5\\), or consecutive as \\(v_1\\), \\(v_2\\), …, \\(v_5\\), \\(c_1\\), \\(c_2\\), …, \\(c_5\\), \\(t_1\\), \\(t_2\\), …, \\(t_5\\).\nColumn-wise vs. row-wise: Specifies the orientation of channels and records. If column-wise, each channel or record is a separate column and time increases along rows. If row-wise, each channel or record is a separate row and time increases along columns.\nHas header: Select when channels or records have a header row (for column-wise data) or header column (for row-wise data). The header is ignored when loading. Only one header row or column is supported; multi-line headers must be deleted before loading.\nHas indices: Select when the time dimension has an index column (for row-wise data) or index row (for column-wise data). The indices are ignored when loading.",
+    "crumbs": [
+      "Get started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Loading files</span>"
+    ]
+  },
+  {
+    "objectID": "graphical-interface-overview.html",
+    "href": "graphical-interface-overview.html",
+    "title": "GUI overview",
+    "section": "",
+    "text": "Zooming and panning the graph\nThe Plot and Table views are the two main ways to visualize data and results in Easy Electrophysiology, accessed through the Plot and Table tabs. The Plot tab is used to view voltage (\\(V_\\mathrm{m}\\)) and current (\\(I_\\mathrm{m}\\)) traces, set up and run analysis, and visualize the results. The Table tab displays results in table format with options for saving to Excel or CSV.\nTo choose an analysis to run, select File › Open Analysis Window. When an analysis type is selected, the Analysis Panel on the left-hand side of the Plot tab will show the relevant options for running that analysis.\nIn the Table view, options for saving analysis results can be found using the dropdown in the Save Table box. Results can be saved as .xlsx (includes border formatting) or as .csv (no formatting). For some analyses (Events, Action Potential Counting, Input Resistance), checkboxes in the left-hand panel can be used to select which results to display.\nThere are two zoom and pan modes available when using the Plot tab graph to explore your data. By default, One Button mode is selected and you can zoom by clicking anywhere on the plot and dragging the mouse to draw a box to zoom in to. To unzoom, right-click the graph and select Undo Zoom.\nIn the second mode, both mouse buttons can be used to navigate the graph. To access it, right-click anywhere on the graph and select Mouse Mode › Two button (pan left, zoom right). To zoom, hold down the right mouse button and drag the mouse to dynamically zoom in and out. To pan, click and hold down the left mouse button and drag to move the plot. You can still use Undo Zoom in this mode.",
+    "crumbs": [
+      "Get started",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>GUI overview</span>"
+    ]
+  },
+  {
+    "objectID": "analysis-overview.html",
+    "href": "analysis-overview.html",
+    "title": "Analysis overview",
+    "section": "",
+    "text": "The Analysis window is used to switch between analysis types and can be accessed through File › Open Analysis Window.\nThe available analyses are determined by the recording type. Curve Fitting and Event Detection are supported for both voltage-clamp and current-clamp recordings. Action Potential Counting, Action Potential Kinetics, and Input Resistance are available only for current-clamp recordings.\nFor maximum flexibility, each analysis type is independent and can be run concurrently. This means it is possible to switch from one analysis type to another mid-analysis without overwriting results. The relevant plots and results tables will be updated on analysis change.\n\n\n\nSwitching analysis. The analysis type can be switched in the Analysis window, opened from File › Open Analysis Window. Switching analysis displays the relevant options in the panel on the left.",
+    "crumbs": [
+      "Get started",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Analysis overview</span>"
+    ]
+  },
+  {
+    "objectID": "curve-fitting.html",
+    "href": "curve-fitting.html",
+    "title": "Curve fitting",
+    "section": "",
+    "text": "Curve fitting regions\nCurve Fitting is used for calculating summary statistics or fitting functions to the data (see Available methods and Appendix I for details of available analyses). The best-fit curve is plotted on the graph and coefficients displayed in the analysis results table.\nUp to six different fits can be applied simultaneously – this is useful for recording protocols requiring measurement of multiple evoked events (e.g. paired-pulse recordings with a seal-checking voltage step). All curve fitting analysis is conducted on the primary input channel.\nCurve fitting analysis fits a curve for every record in the file by default. To select specific records to analyze set the Records to Analyze box at the bottom of the Curve Fitting analysis panel.\nCurve Fitting analysis is conducted within curve fitting regions. These consist of two regions, the baseline region and the measure region. The baseline is calculated as the average of all datapoints within the baseline region. The measure region defines the section of data to fit.\nEach of the six available regions has a designated color (red, blue, green, orange, pink and teal). Switching between regions is achieved using the left and right buttons on the Curve Fitting analysis panel, and Curve Fitting Options window. Only the currently selected region can be moved.\nSwitching to a curve fitting region which is not yet shown will initialize the region. To remove a region and delete all associated analysis, use the Delete selected region / analysis box on the analysis panel.\nOptions for conducting curve fitting analysis are accessed by clicking the Curve Fitting Options button on the analysis panel. The following view options for the curve fitting regions are available:",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Curve fitting</span>"
+    ]
+  },
+  {
+    "objectID": "curve-fitting.html#curve-fitting-regions",
+    "href": "curve-fitting.html#curve-fitting-regions",
+    "title": "Curve fitting",
+    "section": "",
+    "text": "Show region – show both the baseline and measure region.\nHide baseline – show the measure region only.\nHide region – hide both the baseline and measure region.\nShow selected region only – Hide all regions except the currently selected region.\nLink Baseline – By default the baseline and measure regions are linked i.e. moving the baseline region will move the measure region and vice-versa. This option switches between linking and unlinking the baseline and measure regions so they can be moved separately.\n\n\n\n\nCurve Fitting Analysis. Curve-fitting boundaries define the experimental and baseline regions. Experimental regions indicate the data over which to fit each curve, while the baseline region defines the data used to calculate the baseline.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Curve fitting</span>"
+    ]
+  },
+  {
+    "objectID": "curve-fitting.html#available-methods",
+    "href": "curve-fitting.html#available-methods",
+    "title": "Curve fitting",
+    "section": "Available methods",
+    "text": "Available methods\nSummary statistics or functions to fit to the data within the measure region can be selected, along with starting and boundary coefficients, on the Curve Fitting Options window. Following analysis, the baseline, peak, amplitude (peak minus baseline) and coefficients of the best-fit curve are shown in the Table tab table.\nThe mathematical formulas for all functions can be found in Appendix I of this documentation, and their implementation at our GitHub. Please see below for a full list of parameters and functions:\n\nMinimum or maximum: Finds the minimum or maximum (respectively) within the measure region.\nMean or median: Finds the mean or median (respectively) of the measure region. The amplitude shown in the results table represents the difference between this average and the baseline.\nArea under curve (AUC): Calculates the area under the curve of the measure region, with respect to the baseline.\nMax slope: Finds the maximum slope within the measure region, calculated as a regression over \\(n\\) samples. Options are provided for selecting slope direction, the number of samples to calculate the regression over, and applying smoothing prior to calculation.\nMonoexponential, biexponential (decay) and triexponential: Fit an exponential curve with one, two or three terms to the data within the measure region.\nBiexponential (event). Fit a biexponential curve in the form used for event-detection (with rise and decay coefficients). This will also calculate event kinetics (e.g. rise-time, half-width, decay). Event analysis options can be accessed with the Event Kinetics Options button on the biexponential (event) panel. These include:\n\nAverage peak (ms) – the time period to average the event peak (see Average Peak (ms) in Events for detail).\nBaseline search settings – Auto. will automatically detect the foot of the event and use this as baseline. Alternatively, Use Baseline can be selected which will calculate the baseline as the first sample in the data that crosses the baseline in the direction opposite to the peak (e.g. if the peak is negative it will look for the first positive crossing of the baseline).\nBaseline search period (ms) – period to search for the baseline.\nAverage baseline (ms) – period over which to average the data preceding the baseline.\n\n\nNote that these configurations are separate from those in Events analysis (Events Template Matching, Events Thresholding). This means that changing these settings will not affect other event analyses. This is distinct from the events settings accessed through Options › Events Analysis › Misc. Options, which are shared between all Events analysis.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Curve fitting</span>"
+    ]
+  },
+  {
+    "objectID": "curve-fitting.html#curve-fitting-algorithm",
+    "href": "curve-fitting.html#curve-fitting-algorithm",
+    "title": "Curve fitting",
+    "section": "Curve fitting algorithm",
+    "text": "Curve fitting algorithm\nLeast-squares fitting of exponential functions uses the Trust Region Reflective algorithm as implemented in the SciPy scientific analysis package (optimize.least_squares).\nThe starting coefficients of exponential fits are estimated from the data (see Appendix I). The only default bound on the coefficients is that exponential time constants (tau) must be positive. For biexponential event fitting the default starting coefficients are a \\(0.5\\ \\mathrm{ms}\\) rise and \\(5\\ \\mathrm{ms}\\) decay (Jonas et al. 1993).\nFor all functions, default starting coefficients and bounds can be overridden in the Curve Fitting Options window.\n\n\n\nCurve Fitting Analysis Options. The window contains options for setting starting coefficients and boundaries, displaying regions, and fitting up to six curves simultaneously.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Curve fitting</span>"
+    ]
+  },
+  {
+    "objectID": "curve-fitting.html#setting-exact-region-positions",
+    "href": "curve-fitting.html#setting-exact-region-positions",
+    "title": "Curve fitting",
+    "section": "Setting exact region positions",
+    "text": "Setting exact region positions\nThe Region Positions window (on the Curve Fitting left-hand panel) provides the option to set the curve fitting region positions numerically. Further, the position of regions may be saved so they are maintained across Easy Electrophysiology sessions.\nNote that if the saved times of a region do not exist in a new recording, the bounds will bunch at the recording edge. Region positions can be reset to factory defaults by clicking Options › Reset Options to Factory Defaults › Curve Fitting Positions.\n\n\n\n\nJonas, P., G. Major, and B. Sakmann. 1993. “Quantal Components of Unitary EPSCs at the Mossy Fibre Synapse on CA3 Pyramidal Cells of Rat Hippocampus.” The Journal of Physiology 472: 615–63.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Curve fitting</span>"
+    ]
+  },
+  {
+    "objectID": "event-detection-and-analysis.html",
+    "href": "event-detection-and-analysis.html",
+    "title": "Events detection and kinetics",
+    "section": "",
+    "text": "Overview\nEasy Electrophysiology provides two options for events detection, Events Template Matching and Events Thresholding. For simplicity, all relevant options, graphs and results tables are shared between these Events detection methods (e.g. running an events analysis with Template Matching will overwrite a previous analysis with Thresholding).",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Events detection and kinetics</span>"
+    ]
+  },
+  {
+    "objectID": "event-detection-and-analysis.html#event-detection",
+    "href": "event-detection-and-analysis.html#event-detection",
+    "title": "Events detection and kinetics",
+    "section": "Event detection",
+    "text": "Event detection\nBoth event-detection approaches share a range of settings that control event detection and exclusion. These are described in Events options below.\n\nTemplate matching\nTemplate matching relies on the generation of a template event in the form of a biexponential function (Jonas et al. 1993; see also Guzman et al. 2014). The template is generated by fitting a biexponential function to an exemplar event from the recorded data (the key parameters to fit are the rise and decay coefficients; see Appendix I). This ensures the biexponential rise, decay, and fitting window are tailored to the shape of the post-synaptic events to be detected. This initial event template can be further improved by fitting to the average of all detected events (see Refine Template for details).\nEasy Electrophysiology implements three template-matching algorithms: the correlation method (Jonas et al. 1993), the detection criterion method (Clements and Bekkers 1997), and the deconvolution method (Pernia-Andrade et al. 2012).\nThe correlation and detection criterion methods compare the template with the data using a sliding window, but have limited temporal resolution and may fail to detect high-frequency, closely spaced events. In contrast, deconvolution is performed in the Fourier domain and can reliably detect closely spaced events.\nEach approach produces a detection measure across the recording. Applying the relevant cutoff identifies contiguous regions as detected events. The interactive plots in Refine Template can be used to inspect the detection measure and assess performance.\n\nGenerating a template\nThe first step in template matching is to generate the template event. Click 1. Generate Template on the Events Template Matching analysis panel for template generation. A biexponential event template is shown on the graph with sliders and input boxes for manual adjustment of template coefficients. It is possible to increase the coefficients outside the slider range by typing the values directly into the input boxes. The coefficients that define the template shape are:\n\nb0 and b1 – the offset and amplitude scaling parameters. These coefficients are left free during event detection and so are not important for template generation.\nRise – the biexponential rise time constant (defaults to \\(0.5\\ \\mathrm{ms}\\) from Jonas et al. (1993))\nDecay – the biexponential decay time constant (defaults to \\(5\\ \\mathrm{ms}\\) from Jonas et al. (1993))\nWidth – the width (in \\(\\mathrm{ms}\\)) of the event template.\n\nThe best way to generate a template event is to fit the biexponential function to a recorded event from the dataset. An event from the data can be selected by clicking Select Data and drawing around an event to fit. When selecting an event it is helpful to change the graph zoom settings to Two Button (Pan Left, Zoom Right) by right-clicking on the plot and choosing Mouse Mode › Two Button (Pan Left, Zoom Right). This allows the left button to zoom while selecting data with the right button.\n\n\n\nGenerate Template. Selected data are shown in red and the current template fit in black. Coefficients for the fit are displayed in the input boxes.\n\n\n\nFitting the event\nOnce an event from the data is selected it will appear on the graph (red). The start of the event to fit can be shifted with the buttons in the Trim Left Edge box – the start point is critical for optimal fitting. The event from the data can also be filtered prior to fitting (8th order Bessel).\nClicking Fit Curve will fit the biexponential function to the event. This will change the coefficients in the top panel. These coefficients are now saved until Easy Electrophysiology is closed. To save these for the next session, click the Save button (see Saving and Resetting Option Defaults for details).\n\n\nStoring templates for later use\nTemplates may be stored for later use and loaded by clicking the Store Template button in the top left of the Generate Template menu. This will bring up another window allowing the current template to be saved with an identifying name.\nTo save the current template, first enter the name in the Save Template Name text box and click Save Template.\nTo load a template as the current template, click on the template name (the row will become highlighted) and press Load Template. Note this will overwrite the coefficients in the current template.\nTo delete a stored template, click on the template name and press Delete Selected Template.\n\n\nGeneration of multiple templates for simultaneous analysis\nUp to three templates can be used simultaneously for event detection (see Template to use for how to run analysis with multiple templates). The three templates can be accessed using the drop-down menu (Template 1 – 3) in the Generate Template menu.\nThe displayed template is the currently selected template and will be used for analysis when Selected is chosen in Analyze Events. When fitting a template to the data or loading one from Stored Templates, the coefficients will be stored in the currently selected template (e.g. Template 2). The Average Event will always be fit using the currently selected template.\n\n\n\nRefining a template\nThe Refine Template window is used for i) assessing the fit of an event template and ii) generating a refined template by fitting to the average of all events detected with the initial template.\nClicking Fit All Events detects events using the currently selected template. Detected events are displayed on the graph with a filled yellow circle at the peak and their baseline in blue. The average of all detected event is plot on the graph in red. Options to align by Rise half-width (half-way up the event rise), Peak, and Baseline are provided in the Alignment Method drop-down box. The process of fitting to the average event is identical to fitting in Generate Template.\nThe dropdown menu at the top of the window can be used to select the event detection method. If Correlation or Detection Criterion is chosen, the desired cutoff value can be entered in the box next to the drop-down menu. Alternatively, if Deconvolution is selected, the cutoff can be adjusted by clicking Options (detailed below).\n\nAssessing event detection\nClicking the Show (detection method name) button will show the detection measure overlaid on the plot. The cutoff value is shown as a horizontal line. This option is very useful for assisting in choosing a cutoff value, as its position in relation to the detected peaks can be observed. The detection measure units are scaled to fit to the plot for visualization purposes and cannot be interpreted directly.\n\n\n\nRefine Template analysis. The filtered deconvolution is displayed in orange with the current cutoff as a horizontal line. The average detected event is shown in red and can be fitted using Fit Curve.\n\n\nFor correlation and detection criterion methods, the Show Window Fit button will display the best-fit biexponential overlaid on the data of the main plot. When zoomed in, scrolling will move the biexponential along the data, allowing inspection of the fit at every timepoint. For this, it is convenient to use Two Button (Pan Left, Zoom Right) by right-clicking on the plot and choosing Mouse Mode › Two Button (Pan Left, Zoom Right).\n\n\nDeconvolution options\nIn Deconvolution Options, a cutoff can be specified in the Standard Dev box. The cutoff is expressed in standard deviations of the detection-measure amplitude distribution. The default value of 3.5 selects events with a detection measure more than 3.5 standard deviations above the mean.\nAdditionally, the cutoff measure undergoes bandpass filtering which can affect its shape. Default values are 0.1 for the Low Cutoff (Hz) and 200 for High Cutoff (Hz). Changing the high cutoff will influence the height and sharpness of the detection measure peaks and is useful to adjust when selecting optimal values for your data. The best way to choose values is to show the deconvolution on the plot (click Show Deconvolution) and visually inspect how it changes when the filter settings are adjusted and analysis re-run.\n\n\n\nDeconvolution Options. The amplitude histogram for all points in the deconvolution is fitted with a Gaussian function. The cutoff is defined using the standard deviation of this distribution; low and high filter cutoffs can also be specified.\n\n\n\n\n\nEvents Thresholding\nEvents Thresholding is a simpler method of event detection in which any datapoint that crosses a set threshold is considered an event. This method is less precise than the template matching method (e.g. a noise spike over threshold would be considered an event) but is less computationally demanding.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Events detection and kinetics</span>"
+    ]
+  },
+  {
+    "objectID": "event-detection-and-analysis.html#kinetics",
+    "href": "event-detection-and-analysis.html#kinetics",
+    "title": "Events detection and kinetics",
+    "section": "Kinetics",
+    "text": "Kinetics\n\nEvent kinetics overview\n\n\n\nEvent Kinetics. An analyzed event with \\(200\\ \\mathrm{kHz}\\) interpolation for rise time, decay time, and half-width.\n\n\nA Baseline – The event baseline (filled blue circle) acts as both the baseline value and timepoint considered the start of the event. The baseline calculation method is set in Baseline Options (Analyze windows only) and modified with Baseline – Search Period (ms) and Average Baseline (ms).\nB & F Max rise and decay slopes – The maximum slope on the rise or decay, calculated as a linear regression over \\(n\\) points (specified in Calculate Max Rise / Decay Slope).\nC Half-width – The half-width is calculated as the full-width at half-maximum (FWHM). This is the time between two half-amplitude samples (on the rise and decay; displayed on the plot with filled yellow circles). The nearest samples to the ‘true’ half-amplitude are used to calculate the FWHM; as such Interpolate to 200 kHz can greatly improve accuracy. If a monoexponential curve is fit to the decay, or biexponential to the event, this will be used to find the decay, and rise and decay respectively for half-width calculation.\nD Rise-time – The rise time is measured as the time between two timepoints (filled green circles), specified as the percentage of the event amplitude (peak minus baseline). These ‘percentage cut-offs’ can be changed using the Rise-time Cutoffs setting (10-90 rise-time is default, shown).\nE Peak – The peak of the event can be smoothed using Average Peak (ms).\nG Decay time – By default, this is the time between the event peak and the first sample at which the event has decayed to a specified percentage of the event amplitude (default 37%). The sample used is displayed on the graph with a purple cross. Alternatively, this can be set in Options › Events to a second method that uses two points similar to the rise-time calculation. If a monoexponential or biexponential curve is fit to the data, this will be used to find the decay time and half-width.\nThe percentages are set with the Decay time setting. The period to search for the decay-time values can be set using Decay Search Period (ms).\nH Decay fit – A monoexponential fit to the decay is displayed with a purple line. The tau of this fit is reported in the Events results table (if this fit is good, this result should closely match the decay time calculated with the first method when set to 37%).\nI Decay endpoint – If a monoexponential decay is fit, the automatically detected end of the event is used as the fit endpoint (shown with a filled purple circle). See Decay Search Period (ms) for details.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Events detection and kinetics</span>"
+    ]
+  },
+  {
+    "objectID": "event-detection-and-analysis.html#events-options",
+    "href": "event-detection-and-analysis.html#events-options",
+    "title": "Events detection and kinetics",
+    "section": "Events options",
+    "text": "Events options\n\nEvent detection window options\n\n\n\nEvent Detection Options. The Analyze Events window contains options for customizing event detection. The lower linear threshold is displayed on the main plot; putative events that do not pass it are excluded.\n\n\n\nLower Threshold\nThis is the minimum value that an event must pass to be considered within threshold, specified in \\(\\mathrm{pA}\\). It is dependent on the direction of events (e.g. for a threshold of \\(5\\ \\mathrm{pA}\\), positive events must contain a datapoint \\(&gt; 5\\ \\mathrm{pA}\\), negative events must contain a datapoint \\(&lt; 5\\ \\mathrm{pA}\\)). The Lower Threshold is displayed on the graph in red. Using the dropdown menu, it can be specified as:\n\nLinear – A straight horizontal line across the trace. This can be moved up and down with the mouse, or the desired threshold value typed into the input box.\nCurve – A polynomial is fit to the data and used as the threshold. This can be moved up or down by typing the desired offset into the input box. The order of polynomial fit can be changed by clicking Options › Events Analysis – Misc. Options › Dynamic Curve polynomial order (under Other Options). Note fitting of higher-order polynomials slows performance.\nDrawn – Setting the drop-down menu to Draw then clicking the Draw Threshold button will enter threshold drawing mode. The cursor will change to a pointed hand; clicking the graph will begin drawing a baseline. The first click will draw a horizontal line from the left edge of the record to the cursor. Subsequent clicks will draw a straight line from the previous point to the cursor. To finish drawing the threshold, click the right edge of the graph past the final plot datapoint. This mode is particularly useful when there are large, sudden changes in the data’s baseline.\n\nNote that if a new file is loaded which is longer than the currently drawn threshold, the threshold will be extended as a straight line to the new end timepoint.\n\nRMS – The root mean squared error (RMS) of the data, multiplied by a scalar \\(n\\), can also be used as a minimum threshold. The minimum threshold is the baseline minus \\(n \\times \\mathrm{RMS}\\) for negative events, or the baseline plus \\(n \\times \\mathrm{RMS}\\) for positive events, and is shown on the plot in red. The baseline to which the RMS is added is determined by the choice of event baseline (if Auto. is selected, the mean of the data will be used separately for each record).\nWhen selecting RMS from the drop-down menu, clicking Settings will open a window allowing choice of settings for calculating the RMS. The multiplier \\(n\\) used to scale the RMS (e.g. \\(2 \\times \\mathrm{RMS}\\)) can be typed into the input box.\nIf All Data (Per Record) is selected, the RMS will be calculated separately for each record, using the mean of the record as calculation baseline. Alternatively, selecting Within Selected Region will allow calculation of the RMS within a movable region on the graph.\nSelecting the option Baseline used: mean will use the mean of the data within this region as the calculation baseline for the RMS. Otherwise, if Baseline used: selected baseline then the currently selected baseline will be used as the calculation baseline during RMS calculation. In Baseline used: selected baseline mode, for Linear, Curve, and Drawn baselines, the RMS is calculated as the root mean square error between the baseline and data. For Auto., the calculation baseline is the mean of the entire record (not the data within the bounds).\n\n\n\nBaseline Options (Analyze windows only)\nThe event baseline can be detected automatically (Auto.) or set as the first sample at which the data crosses a pre-defined baseline value. The baseline datapoint acts as both the baseline \\(I_\\mathrm{m}\\) value and the event foot (i.e. the timepoint at which the event starts).\nFor automatic detection, the baseline is first estimated per-event (see Legacy options). Next, the method of Jonas et al. (1993) (the intersection between the baseline and a straight line drawn through the 20-80 rise time) is used to shift the x-axis position of the baseline to the point of the event foot. Together, these methods result in robust simultaneous estimation of the event baseline and foot.\nThis baseline value can also be specified in a similar way as Lower Threshold (i.e. Linear, Curve, or Drawn). This will search the baseline search region for the first datapoint that has crossed this baseline threshold and set it as the baseline. If no datapoint crosses the baseline threshold within the search region, the closest value to the threshold is used.\n\n\nUpper Threshold\nThe upper threshold is defined as the maximum value an event can pass before it is excluded from analysis (e.g. for a \\(100\\ \\mathrm{pA}\\) threshold, any positive event \\(&gt; 100\\ \\mathrm{pA}\\) or negative event \\(&lt; 100\\ \\mathrm{pA}\\) will be excluded). This option can be specified by typing the absolute value in the input box. This is particularly useful for excluding large noise spikes e.g. stimulus artefacts.\n\n\nOmit Time Periods\nOmitting time periods from analysis can be useful for event recordings with interleaved stimulation. The Omit Time Period button opens a table for inputting time periods to omit from analysis. Add the start time of the period to exclude in the first column and the end time in the second column. Multiple time periods to exclude can be input, one on each row.\nWhen set to absolute, the events are excluded based on the absolute value of the omit times. When set to relative, the events are excluded based on the omit times relative to the start of the record on which the event occurs.\n\n\nTemplate to use\nEvent detection may be run with up to three different templates simultaneously. The Templates to Use specifies the templates to use for the analysis (Selected, Template 1 and 2, or Template 1, 2 and 3). See Generation of Multiple Templates for Simultaneous Analysis for details on generating the three templates. The Average Event and manually selected events are always fit using the currently selected template.\nIf set to Selected, the currently selected template (in Generate Template) is used. The coefficients of the currently selected template can be seen directly underneath the drop-down menu. Otherwise, templates 1 and 2, or 1, 2 and 3 are used depending on the selected option.\nAnalysis with multiple templates is run in the same way as a normal analysis. On the plot, the events detected by different templates can be distinguished by the peak color (Template 1: red, Template 2: pale blue, Template 3: pale orange). In the results table, the column Template holds the number of the template that was used to detect the event. To set the behavior in the case that the same event is detected by two different templates, see Multi-template event assignment.\n\n\n\nEvent fitting analysis panel options\nThis panel contains detection and kinetics options which are shared between Events Template Matching and Events Thresholding.\n\nPeak Direction (Events Threshold only)\nDirection of the events to detect.\n\n\nMinimum IEI (ms)\nThe minimum inter-event interval (IEI) between event peaks in milliseconds. For example, if set to \\(1000\\ \\mathrm{ms}\\), detected events will be at least \\(1\\ \\mathrm{s}\\) apart. Detected events that are closer than the local minimum period (i.e. \\(1\\ \\mathrm{s}\\) in our example) will be excluded, with smallest events excluded first.\n\n\nDecay Search Period (ms)\n\n\n\nEvent Detection Results. Detected event peaks are marked with filled red circles. The lower threshold is shown in red and the baseline in blue. Event baselines and decay endpoints can be adjusted in Edit Kinetics mode.\n\n\nWhen fitting a monoexponential function to the event decay, the end of the event is estimated as the closest datapoint to the baseline (using a weighting and smoothing algorithm to account for noise and complex waveforms). This end-of-event point is indicated with a closed purple circle on the graph. The monoexponential function is fit between the event peak and the end-of-event datapoint. Here, the decay search period indicates the period to search for the end-of-event datapoint.\nIf a monoexponential curve is not fit to the decay, Decay Search Period (ms) defines the search region, starting at the event peak, for the Decay times value.\n\n\nAmplitude Threshold (pA)\nSets the minimum amplitude (event peak minus baseline; absolute value) for detected events. Any events with an amplitude smaller than this threshold are excluded.\n\n\nAverage Peak (ms)\nPeriod to smooth around the event peak. The intuitive method of peak averaging is to simply average around the peak detected from unsmoothed data. However, this method often detects the peak at off-center noise spikes (i.e. not centered on the natural peak of the event).\nIn Easy Electrophysiology, the event is first detected without smoothing. Then, the event is smoothed with a window of size specified with Average Peak (ms). Finally, the new peak is determined from the smoothed data in a small region around the previously detected peak (±3 * Average Peak (ms)). This method simultaneously smooths the peak \\(I_\\mathrm{m}\\) value as an average of surrounding points and adjusts the position to reduce noise bias.\n\n\nAUC min. (pA ms)\nArea Under Curve (AUC) threshold can be set to exclude putative events with small areas. Note this is the absolute value (as for negative events area is defined as negative area) (e.g. if set to \\(5\\), negative events with area \\(-10\\ \\mathrm{pA\\,ms}\\) will be included, but \\(-3\\ \\mathrm{pA\\,ms}\\) excluded).\n\n\nBaseline – Search Period (ms)\nThe time period before the event peak to search for the baseline. When baseline detection method is set to Auto. (in the Analyze Events window), this specifies the search period for automated baseline detection. For all other baseline options (Linear, Curve, Drawn) this is the search period for the first datapoint that crosses the baseline (see Baseline Options (Analyze windows only)).\n\n\nAverage Baseline (ms)\nThe period over which to average the event baseline. First, the event baseline is detected with the selected method (Auto., Linear, Curve, or Drawn). Then, the baseline value is set to the average of a window before the baseline. Average Baseline (ms) sets the size of this averaging window.\n\n\n\nEvents options window\nAdditional event detection and analysis options can be found by clicking Options › Events. These options are shared between Events Template Matching, Events Thresholding, Average Event and Curve Fitting (biexponential event) analysis.\n\nDecay Endpoint search method\nThis option selects the method used to calculate the endpoint of the event (i.e. when the event is considered to have finished). This is the period across which the decay times parameter will be searched, and act at the endpoint for monoexponentially and biexponential fits. A third, older event endpoint detection method is available in Legacy options.\nEntire Search Region, the event endpoint will be at the exact time after the peak specified in Decay Search Period (ms) (e.g. if Decay Search Period (ms) is \\(30\\ \\mathrm{ms}\\), and the peak is detected at \\(100\\ \\mathrm{ms}\\), the decay endpoint will be at timepoint \\(130\\ \\mathrm{ms}\\)). However, if another event occurs before this decay endpoint, the decay endpoint will be moved to one sample prior to the next event baseline.\nFirst Baseline Cross, the first datapoint that crosses the baseline is used as the event endpoint. The data is smoothed slightly (3 samples) to avoid large noise spikes that may occur during the decay period. If no sample in the search period crosses the baseline, the datapoint closest to the baseline is used. Similar to Entire Search Region, if the next events baseline is before the detected decay endpoint, the decay endpoint will be moved.\n\n\nInterpolate to 200 kHz\nInterpolate the event to \\(200\\ \\mathrm{kHz}\\) prior to decay-time, rise-time and half-width analysis (linear interpolation). First, the event peak, baseline and event end-point is calculated. Then the event (i.e. the period between the baseline and event end-point) is interpolated before decay, rise and half-width analysis.\n\n\nRise-time Cutoffs\nSpecifies the cutoffs for rise-time calculation (by default, the 10-90 rise-time is used).\n\n\nDecay time\nThese options specify the method used to calculate the decay time, and their exact percentages. By default, the time from peak to a value at some specified % of the amplitude is the decay time. Alternatively, the second method (between points) is calculated similar to the rise time.\n\n\nCalculate Max Rise / Decay Slope\nThe maximum rise and decay slopes for each event will be calculated if this option is on. It is not calculated by default as it may increase analysis time, particularly if the slope is calculated over many samples.\nThe maximum slope is calculated as a regression over \\(n\\) points. The number of samples to calculate the regression over can be specified separately for the rise and decay. If the number of samples to calculate the regression is larger than the number of samples in the rise / decay, this parameter will not be calculated for the event.\nIn some cases, noise spikes can bias the calculation of the maximum slope. As such, an option to smooth the rise / decay before calculation of maximum slope is provided.\nFinally, it is recommended to select Always use baseline crossing as max slope search endpoint. This ensures that the algorithm will stop searching for the maximum slope close to the point when the decay returns to baseline. Otherwise if this is unchecked and Decay Endpoint search method is set to Entire Search Region, the entire Decay Search Period (ms) will be searched for regression, leading to poorer accuracy and increased analysis time.\n\n\nEvent Curve Fitting\nEvent curve fitting provides options for fitting a biexponential function to the entire event (Biexponential), monoexponential function to the decay period (Monoexponential to Decay), or not fitting (Don’t Fit Event).\nIf a biexponential is fit, half-width and decay times will be calculated on the fit. If a monoexponential is fit, the decay part of the half-width and decay times will be calculated from the fit. If Don’t Fit Event is selected it is recommended to slightly smooth the decay period for calculation of decay times and half-width to reduce the influence of noise spikes that may occur after the true decay mid-point, as shown in the examples below.\nOptions are provided to ensure only optimal fits are included in the results. Two measures to assess the fit are provided as a basis to exclude or attempt to improve the fit – the R2 or fitted-coefficient.\nIf excluding based on R2 or bounds, any event with a fit lower than the R2 value or outside of the coefficient bounds will be excluded from the results. Alternatively, it is possible to try and improve the fit by adjusting the first sample of the data the function is fit to.\nBoth biexponential and monoexponential fitting are extremely sensitive to the position of the event foot and peak, respectively. For monoexponential fits, new-start-points both to the right and left of the peak will be attempted. For biexponential fits, samples only to the right of the baseline will be attempted, as choosing samples further from the natural foot of the event typically worsens biexponential fitting. If improvement is not sufficient such that the fits are within threshold, the event will be excluded.\n\n\n\nEvent Fitting. A: monoexponential fit to event decay. B: biexponential fit to an event. C: without fitting, noise spikes can distort decay-time and half-width measurements. D: slight decay smoothing reduces the influence of noise spikes.\n\n\nFor biexponential fits, the starting estimate for the coefficients will be taken from the template used to detect the event in Events Template Matching analysis. Otherwise, for Events Thresholding and Curve Fitting analysis the default coefficients specified in Template Matching – Initial Coefficients will be used.\nThese options can also be useful for excluding erroneously detected events. The most typical cause of poor fits is that the putative event is in fact a noise spike.\n\n\nFrequency Data\nThe Type menu sets frequency-data plots to Cumulative Probability or Histogram.\nClicking More Options opens the Frequency Options window. Binning Method can be set to Auto., Custom Bin Number, Custom Bin Size, or Num events divided by. When using custom bin sizes, select the event parameter and enter its bin size. Fix bin start values sets a fixed starting value for that parameter’s bins. X axis display places plotted values at the Bin Centre, Left Edge, or Right Edge.\n\n\nPlots\nShow Area Under Curve (AUC) (may slow performance) displays the area under each event on the plot. Plotting the AUC may reduce performance.\n\n\nOther Options\n\nThreshold manually selected events – selected by default. When selected, Amplitude Threshold (pA), Omit Start Times, Threshold – Lower, and Threshold – Upper are applied to manually selected events. Turn this option off to prevent these exclusion criteria from being applied to manually selected events.\nDynamic curve polynomial order specifies the order of the polynomial used in Lower Threshold and Baseline curves. Fitting high-order polynomials will increase computation time.\nMulti-template event assignment – If set to To best fitting template, the template with the highest value of the detection measure (see Events Template Matching) is used. If set to To first template used 1 &gt; 2 &gt; 3, the first template that detects the event (in the order 1, 2, 3) will be used.\nTemplate Matching – Initial Coefficients specifies the default coefficients for the Events Template Matching template generation, Curve Fitting (biexponential event), and biexponential fitting to events in Events Thresholding.\n\nReset to Defaults restores the default Events options. Save as Default saves the current Events options as the defaults for future use.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Events detection and kinetics</span>"
+    ]
+  },
+  {
+    "objectID": "event-detection-and-analysis.html#manual-editing",
+    "href": "event-detection-and-analysis.html#manual-editing",
+    "title": "Events detection and kinetics",
+    "section": "Manual editing",
+    "text": "Manual editing\nEasy Electrophysiology offers a high degree of flexibility when it comes to manual adjustment of event detection and analysis. Erroneously detected events may be discarded, or undetected events manually selected. Furthermore, the position of event baseline and foot, and endpoint can be easily adjusted.\n\nSelect events\nTo manually select an event, click the Manually Select Events option on the Analysis Panel (for both Events Template Matching and Events Thresholding). The cursor will change to a crosshair and clicking-and-dragging on the graph will draw a circle. The peak (minimum for negative events, maximum for positive events) in this region will be taken as the new event peak.\nAll current settings (e.g., smoothing and search periods) apply to manually selected events; see Threshold manually selected events for the exclusion criteria that can be disabled. However, the fitting method must be the same for every event in an analysis, as such the fit of a manually selected event will always match the analysis used.\n\n\nReject events\nTo discard detected events, click twice on the filled circle at the peak of an event. The first click will prime the event for deletion (the circle will turn blue) and the second click will delete the event from analysis. Alternatively, holding D while selecting multiple event peaks by click-and-dragging the mouse on the main plot will delete multiple events at once.\n\n\nEdit kinetics\nThe position of the event baseline and decay endpoint can be manually adjusted. Clicking Edit Kinetics will enter Edit Kinetics mode, indicated by the cursor changing to a pointing hand. To edit a kinetic in this mode, first click on the baseline (light blue circle) or event endpoint (purple circle). Next, the cursor will change to a crosshair. Click on the desired position for the kinetic, and the kinetic will be moved and the other event parameters re-analyzed.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Events detection and kinetics</span>"
+    ]
+  },
+  {
+    "objectID": "event-detection-and-analysis.html#grouping-detected-events",
+    "href": "event-detection-and-analysis.html#grouping-detected-events",
+    "title": "Events detection and kinetics",
+    "section": "Grouping detected events",
+    "text": "Grouping detected events\nEvent grouping makes it possible to select subsets of detected events and restrict results display to these subsets (or, excluding a subset of events). To group selected events following event detection, click the peak of an event holding the group number you would like to assign to the event on the keyboard. The group number can range from 1 to 5.\nTo selectively view grouped events on the main Table tab table, click Analysis › Table Options. In the Show Events by Group section, the group to selectively display can be chosen from the drop-down menu. To display all events excluding the selected group, click the Exclude group button.\n\n\n\nGrouping Detected Events. Events can be grouped by clicking an event peak while holding the desired group number on the keyboard. Here, the large event is assigned to Group 1 and the other events to Group 2.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Events detection and kinetics</span>"
+    ]
+  },
+  {
+    "objectID": "event-detection-and-analysis.html#saving",
+    "href": "event-detection-and-analysis.html#saving",
+    "title": "Events detection and kinetics",
+    "section": "Saving",
+    "text": "Saving\nEvents analysis (all detected events, plots and tabular results) can be saved for later use. To save the current analysis, click Save Data and Save Events Analysis. The events analysis is stored as a .json file.\nTo re-load the events analysis, click Save Data › Load Events Analysis and select the previously saved JSON file. Note that the file name, number of records and number of samples of the data file are saved with the analysis results to ensure the event analysis matches the recording file. As such, the recording filename should not be changed in between saving and loading events results.\n\n\n\n\nClements, J. D., and J. M. Bekkers. 1997. “Detection of Spontaneous Synaptic Events with an Optimally Selected Template.” Biophysical Journal 73 (1): 220–29.\n\n\nGuzman, S. J., A. Schlögl, and C. Schmidt-Hieber. 2014. “Stimfit: Quantifying Electrophysiological Data with Python.” Frontiers in Neuroinformatics 8: 16.\n\n\nJonas, P., G. Major, and B. Sakmann. 1993. “Quantal Components of Unitary EPSCs at the Mossy Fibre Synapse on CA3 Pyramidal Cells of Rat Hippocampus.” The Journal of Physiology 472: 615–63.\n\n\nPernia-Andrade, A., S. P. Goswami, Y. Stickler, U. Fröbe, A. Schlögl, and P. Jonas. 2012. “A Deconvolution-Based Method with High Sensitivity and Temporal Resolution for Detection of Spontaneous Synaptic Currents in Vitro and in Vivo.” Biophysical Journal 103 (7): 1429–39.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Events detection and kinetics</span>"
+    ]
+  },
+  {
+    "objectID": "events-analysis.html",
+    "href": "events-analysis.html",
+    "title": "Events analysis",
+    "section": "",
+    "text": "Average event",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Events analysis</span>"
+    ]
+  },
+  {
+    "objectID": "events-analysis.html#average-event",
+    "href": "events-analysis.html#average-event",
+    "title": "Events analysis",
+    "section": "",
+    "text": "Analysis\nFollowing events analysis an average event may be generated and analyzed. To generate an average event, click the Average All Events button in the Analyze Events popup window (for both Template Matching and Thresholding analysis).\n\nGenerate an Average Event\n\n\n\nAverage Event Analysis. Following event detection, an average event can be generated and its kinetics calculated. Average event data can be copied or saved, and results displayed in a table.\n\n\nTo generate an average event, a point on each event is chosen to align (Peak, Rise half-width, or Baseline). The data around this point is windowed and displayed in the Average Events window. If a window around an event extends further than the limits of the data, the event is excluded from analysis. This means that events to the extreme edge of the record are not included.\nClick Copy Event to Clipboard and Save Average Event to copy or save (to .xlsx or .csv) the displayed data, respectively.\nThe averaged event can be filtered prior to analysis with the Filter (Hz) box (8th order Bessel). The averaged event can also be normalized using Scale › Amplitude to 1 and Shift › Demean.\n\n\nAnalyze the Average Event\nClick the Find Peak and Calculate Event Kinetics button to start Average Event analysis. This will bring up a region on the plot that defines the analysis space.\nThe dropdown box to the right of the Calculate Kinetics button can be used to set the baseline detection method. Set Auto. for automatic baseline detection, or Use Baseline to manually set the baseline. If Use Baseline is selected, a baseline region will appear and can be moved to set the baseline for the data (This is analogous to the Linear baseline during event detection).\nTo fit a biexponential function to the average event and calculate the kinetics on the function, select Fit biexponential curve, calculate kinetics on fit. The region displayed on the graph can be used to define the fit start and end points.\nThe results of average event analysis can be viewed by clicking Display Results Table and copied to the clipboard with the mouse and keyboard.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Events analysis</span>"
+    ]
+  },
+  {
+    "objectID": "events-analysis.html#events-overlay",
+    "href": "events-analysis.html#events-overlay",
+    "title": "Events analysis",
+    "section": "Events overlay",
+    "text": "Events overlay\nThe Events Overlay window displays all detected events on the same plot, providing a convenient way to find and remove outliers.\nEvents Overlay can be opened (after event detection has been performed) by clicking the Overlay button on the Events Analyze window. All detected events are shown overlaid on the plot in black. The display of the overlaid events can be adjusted with the Alignment method and Window size (ms) settings:\n\nAlignment method determines the point of the event used for alignment (e.g. the event peak).\nWindow size (ms) controls the size of the window used to display the events (the displayed period prior to the peak is fixed, this setting controls the window from the peak to the right edge of the data).\n\n\nThe Selected Event and Average Event\nIn the Events Overlay window, the currently selected individual event is shown in blue. When the window first opens, the individual event mode is set to Selected. Clicking the left or right arrow buttons in Selected mode will scroll through all events in numerical order. Changing the selected event through the Events Overlay window also scrolls through the individual events shown on the Events Analysis window, and vice versa.\n\n\n\nEvents Overlay. All detected events are overlaid in black. The selected event is shown in blue in Most Distant mode and has the greatest L2 distance from the average event.\n\n\nAlternatively, individual events can be scrolled through in Most Distant mode. The selected event will become the most distant event; here, distance is measured as the L2 norm from the average of all events. Clicking the left or right buttons will scroll through selected events based on their distance (in the order most to least distant). This can be a very useful way to detect and remove outlier events.\nFurther, individual events can be selected by clicking on them directly on the plot.\nTo remove an event from the analysis the Del. button can be clicked on the Events Overlay window or the Delete keyboard button pressed. The currently selected event will be removed from all analyses.\nThe average of all detected events can be displayed instead of the currently selected event by clicking Show Average Event. Then, clicking Analyze Average Event will open the analyze event dialog window, allowing analysis of the average event kinetics. This provides the possibility to shift and scale individual events prior to analysis of the average event.\n\n\nShift and scale\nThe Shift and Scale options shift (add a constant) and scale (multiply by a constant) the individual events prior to presentation. When shift and scale operations are applied to data, scale operations are applied prior to shift operations.\n\nShift\n\nDemean – The mean of the event is subtracted (so the mean of the event becomes zero).\nAligned param to zero – The parameter used to align the events (e.g. rise half-width) is subtracted from the event (so that the aligned parameter value becomes zero).\nFirst sample to zero – The first datapoint value of the event is subtracted (so the first sample of the event is zero).\n\n\n\nScale\n\nAmplitude to 1 – The event is multiplied by a constant such that the amplitude (from most negative to most positive sample) becomes 1.\nStd. Dev. to 1 – The event is multiplied by a constant such that the standard deviation of the event becomes 1.\n\nNote that the shift and scale operations are identical to those in the Average Event window.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Events analysis</span>"
+    ]
+  },
+  {
+    "objectID": "events-analysis.html#cumulative-probability-and-histograms",
+    "href": "events-analysis.html#cumulative-probability-and-histograms",
+    "title": "Events analysis",
+    "section": "Cumulative probability and histograms",
+    "text": "Cumulative probability and histograms\nFrequency data (as Histograms or Cumulative Probabilities) for all analyzed parameters can be calculated by selecting the check boxes on the Events Table tab.\nTo specify how the frequency data is calculated click Options › Events. In the Frequency Data section it is possible to select Cumulative Probability or Histogram format. Clicking More Options will provide options for binning. These options will come into effect from the next analysis run (that is, re-run the analysis for the new options to take effect).\nIn the More Options window, the binning method can be selected from the top drop-down menu. If Auto., the maximum of the Sturges or Freedman-Diaconis Estimation methods is used, as implemented in the NumPy method histogram_bin_edges(). In some instances, depending on the scaling and units of the data, this will erroneously return a very large number of bins – in this case the square root method is used instead.\nAlternatively, the number of bins can be set manually (Custom Bin number), the size of the bins in the units of the relevant parameter can be set (Custom Bin Size) or the number of bins can be a function of the total number of events (total number of events divided by). Finally, the bin edges can be chosen as Bin Centre, Left Edge, or Right Edge from the X axis display drop-down menu.\nFor example, for bins spanning \\(0\\)–\\(1\\), \\(1\\)–\\(2\\), and \\(2\\)–\\(3\\), the x-axis values are:\n\nBin Centre – \\(0.5\\), \\(1.5\\), \\(2.5\\)\nLeft Edge – \\(0\\), \\(1\\), \\(2\\)\nRight Edge – \\(1\\), \\(2\\), \\(3\\)\n\n\n\n\nEvents Frequency Plots. Cumulative probability and histogram plots of decay-time frequency data. Line and fill colour, line thickness, marker size, axis limits, and grid lines can be customized.\n\n\nNote that when calculating inter-event interval for multi-record files, the IEI between the last event of a record and first event of the following record will be ignored unless records are time-contiguous.\nBy default, frequency data is sorted on the table by value (e.g. smallest to largest amplitude). To sort by event number, right click the table header and select Sort by Event Num.. At the bottom of the result table, the summary statistics for each column are shown.\n\nFrequency Data Plots\nOn the table tab, clicking Plot Frequency Data will bring up the events frequency plots. Note that changing any of these options only changes the current display of the plot and not how the data is binned and presented in the table.\nThe data can be displayed as a histogram or cumulative probability plot, and any event parameter selected for display. If analysis is run in Batch Mode, any analyzed file can be selected for display. Finally, clicking Plot Options allows customization of the plot, including removing the gridlines, setting marker and line color, size and X axis limits.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Events analysis</span>"
+    ]
+  },
+  {
+    "objectID": "action-potential-counting.html",
+    "href": "action-potential-counting.html",
+    "title": "Action potential counting",
+    "section": "",
+    "text": "Run spike counting analysis\nAction Potential Counting analysis provides automatic detection of action potentials (APs) and calculation of:\nClicking the Count APs button on the Action Potential Counting analysis panel will run the analysis. By default, every record in the file is analyzed. To select specific records to analyze set the Records to Analyze box at the bottom of the analysis panel.\nTo restrict the analysis to a specific time period, click Set bounds. To change the spike-detection algorithm, use the drop-down menu in the Thresholding box on the analysis panel. More detail on these detection algorithms is given below.\nTo calculate the rheobase, \\(I_\\mathrm{m}\\) input is required. This can be initialized by clicking the Im checkbox. See Input resistance for more detail on \\(I_\\mathrm{m}\\) measurement.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>AP counting</span>"
+    ]
+  },
+  {
+    "objectID": "action-potential-counting.html#run-spike-counting-analysis",
+    "href": "action-potential-counting.html#run-spike-counting-analysis",
+    "title": "Action potential counting",
+    "section": "",
+    "text": "Action Potential Counting. Detected action potentials are marked with filled red circles at their peaks. Double-click a peak to discard it, or use Manual Select to add an undetected action potential.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>AP counting</span>"
+    ]
+  },
+  {
+    "objectID": "action-potential-counting.html#spike-detection-methods",
+    "href": "action-potential-counting.html#spike-detection-methods",
+    "title": "Action potential counting",
+    "section": "Spike detection methods",
+    "text": "Spike detection methods\nThree spike-detection algorithms are provided – Auto. Threshold Record, Auto. Threshold Spike, and Manual Threshold – which differ in their sensitivity and approach.\n\nDetection parameters\nAutomatic spike detection uses five parameters to detect spikes:\n\nAmplitude (mV) – Minimum amplitude of a spike to be considered an action potential.\nRise (mV/ms) – This captures the rising phase of the action potential. Spikes must exceed this threshold to be considered an action potential.\nFall (mV/ms) – This captures the repolarizing phase of the action potential. This threshold criterion will only be applied if the rise threshold is passed within the period set by Width (ms).\nWidth (ms) – Period to search for a sample crossing the fall threshold after the rise threshold is crossed.\nMin. distance between APs – The minimum distance in milliseconds between two action potentials. When two APs are closer than this distance, the smaller will be excluded.\n\nThese parameters can be adjusted through Options › Action Potential Counting Options.\n\n\nDetection approaches\n\nAuto. Threshold Spike – Detects action potentials using the threshold parameters described above. This option is useful for dynamic spike waveforms and instances where non-linear trends in the peak amplitudes preclude use of a straight-line threshold.\nAuto. Threshold Record – Provides a robust alternative to individual action potential detection by averaging across all detected spikes to generate an absolute threshold.\nFirst, an Auto. Threshold Spike approach is used to detect action potentials. Then, the median amplitude mid-point \\(V_\\mathrm{m}\\) is calculated from all detected action potentials. This is used as a straight-line threshold over which any spike crossing is considered an action potential.\nThis method reduces the number of erroneously detected action potentials, particularly in noisy data as edge-case spikes are downweighted. This is the default setting for spike detection.\nManual Threshold – The simplest method. When selected, a red threshold bar appears on the plot. Any spike which rises above then falls below this threshold will be counted as an action potential.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>AP counting</span>"
+    ]
+  },
+  {
+    "objectID": "action-potential-counting.html#manual-spike-selection-and-editing",
+    "href": "action-potential-counting.html#manual-spike-selection-and-editing",
+    "title": "Action potential counting",
+    "section": "Manual spike selection and editing",
+    "text": "Manual spike selection and editing\nFollowing AP counting, detected events may be discarded or undetected events manually selected.\nTo select an AP, click the Manual Select button on the Action Potential Counting panel. The cursor will change to a crosshair and clicking and dragging on the graph will draw a circle allowing selection of an AP peak. To allow maximum flexibility, these selections are not thresholded and the maximum \\(V_\\mathrm{m}\\) in the selected region will be taken as the new spike peak.\nTo discard detected APs, click twice on the filled red circle at the peak of an AP. The first click will prime the AP for deletion (the peak circle will turn blue) and the second click will delete the event from analysis.\nManual editing of detected action potentials will update all existing results (e.g. rheobase, first-spike latency, mean inter-spike interval, spike-frequency accommodation).",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>AP counting</span>"
+    ]
+  },
+  {
+    "objectID": "action-potential-counting.html#action-potential-counting-options",
+    "href": "action-potential-counting.html#action-potential-counting-options",
+    "title": "Action potential counting",
+    "section": "Action Potential Counting Options",
+    "text": "Action Potential Counting Options\n\nRheobase\nRheobase refers to the smallest current injection that elicits an action potential. Rheobase analysis is enabled when the Im checkbox is active (see Input resistance for details on \\(I_\\mathrm{m}\\) calculation in current-clamp mode).\nThe rheobase can be calculated as:\n\nRecord – \\(I_\\mathrm{m}\\) injection for the record at which the first AP is detected.\nExact – \\(I_\\mathrm{m}\\) at the exact time-point of the first detected AP peak.\n\n\n\nFirst-spike latency\nThe first spike latency is defined as the time from the start of the \\(I_\\mathrm{m}\\) injection to the peak of the first action potential. If selected, users will be prompted to input the time (in seconds) that the \\(I_\\mathrm{m}\\) injection starts. First spike latency will be calculated for all records that contain action potentials.\n\n\nInter-spike interval\nThe mean difference between the times of consecutive action potential peaks (i.e. the inter-spike-interval, ISI).\n\n\nSpike freq. accommodation\nSpike frequency accommodation (SFA) refers to a reduction in firing rate during a prolonged current injection. Two methods of SFA measurement are provided:\n\nDivisor Method – The first ISI of the spike train divided by the final ISI in the spike train.\nLocal Variance – Introduced by Shinomoto et al. (2003), this measure captures the degree of irregularity of neuronal firing from the local variation of inter-spike intervals across the spike train (see Appendix I).\n\n\n\n\nAction Potential Counting Options. Analysis using a manual threshold and restricted to a selected region. More Analysis provides first-spike latency, inter-spike interval, and spike-frequency accommodation options.\n\n\n\n\n\n\nShinomoto, S., K. Shima, and J. Tanji. 2003. “Differences in Spiking Patterns Among Cortical Neurons.” Neural Computation 15: 2823–42.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>AP counting</span>"
+    ]
+  },
+  {
+    "objectID": "action-potential-kinetics.html",
+    "href": "action-potential-kinetics.html",
+    "title": "Action potential kinetics",
+    "section": "",
+    "text": "Action potential detection\nAction Potential Kinetics analysis calculates:\nOptions for automatic detection and manual selection of APs are available. For details on automatic spike detection, see Action potential counting.\nThe action potential kinetics algorithm first identifies the action potential peak, calculates the threshold, and then calculates the additional kinetic measures. AP peaks are detected using the same spike-detection methods and settings as Action potential counting, including the amplitude, rise, fall, width, and minimum-distance criteria. Changes to these detection settings therefore apply to both analyses.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>AP kinetics</span>"
+    ]
+  },
+  {
+    "objectID": "action-potential-kinetics.html#action-potential-detection",
+    "href": "action-potential-kinetics.html#action-potential-detection",
+    "title": "Action potential kinetics",
+    "section": "",
+    "text": "Action Potential Kinetics Analysis. Calculation of action-potential threshold, rise time, decay time, half-width, fAHP, and mAHP with customizable analysis options.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>AP kinetics</span>"
+    ]
+  },
+  {
+    "objectID": "action-potential-kinetics.html#action-potential-kinetics-overview",
+    "href": "action-potential-kinetics.html#action-potential-kinetics-overview",
+    "title": "Action potential kinetics",
+    "section": "Action potential kinetics overview",
+    "text": "Action potential kinetics overview\n\n\n\nAction Potential Kinetics. An analyzed action potential with \\(200\\ \\mathrm{kHz}\\) interpolation for rise time, decay time, and half-width.\n\n\nA Threshold – The threshold value for the AP. The period before the peak to search for the threshold is set by Threshold search region (before peak). The detection method is set under Thresholding.\nA & D Amplitude – The AP peak voltage minus the threshold voltage.\nB Rise time – The time between two samples specified as percentages of the AP amplitude (displayed with purple crosses; default \\(10\\)–\\(90\\%\\)). The percentages are set by Rise-time % cutoff (min/max).\nC Half-width – The time between the two half-amplitude samples on the rise and decay, displayed with black-bordered filled yellow circles. The nearest samples to the true half-amplitude are used to calculate the full width at half maximum (FWHM); Interpolate to 200kHz for rise, decay and half-width can greatly improve accuracy.\nD Peak – The maximum voltage of the action potential.\nE Decay time – The time between two samples specified as percentages of the decay amplitude (displayed with blue crosses; default \\(10\\)–\\(90\\%\\)). The percentages are set by Decay-time % cutoff (min/max). The decay endpoint is controlled by Measure decay time from peak to threshold (rather than fAHP).\nF fAHP and mAHP – The fast and medium afterhyperpolarizations are calculated as the minimum AHP voltage minus AP threshold voltage. Each voltage, displayed with an open green circle, is the minimum within the corresponding search period set under After-hyperpolarization (AHP) Options.\nB & E Maximum rise / decay slope – The maximum slopes during the AP rise and decay, calculated as linear regressions over \\(n\\) samples. Enable and configure these results with Calculate max slope.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>AP kinetics</span>"
+    ]
+  },
+  {
+    "objectID": "action-potential-kinetics.html#action-potential-kinetics-options",
+    "href": "action-potential-kinetics.html#action-potential-kinetics-options",
+    "title": "Action potential kinetics",
+    "section": "Action Potential Kinetics Options",
+    "text": "Action Potential Kinetics Options\nOptions can be accessed from the AP Kinetics Options button at the bottom of the Action Potential Kinetics panel or by clicking Options › Action Potential Kinetics Options.\n\nThresholding\nA number of threshold detection methods are available from the Thresholding dropdown menu (see Appendix I for mathematical formulas). Once an AP peak is detected, the method is applied to the region before the peak set by Threshold search region (before peak). The detected threshold is plotted on the AP with a filled red circle. The threshold is calculated as the \\(V_\\mathrm{m}\\) that maximizes or minimizes the relevant function:\n\nFirst Derivative\n\nMax – The maximum of the first derivative.\nCutoff – The first sample at which the first derivative passes the cutoff. A value of \\(20\\ \\mathrm{mV/ms}\\) usually works well.\n\nThird Derivative\n\nMax – The maximum of the third derivative.\nCutoff – The first sample at which the third derivative passes the cutoff.\n\nMethod I (Sekerli et al., 2004) – Method I of the phase-space methods introduced by Sekerli et al. (2004). Samples with a first derivative below 1st Diff. Lower Bound are excluded as potential thresholds; the default value typically works well.\nMethod II (Sekerli et al., 2004) – The 1st Diff. Lower Bound may be specified as for Method I.\nLeading Inflection – The minimum of the first derivative.\nMaximum Curvature – The maximum-curvature method introduced by Rossokhin and Saakian (1992).\n\n\n\nThreshold search region (before peak)\nThe period before the peak, in milliseconds, in which to search the \\(V_\\mathrm{m}\\) data for the AP threshold.\n\n\nInterpolate to 200kHz for rise, decay and half-width\nLinearly interpolates the data to a sampling rate of \\(200\\ \\mathrm{kHz}\\) before calculating half-width, rise time, and decay time. This is recommended to improve the accuracy of measured kinetics.\n\n\nMeasure decay time from peak to threshold (rather than fAHP)\nWhen selected, the decay amplitude is measured from the AP peak to the first sample at which the repolarizing phase reaches the AP threshold. By default, when this option is not selected, the decay amplitude is measured from the AP peak to the fAHP. Decay-time % cutoff (min/max) is applied to this decay amplitude.\n\n\nRise-time % cutoff (min/max)\nBy default, the \\(10\\)–\\(90\\%\\) rise time is calculated. The minimum and maximum percentage cutoffs can be changed with this option.\n\n\nDecay-time % cutoff (min/max)\nBy default, the \\(10\\)–\\(90\\%\\) decay time is calculated from the decay amplitude, measured from the peak to the fAHP or threshold according to the selected endpoint option. The minimum and maximum percentage cutoffs can be changed with this option.\n\n\nCalculate max slope\nThe maximum rise and decay slopes for each AP are calculated when this option is selected. It is disabled by default because it can increase analysis time.\nThe maximum slope is calculated as a linear regression over \\(n\\) points. Number of samples (rise / decay) sets \\(n\\) separately for the rise and decay.\n\n\nAfter-hyperpolarization (AHP) Options\nSet the periods after the AP peak in which to search for the fast and medium afterhyperpolarizations with fAHP search period (ms; start/stop) and mAHP search period (ms; start/stop). The fAHP and mAHP are plotted on the AP with open green circles.\nThe mAHP is defined as the voltage during period after the AP peak. To measure the voltage sag at the end of a current injection, to which mAHP sometimes refers, see Sag and hump analysis in Input resistance.\nReset to Defaults restores the default Action Potential Kinetics options. Save as Default saves the current options as the defaults for future use.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>AP kinetics</span>"
+    ]
+  },
+  {
+    "objectID": "action-potential-kinetics.html#phase-plot-analysis",
+    "href": "action-potential-kinetics.html#phase-plot-analysis",
+    "title": "Action potential kinetics",
+    "section": "Phase plot analysis",
+    "text": "Phase plot analysis\nPhase plot analysis of action potentials is available under AP Kinetics analysis. After an analysis has been run, the Phase Plot Analysis button on the bottom-left of the AP Kinetics panel will bring up the phase plot analysis window.\nThe phase plot analysis window contains two panels. On the left panel is displayed the currently selected AP, while the right panel contains the phase-space plot of the currently selected AP.\n\nSelecting APs\nAll analyzed APs can be selected for phase-space analysis. Use the &lt; and &gt; buttons to move through the APs, or enter a value directly in the Record or AP box.\nWindow Size (R / L) (ms) adjusts the periods shown to the right and left of the selected AP. Changing this window updates both the AP plot and the phase-space plot and can affect the phase-plot results. In practice, the left window is often adjusted to place the start of the analysis close to the AP threshold.\nIn theory, it is also possible to increase the window to create phase-space plots of multiple APs. However, the phase-space plot parameters will be calculated only once on a phase-space plot.\n\n\n\nPhase Analysis Dialog. The action potential is shown on the left, windowed by \\(1.7\\ \\mathrm{ms}\\) on either side of the peak. The phase-space plot is shown on the right.\n\n\nFor HEKA .dat files, Add zero offset (HEKA) applies the recorded channel offset to the displayed AP. Delete AP removes the selected AP from the analysis.\n\n\nAnalysis\nA phase-space plot graphs the first derivative of \\(V_\\mathrm{m}\\) (\\(\\mathrm{d}V_\\mathrm{m}/\\mathrm{d}t\\), in \\(\\mathrm{mV/ms}\\)) on the y-axis against \\(V_\\mathrm{m}\\) on the x-axis. This represents the rate at which \\(V_\\mathrm{m}\\) changes at each voltage.\n\n\nPhase plot parameters\nThe phase-space plot provides the following parameters:\n\nThreshold – The \\(V_\\mathrm{m}\\) at which the first derivative, \\(\\mathrm{d}V_\\mathrm{m}/\\mathrm{d}t\\), first crosses the cutoff set by Threshold. This provides a phase-plot estimate of the AP threshold.\nMaximum \\(\\mathrm{d}V_\\mathrm{m}/\\mathrm{d}t\\) – The maximum positive rate of \\(V_\\mathrm{m}\\) change.\nMinimum \\(\\mathrm{d}V_\\mathrm{m}/\\mathrm{d}t\\) – The maximum negative rate of \\(V_\\mathrm{m}\\) change.\nMaximum \\(V_\\mathrm{m}\\) – The maximum AP voltage, equivalent to the AP peak.\n\n\n\nExporting results\n\nCopy Parameters – Right-click the plot and select this action to copy the record, AP number, AP peak time, and \\((V_\\mathrm{m}, \\mathrm{d}V_\\mathrm{m}/\\mathrm{d}t)\\) coordinates of the threshold, maximum \\(V_\\mathrm{m}\\), maximum \\(\\mathrm{d}V_\\mathrm{m}/\\mathrm{d}t\\), and minimum \\(\\mathrm{d}V_\\mathrm{m}/\\mathrm{d}t\\).\nCopy Data – Copies the parameters above, the AP-plot data (time and \\(V_\\mathrm{m}\\)), and the phase-space data (\\(V_\\mathrm{m}\\) and \\(\\mathrm{d}V_\\mathrm{m}/\\mathrm{d}t\\)). Without interpolation, the phase-space \\(V_\\mathrm{m}\\) values equal the AP-plot \\(V_\\mathrm{m}\\) values. With interpolation enabled, the phase-space values are cubic-spline interpolated.\nSave All Data – Saves the parameters, AP-plot data, and phase-space data described above for every analyzed AP to an .xlsx or .csv file.\n\n\n\nAnalysis options\n\nCubic Spline Interpolation – Smoothly interpolates the phase-space plot with an interpolation factor of \\(100\\), ensuring continuity through the second derivative at interpolated knots. This can be useful when the AP is not well sampled.\nThreshold – Sets the first-derivative cutoff, in \\(\\mathrm{mV/ms}\\), used to calculate the AP threshold from the phase-space plot. The AP threshold is the \\(V_\\mathrm{m}\\) at which the first derivative crosses this value.\n\n\n\nGraph options\n\nShow Grid – Toggles the grid on the AP and phase-space plots.\nGraph Line Thickness – Adjusts the AP and phase-space plot line widths. Due to a limitation in the underlying graphing software, line thicknesses \\(&gt; 1\\) may reduce performance.\n\n\n\n\n\nRossokhin, A. V., and I. Z. Saakian. 1992. “Dependence of the Nerve Pulse Generation Threshold on the Ability of Forming an Input Signal Based on the Hodgkin-Huxley Model.” Biofizika 37 (6): 1071–75.\n\n\nSekerli, M., C. A. Del Negro, R. H. Lee, and R. J. Butera. 2004. “Estimating Action Potential Thresholds from Neuronal Time-Series: New Metrics and Evaluation of Methodologies.” IEEE Transactions on Biomedical Engineering 51 (9): 1665–72.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>AP kinetics</span>"
+    ]
+  },
+  {
+    "objectID": "input-resistance.html",
+    "href": "input-resistance.html",
+    "title": "Input resistance",
+    "section": "",
+    "text": "Calculating ΔVm and ΔIm\nInput Resistance analysis provides a convenient interface for measuring the input resistance and voltage sag and hump in current-clamp mode.\nTo calculate input resistance, the changes in membrane voltage (\\(\\Delta V_\\mathrm{m}\\)) and membrane current (\\(\\Delta I_\\mathrm{m}\\)) must be determined from the data; \\(I_\\mathrm{m}\\) injections can also be entered manually. Input resistance is calculated as the slope of an ordinary least-squares linear fit, where \\(x = \\Delta I_\\mathrm{m}\\) and \\(y = \\Delta V_\\mathrm{m}\\), using SciPy’s linregress with a fitted intercept. If only one record is analyzed, \\(R_\\mathrm{i}\\) is calculated as \\(\\Delta V_\\mathrm{m} / \\Delta I_\\mathrm{m}\\).\nFor input resistance calculations, voltage is specified in \\(\\mathrm{mV}\\) and current in \\(\\mathrm{nA}\\), giving input resistance in \\(\\mathrm{M\\Omega}\\).\nOptions for analyzing the voltage sag (for negative \\(I_\\mathrm{m}\\) injections) or hump (for positive \\(I_\\mathrm{m}\\) injections) are also provided.\nThe Im Period to Average menu provides three methods for obtaining \\(\\Delta I_\\mathrm{m}\\) and \\(\\Delta V_\\mathrm{m}\\):",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Input resistance</span>"
+    ]
+  },
+  {
+    "objectID": "input-resistance.html#calculating-δvm-and-δim",
+    "href": "input-resistance.html#calculating-δvm-and-δim",
+    "title": "Input resistance",
+    "section": "",
+    "text": "From Data (Bounds) – Calculates \\(\\Delta V_\\mathrm{m}\\) and \\(\\Delta I_\\mathrm{m}\\) as the difference between data in the Baseline and Measure regions. These regions are displayed automatically on the \\(V_\\mathrm{m}\\) and \\(I_\\mathrm{m}\\) plots. The baseline is the mean between the two baseline-region boundaries and is displayed as a horizontal red line. The measured value is the mean of the data within the measure region.\nAlternatively, the current-injection protocol start and stop times can be used to position the baseline and measure regions.\nFrom Data (Start/Stop) – Uses the known start and stop times of the current injection. Select this mode and click Set Im to enter the times. The baseline is averaged from the start of the record to the start of the \\(I_\\mathrm{m}\\) injection, and the measured data are averaged from the start of the injection to its end.\nA padding of \\(n\\) samples around the injection start and stop times accounts for a non-instantaneous \\(\\Delta I_\\mathrm{m}\\). Set the padding under Options › Misc. Options › Current Clamp User-Im Protocol Options; the default is \\(10\\) samples.\nUser-Input – Allows current-injection steps to be entered directly in the case the trace is not available. Select this mode, click Set Im, and enter the \\(I_\\mathrm{m}\\) injection for each record. The number of entered injections must match the number of records selected for analysis.\nFor rheobase analysis in Action potential counting, a ramp protocol can be specified for exact rheobase calculation by selecting the Ramp tab and entering the current-stimulation protocol.\n\n\n\n\nInput Resistance Analysis. Regions used to calculate the changes in membrane voltage and current are displayed on the graph. Each change is measured between the baseline and experimental regions.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Input resistance</span>"
+    ]
+  },
+  {
+    "objectID": "input-resistance.html#region-and-current-options",
+    "href": "input-resistance.html#region-and-current-options",
+    "title": "Input resistance",
+    "section": "Region and current options",
+    "text": "Region and current options\n\nRound Im – When current is calculated from the data, the measured \\(I_\\mathrm{m}\\) steps can be rounded according to the injection protocol. Select Round Im from the Im Options menu on the Table tab. Although the rounding algorithm accounts for noise using the injection protocol, cross-check the rounded values for stray \\(I_\\mathrm{m}\\) measurements.\nLink Im to Vm – When region boundaries are shown on both \\(V_\\mathrm{m}\\) and \\(I_\\mathrm{m}\\) plots, select View › Region Options › Link Im to Vm to link their positions. Moving a \\(V_\\mathrm{m}\\) boundary then moves the corresponding \\(I_\\mathrm{m}\\) boundary, and vice versa. This option is off by default.\nLink Across Records – This option links region-boundary positions across records. Moving a boundary on one record, such as Record \\(1\\), moves the corresponding boundary on other records. When this option is off, each record’s boundaries can be moved independently. Change it under View › Region Options › Link Across Records. It is on by default.\n\n\n\n\nInput Resistance Results displayed on the Table tab. Plot Fit displays the linear fit used to calculate input resistance together with the line coefficients.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Input resistance</span>"
+    ]
+  },
+  {
+    "objectID": "input-resistance.html#sag-and-hump-analysis",
+    "href": "input-resistance.html#sag-and-hump-analysis",
+    "title": "Input resistance",
+    "section": "Sag and hump analysis",
+    "text": "Sag and hump analysis\nMany neuronal types display a pronounced \\(V_\\mathrm{m}\\) deflection following negative (sag) or positive (hump) current injection that decays to the steady-state response. Options are provided for finding the sag or hump peak within a specified time window (the Calculate Sag / Hump box).\nThe detected peak can follow the direction of the voltage deflection or be forced to always use a minimum or maximum. Select the method from Calculate Sag / Hump:\n\nPeak - Direction of Current – Uses a minimum for a negative \\(I_\\mathrm{m}\\) deflection and a maximum for a positive deflection.\nPeak - Always Minimum – Always uses the minimum value in the search period.\nPeak - Always Maximum – Always uses the maximum value in the search period.\n\nThe sag or hump position is marked on the plot with a red circle. Its peak voltage deflection is the difference between peak \\(V_\\mathrm{m}\\) and the steady-state \\(V_\\mathrm{m}\\) response. The sag or hump ratio is the sag or hump divided by the peak voltage deflection from baseline.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Input resistance</span>"
+    ]
+  },
+  {
+    "objectID": "input-resistance.html#input-resistance-plot",
+    "href": "input-resistance.html#input-resistance-plot",
+    "title": "Input resistance",
+    "section": "Input resistance plot",
+    "text": "Input resistance plot\nA plot of \\(\\Delta V_\\mathrm{m}\\) (y-axis) against \\(\\Delta I_\\mathrm{m}\\) (x-axis), with the fitted line and coefficients, is available by clicking Plot Fit on the Table tab. This plot is available only when more than one record is analyzed.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Input resistance</span>"
+    ]
+  },
+  {
+    "objectID": "burst-analysis.html",
+    "href": "burst-analysis.html",
+    "title": "Burst analysis",
+    "section": "",
+    "text": "Burst analysis parameters\nBurst Analysis is available after Events Template Matching, Events Thresholding, or AP Kinetics analysis. These analyses detect the events or action potentials that are grouped into bursts. After running one of them, open Burst Analysis from Analysis › Burst Analysis.\nTwo methods for Burst Analysis are provided: LogISI and MaxInterval, both of which were found to perform robustly across datasets by Cotterill et al. (2016).\nRun Burst Detection automatically detects bursts using the selected method and calculates the burst summary.\nWhen Burst Analysis is run, the main plot updates to display the detected bursts. Toggle Show burst on main plot to switch the burst display on or off. Show burst plot labels controls the automatically generated burst labels.\nNote that in the software, a detected spike or event is called ‘spike’ in AP Kinetics mode and an ‘event’ in Events mode.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Burst analysis</span>"
+    ]
+  },
+  {
+    "objectID": "burst-analysis.html#burst-analysis-parameters",
+    "href": "burst-analysis.html#burst-analysis-parameters",
+    "title": "Burst analysis",
+    "section": "",
+    "text": "Burst Analysis Window in Log ISI detection mode. The burst-results summary is shown on the left and a logISI histogram on the right. The red and grey points mark histogram peaks, and the green cross marks the long-ISI threshold.\n\n\n\n\n\n\n\n\nBurst Detection Events. Detected bursts are shown in different colours with automatically generated labels. Colours are assigned randomly to distinguish nearby bursts.\n\n\n\nSummary statistics\nThe burst summary statistics are displayed on the left-hand panel of the burst analysis window, as well as in the results table (Show Full Results Table).\n\nTotal number of bursts – Total number of detected bursts in the dataset.\nFraction of spikes/events in burst – Proportion of detected spikes or events that belong to a burst, calculated as the number in bursts divided by the total number detected.\n\n\n\nAverages\n\nNumber of spikes/events per burst – Average number of spikes or events in a burst.\nBurst length (ms) – Average burst duration in milliseconds.\nWithin-burst inter-spike/inter-event interval (ms) – Average interval between consecutive spikes or events within a burst.\nInter-burst interval (ms) – Average interval between successive bursts in milliseconds.\n\n\n\n\nBurst Detection AP Kinetics. Detected action-potential bursts are shown in different colours with automatically generated labels.\n\n\n\n\nPer-burst statistics\nThe results table reports the following values for each burst:\n\nPeaks in Burst – Number of spikes or events in the burst.\nBurst Length – Duration of the burst.\nIntra-burst interval – Mean interval between consecutive spikes or events within the burst.\n\nFor each detected spike or event, the table also reports its Record, Peak Time, and In Burst value. In Burst identifies the burst or shows N/A when the spike or event is not in a burst.\nReset to Defaults restores the default Burst Analysis options. Save as Default saves the current options as the defaults for future use.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Burst analysis</span>"
+    ]
+  },
+  {
+    "objectID": "burst-analysis.html#burst-detection-methods",
+    "href": "burst-analysis.html#burst-detection-methods",
+    "title": "Burst analysis",
+    "section": "Burst detection methods",
+    "text": "Burst detection methods\n\nLog ISI\nThe LogISI method (Pasquale et al. 2010) extends Burst Analysis to hard-to-detect burst boundaries by calculating an additional inter-spike interval threshold from the logarithmically scaled histogram of ISIs.\nThe algorithm proceeds by using a manually set, short ISI (Max. short ISI (ms), typically \\(100\\ \\mathrm{ms}\\)) and a long ISI (Max. long ISI (ms)) generated from the logISI histogram. The short ISI is used to detect burst cores, while the long ISI is used to extend these cores to the burst boundaries. If the long ISI is smaller than the short ISI, the long ISI is used as both.\nCalculate LogISI Threshold calculates and plots the LogISI histogram used for long-ISI calculation. The detected threshold is displayed with a green cross, and Max. long ISI (ms) is updated to the threshold value.\n\nCore burst settings\n\nMax. short ISI (ms) – The short ISI used to detect burst cores in the first-pass analysis. This is set manually; a typical value is \\(100\\ \\mathrm{ms}\\).\nMax. long ISI (ms) – The long ISI used to extend burst cores to the burst boundaries. It can be calculated from the LogISI histogram or set manually.\nMin. spikes per burst – Minimum number of spikes in a burst. Bursts containing fewer spikes are excluded.\n\n\n\nLogISI threshold calculation\nThe long ISI is calculated from the LogISI histogram using a peak and trough-finding algorithm. First, the intra-burst peak (expected to be dominated by the short ISI of spikes in bursts) is detected. This is expected to be the smallest peak (i.e. within-burst ISI), and so the search range is usually small (e.g. default \\(100\\ \\mathrm{ms}\\)).\nNext, all other peaks of the logISI histogram are found. A ‘void parameter’ is computed between the intra-burst peak and all other peaks, capturing the depth of the trough in between the two peaks. The first, lowest-ISI trough whose void parameter exceeds the minimum criterion is taken as the new long ISI threshold (see Pasquale et al. (2010) for equations).\n\nMin. void parameter – Sets the minimum acceptable void parameter. Lower values increase the chance of accepting a local minimum.\nIntraburst peak cutoff (ms) – Sets the upper bound of the period beginning at \\(0\\ \\mathrm{ms}\\) in which to search for the intraburst peak.\nMin. samples between peaks – Minimum number of samples between additional, non-intraburst LogISI histogram peaks.\nBins per decade – Sets the LogISI histogram bin size. More bins per decade increase histogram sampling and can improve threshold detection.\nHistogram Smoothing – Applies locally weighted scatterplot smoothing (LOWESS) to the histogram.\nLowess fraction – Sets the fraction of points used in each LOWESS local regression. Increasing the value increases smoothing.\n\n\n\n\nMax interval\nThe MaxInterval method is an inter-spike interval thresholding approach based on the following settings:\n\nMax. interval (ms) – Maximum first ISI allowed in a burst.\nMax. end interval (ms) – Maximum final ISI allowed in a burst.\nMin. burst interval (ms) – Minimum interval required between successive bursts.\nMin. burst duration (ms) – Minimum duration required for a burst to be detected.\nMin. spikes per burst – Minimum number of spikes required for a burst to be included.\n\n\n\n\n\nCotterill, E., P. Charlesworth, C. W. Thomas, O. Paulsen, and S. J. Eglen. 2016. “A Comparison of Computational Methods for Detecting Bursts in Neuronal Spike Trains and Their Application to Human Stem Cell-Derived Neuronal Networks.” Journal of Neurophysiology 116 (2): 306–21.\n\n\nPasquale, V., S. Martinoia, and M. Chiappalone. 2010. “A Self-Adapting Approach for the Detection of Bursts and Network Bursts in Neuronal Cultures.” Journal of Computational Neuroscience 29: 213–29.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Burst analysis</span>"
+    ]
+  },
+  {
+    "objectID": "analysis.html",
+    "href": "analysis.html",
+    "title": "Statistics",
+    "section": "",
+    "text": "Kolmogorov-Smirnov tests\nKolmogorov-Smirnov (KS) tests compare one sample with a normal distribution or compare two samples with each other. Open the analysis from Analysis › Kolmogorov-Smirnov. Raw data can be copied directly into the input table; the cumulative distribution does not need to be calculated first.\nThe KS statistic, denoted \\(D\\), is the maximum absolute difference between two cumulative distribution functions. For a one-sample test, it compares the sample’s empirical CDF with a specified theoretical CDF; for a two-sample test, it compares the empirical CDFs of the two samples.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Statistics</span>"
+    ]
+  },
+  {
+    "objectID": "analysis.html#kolmogorov-smirnov-tests",
+    "href": "analysis.html#kolmogorov-smirnov-tests",
+    "title": "Statistics",
+    "section": "",
+    "text": "Selecting a test\n\nOne Dataset (compare with normal distribution) – Compares the empirical CDF of Dataset 1 with a Normal CDF:\n\nEstimate M and SD from sample (Lilliefors corrected) – Estimates the mean and standard deviation from the sample and applies the Lilliefors correction.\nSupply population M and SD – Uses a supplied population mean and standard deviation.\n\nTwo Datasets (compare with each other) – Compares the empirical CDFs of Dataset 1 and Dataset 2. Set the alternative hypothesis to Two-Tailed, Dataset 1 Greater, or Dataset 1 Less.\n\nEasy Electrophysiology uses scipy.stats.kstest for one-sample tests with supplied population parameters and for two-sample tests. When the mean and standard deviation are estimated from the sample, it uses statsmodels.stats.diagnostic.lilliefors.\n\n\nRunning and plotting the analysis\n\nRun Analysis – Runs the selected KS test. The results show the sample size \\(n\\), KS statistic \\(D\\), and \\(p\\)-value.\nPlot Data – Opens a plot of Binned Cumulative Probability, Histogram, or Empirical CDF data. For two datasets, display either dataset individually or select Overlay (1 on top) or Overlay (2 on top).\nBin Options – Configures the bins used for binned cumulative-probability and histogram plots.\nPlot Options – Configures the appearance of the current plot.\n\n\n\n\nEmpirical cumulative distribution function plot for two datasets.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Statistics</span>"
+    ]
+  },
+  {
+    "objectID": "analysis.html#summary-statistics",
+    "href": "analysis.html#summary-statistics",
+    "title": "Statistics",
+    "section": "Summary statistics",
+    "text": "Summary statistics\nSummary statistics can be calculated from data displayed in the results table. Selecting Summary Statistics on the Table tab displays the mean, standard deviation, and standard error of each parameter by default.\n\nCalculated statistics\nOpen Analysis › Table Options to select the calculated statistics:\n\nMean (M)\nStandard Deviation (SD)\nStandard Error (SE)\n\nAt least one statistic must be selected. Parameters for which summary statistics are not meaningful, such as record number and event time, are omitted. A Count column reports the number of rows summarized. For Events and AP Kinetics, this equals the number of events or action potentials; for other analyses, it equals the number of records.\n\n\nCalculation and table layout\n\nCalculate Across Records – Calculates summary statistics across records.\nCalculate Within Records – Calculates summary statistics separately within records.\nPer Row – Stacks analyzed files vertically. Only show file name once prevents repeated file names in this layout.\nPer Column – Displays analyzed files horizontally in separate columns. This is the default layout.\n\nFor Events results, Show Events by Group selects All events or Group 1-5. Select Exclude group to show all events except the selected group.\nReset to Defaults restores the default table options. Save as Default saves the current options as the defaults for future use.\n\n\n\nOptions window for table analysis and display.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Statistics</span>"
+    ]
+  },
+  {
+    "objectID": "analyzing-in-batch-mode.html",
+    "href": "analyzing-in-batch-mode.html",
+    "title": "Batch mode",
+    "section": "",
+    "text": "Batch Mode retains analysis results from multiple files in a single results table, allowing the same analysis to be run and compared across a series of recordings.\nWhen Batch Mode is off, loading a new file will clear all analyses from the previous file.\nTurning Batch Mode on (File › Batch Mode › On) causes a file’s analysis results to be saved in the Table tab results table. If analysis is run on a file then a new file is loaded, all results from this new file are appended to the end of the table. For each file, re-analysis will overwrite the results for that file only (unless a Data Tools method has been run between the two analyses in which case they are both displayed).\nIt is not possible to mix current clamp and voltage clamp recordings in Batch Mode. To load a voltage clamp file after a current-clamp file (or vice-versa) it will be necessary to turn off Batch Mode (which will clear the results table on new file load).\nIn batch mode, Records to Analyze settings will not be changed when the next file is loaded (by default, they are set to the start and stop times of the new file).\n\n\n\nAnalyzing in Batch Mode. Results from Action Potential Counting analysis of four files are displayed sequentially on the Table tab. Batch Mode can be enabled from File › Batch Mode.\n\n\nIn Batch Mode analysis can be deleted from the analysis results table by right-clicking the first row of the table and selecting Delete analysis.",
+    "crumbs": [
+      "Analysis",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Batch mode</span>"
+    ]
+  },
+  {
+    "objectID": "upsample.html",
+    "href": "upsample.html",
+    "title": "Upsample",
+    "section": "",
+    "text": "Upsample options.\n\n\nData upsampling increases the resolution of the data by interpolating between samples. The following methods of upsampling are available:\n\nNearest Neighbor – the simplest method of interpolation, in which the interpolants are chosen as the nearest datapoint.\nLinear Interpolation – a coarse interpolation method in which the interpolants are chosen to lie on a straight line between adjacent datapoints.\nCubic Spline Interpolation – a sophisticated interpolation technique in which interpolants are chosen to lie on 3rd-order piecewise polynomials between adjacent data points. The polynomial coefficients are set to ensure the interpolated function is continuous at the first and second derivative.\n\nFor most purposes cubic spline interpolation is optimal as it produces the smoothest interpolation.",
+    "crumbs": [
+      "Data tools",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Upsample</span>"
+    ]
+  },
+  {
+    "objectID": "downsample.html",
+    "href": "downsample.html",
+    "title": "Downsample",
+    "section": "",
+    "text": "Downsample options.\n\n\nDownsampling reduces the data resolution by discarding every nth sample (up to a factor of 12). Prior to downsampling, the primary channel data is low-pass filtered to the Nyquist frequency of the downsampled data.\nFor two-channel data, both the primary and secondary channel are downsampled, but only the primary channel is filtered before downsampling. This is because it is assumed the secondary channel may contain step protocols. Options for choosing the low-pass filter are provided (default 8th order Bessel).",
+    "crumbs": [
+      "Data tools",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Downsample</span>"
+    ]
+  },
+  {
+    "objectID": "filter.html",
+    "href": "filter.html",
+    "title": "Filter",
+    "section": "",
+    "text": "Filter options.\n\n\nOptions for low-pass, high-pass, bandpass and bandstop modes with Bessel and Butterworth filters are provided.\nZero-phase shift filtering is achieved by passing the data forwards and backwards through a linear digital filter. This process doubles the effective order of the filter, and this is accounted for in the Filter options menu. For example, if an 8th order Bessel is specified, a 4th order filter is designed and the data passed through twice for an effective filter order of 8.\nConvenient interfaces are provided for checking the results of filtering before applying to the data. The See Filtered Data button will display the currently selected trace overlaid with the filtered trace in red. Show FFT will show the Fourier-transformed data, with the power-spectrum of the filter data overload in red. Finally, clicking Apply will filter all records in the file.\n\n\n\nFilter Data. Data are low-pass filtered at \\(1000\\ \\mathrm{Hz}\\) using an eighth-order Bessel filter. See Filtered Data overlays the filtered trace for inspection before applying the filter.",
+    "crumbs": [
+      "Data tools",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Filter</span>"
+    ]
+  },
+  {
+    "objectID": "detrend.html",
+    "href": "detrend.html",
+    "title": "Detrend",
+    "section": "",
+    "text": "Detrend window. Preview the fitted trend or detrended trace before applying detrending to all records.\n\n\nLinear and non-linear drifts can be removed from electrophysiological timeseries by detrending. This is particularly useful for long recordings (e.g. sEPSCs) that show some baseline variability.\nAn nth order polynomial (up to 20th order) is first fit to and then subtracted from the data (see Polynomials for detrending). In the Detrend analysis window, the type of detrending and polynomial order can be accessed through the drop-down menu and input box respectively. Note that the mean is added back to the data after detrending (to remove the mean, see Remove Baseline).\nClicking View Fit will display the currently selected record overlaid with the fit polynomial in red. Use the View Detrended Trace button to view the currently selected record after detrending (without applying to the data).\nFinally, clicking Apply to All Records will detrend all records in the dataset. A polynomial of the order specified will be fit and subtracted (with the mean added back) for every record iteratively. Only the primary data channel will be detrended.",
+    "crumbs": [
+      "Data tools",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Detrend</span>"
+    ]
+  },
+  {
+    "objectID": "remove-baseline.html",
+    "href": "remove-baseline.html",
+    "title": "Remove baseline",
+    "section": "",
+    "text": "Remove Baseline window. The shaded region defines the interval used to calculate the baseline before subtraction.\n\n\nRemoving the baseline is accomplished by subtracting a baseline value from the data. The baseline is calculated as the average within a specified time window (indicated by the period within the boundary region that appears on screen).\nClicking Apply will apply baseline removal for every record in the file. For each record, the baseline is calculated and subtracted separately.\nIf your file has two channels (i.e. \\(V_\\mathrm{m}\\) and \\(I_\\mathrm{m}\\)) and the bottom checkbox is clicked, it will also calculate and remove the baseline from the second data channel (across the time window specified on the primary data channel).",
+    "crumbs": [
+      "Data tools",
+      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Remove baseline</span>"
+    ]
+  },
+  {
+    "objectID": "average-records.html",
+    "href": "average-records.html",
+    "title": "Average records",
+    "section": "",
+    "text": "Averaging across records is useful for reducing noise in repeated-stimulation protocols. Averaging is applied to both channels when two channels are loaded. The time vector from the first record is used for each resulting record.\nIf set to Average All Records, every record in the file will be averaged into one record:\n\n\n\nThe Average all records option.\n\n\nAlternatively, specific records can be selected for averaging by choosing the Average specific records option from the dropdown menu:\n\n\n\nThe Average specific records option.\n\n\nA single-column table will be displayed. The rows of the table can be used to group records for averaging. For example, in a file containing 10 records, 1,2,3 could be entered into the first row and 4,5,6 into the second. Clicking Apply would generate 2 records (record 1 - average of 1,2,3; record 2 - average of 4,5,6, with records 7, 8, 9 and 10 discarded).",
+    "crumbs": [
+      "Data tools",
+      "<span class='chapter-number'>19</span>  <span class='chapter-title'>Average records</span>"
+    ]
+  },
+  {
+    "objectID": "record-arithmetic.html",
+    "href": "record-arithmetic.html",
+    "title": "Record arithmetic",
+    "section": "",
+    "text": "Record Arithmetic window. Enter one mathematical expression per row to generate new records from existing records.\n\n\nRecord arithmetic (Data › Record Arithmetic) provides the option to perform arithmetic operations pointwise across records e.g. add two records together, sample-by-sample.\nRecord Arithmetic can be performed by a flexible interface that takes text input. Records are referred to with the r prefix, and permitted mathematical operations are the addition (+), subtraction (-), multiplication (*) and division (/), and brackets. For example, to add the first and second record: r1+r2. To calculate the average of the 2nd, 3rd and 4th records: (r2+r3+r4)/3.\nMultiple record arithmetic expressions over sets of records can be performed by inputting an expression on each row of the input table. The example below will result in a 2-record file, with the first record being the sum of the first and second record, and the second record being the sum of the second and third record.\n\n\n\nIn this example, the resulting dataset contains two records formed by adding records 1 and 2, and records 2 and 3, respectively.",
+    "crumbs": [
+      "Data tools",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Record arithmetic</span>"
+    ]
+  },
+  {
+    "objectID": "stimulus-artefact-removal.html",
+    "href": "stimulus-artefact-removal.html",
+    "title": "Stimulus artefact removal",
+    "section": "",
+    "text": "The stimulus artefact removal algorithm\nElectrophysiological recordings are often contaminated by artefacts from electrical stimuli used to elicit the membrane responses during experimental protocols. Stimulus Artefact Removal can automatically remove such stimulus artefacts from the data.\nThe data with stimulus artefacts removed can be displayed by clicking the Preview button, which will preview the trace with stimulus-artefact removed in orange. Clicking Apply will apply the stimulus artefact removal to the data, closing the Stimulus Artefact window.\nThe default parameters typically work out of the box on most datasets, however the details of the algorithm are explored below in case the default parameters need to be adjusted.\nThe first step is to detect the peaks (positive or negative) of the stimulus artefacts. The method used for detection is by default First Derivative. The first derivative is usually optimal because stimulus artefacts typically have much faster rise times than physiological responses. Therefore, setting a high derivative threshold can selectively pick out stimulus artefact events. However, Absolute Threshold is also available.\nNext, the period from the stimulus artefact peak to the end of the artefact in the forward direction (i.e. moving forward in time) is detected. The length of the window that is searched (from the peak to the end of the artefact) is set by Forward search period (s).\nThe value taken as the end of the stimulus artefact is determined by the End of stimulus % parameter. This sets the data value at which the stimulus artefact is determined to have reached baseline. This is detected by the crossing of a threshold which takes the value of the baseline signal plus some percentage of the noise of the signal (here, the noise is measured as the median difference between consecutive samples). End of stimulus % sets this percentage. For example, if End of stimulus % is set to 200%, a datapoint will be considered returned to baseline once it is within twice the noise level.\nFinally, the point where the stimulus artefact started is determined. The parameter Backward search period (s) defines the size of the window, starting at the peak, which is searched for the stimulus artefact start. Because stimulus artefacts are characterized by a fast rise time, a derivative threshold is again used. The first sample that crosses Backward search threshold (derivative) is taken at the start of the stimulus artefact.\nAll datapoints within the region determined to contain the stimulus artefact are replaced with samples randomly drawn from a Gaussian distribution with mean and variance estimated from the data.",
+    "crumbs": [
+      "Data tools",
+      "<span class='chapter-number'>21</span>  <span class='chapter-title'>Stimulus artefact removal</span>"
+    ]
+  },
+  {
+    "objectID": "reshape-records.html",
+    "href": "reshape-records.html",
+    "title": "Reshape records",
+    "section": "",
+    "text": "Reshape Data options.\n\n\nSelecting Concatenate all records into a single record will combine multiple records into one long record. Note that where recorded time intervals between records are not continuous, because they reflect gaps in the recording schedule (e.g. Record 1, \\(0\\)–\\(2\\ \\mathrm{s}\\), Record 2, \\(3\\)–\\(5\\ \\mathrm{s}\\)), they will be made continuous (e.g. record 1 and record 2 would be concatenated into a single record between time points \\(0\\)–\\(4\\ \\mathrm{s}\\)).\nAlternatively, a single-record dataset can be split into multiple records by selecting Expand data from a single record to multiple records. This is useful for improving performance when plotting long records, or handling .abf files exported from other software (e.g. Igor or WinWCP) that automatically concatenate all records.\n\n\n\n\n\n\nWarning\n\n\n\nLong single record files (containing millions of datapoints) can slow down the software due to the overhead associated with displaying the data on the graph. A simple workaround is to reshape the single record into multiple, smaller records.\nThis may affect Events analysis. When the resulting record times are non-contiguous, inter-event intervals used for frequency cumulative-probability and histogram plots are not calculated across record boundaries. If all \\(N\\) records contain events, this removes \\(N - 1\\) intervals. Intervals continue to be calculated across records when their times are contiguous. In large files with hundreds or thousands of events, omitting these boundary intervals is unlikely to meaningfully affect the results.\n\n\nThe option is provided to normalize time when reshaping records (so every record has the same time period, see Normalize Time).\nIf the number of samples does not divide without remainder into the number of records, a warning will show and the remainder samples will be removed from the end of the single-record before reshaping.",
+    "crumbs": [
+      "Data tools",
+      "<span class='chapter-number'>22</span>  <span class='chapter-title'>Reshape records</span>"
+    ]
+  },
+  {
+    "objectID": "normalize-time.html",
+    "href": "normalize-time.html",
+    "title": "Normalize time",
+    "section": "",
+    "text": "Normalize Time window. Apply a consistent time range across records when time is cumulatively increasing.\n\n\nThe time in electrophysiological data may be recorded in two ways. If ‘normalized’, the times of each record are the absolute record length (e.g. for \\(2\\ \\mathrm{s}\\) recordings, record 1: \\(0\\)–\\(2\\ \\mathrm{s}\\), record 2: \\(0\\)–\\(2\\ \\mathrm{s}\\)).\nAlternatively, time may be recorded relative to the start of recording, increasing cumulatively (e.g. record 1: \\(0\\)–\\(2\\ \\mathrm{s}\\), record 2: \\(2\\)–\\(4\\ \\mathrm{s}\\)).\nIn the case that times are cumulative, Normalize Time normalises them. This is done by replacing the time values for every record with those from the first record, maintaining the time offset if not corrected on load.",
+    "crumbs": [
+      "Data tools",
+      "<span class='chapter-number'>23</span>  <span class='chapter-title'>Normalize time</span>"
+    ]
+  },
+  {
+    "objectID": "cut-trace-length.html",
+    "href": "cut-trace-length.html",
+    "title": "Cut trace length",
+    "section": "",
+    "text": "Cut Trace options.\n\n\nThis gives the option to set new record start and finish times (e.g. cut a trace that is \\(0\\)–\\(2\\ \\mathrm{s}\\) long down to \\(0.5\\)–\\(1\\ \\mathrm{s}\\)). An offset will always be subtracted to ensure the first record starts at \\(t = 0\\).\nClicking Apply will change the record length for every record in the file. Options are provided for cumulatively increasing record times after cutting trace length (e.g. record 1: \\(0\\)–\\(0.5\\ \\mathrm{s}\\), record 2: \\(0.5\\)–\\(1\\ \\mathrm{s}\\)) or normalizing time instead (see Normalize Time).",
+    "crumbs": [
+      "Data tools",
+      "<span class='chapter-number'>24</span>  <span class='chapter-title'>Cut trace length</span>"
+    ]
+  },
+  {
+    "objectID": "reset-to-raw-data.html",
+    "href": "reset-to-raw-data.html",
+    "title": "Reset to raw data",
+    "section": "",
+    "text": "To restore the current file to its original state, click Data › Reset to Raw Data. This reloads the data from the original file, undoing all data-processing steps and clearing any analysis results for that file. The original file must still exist in the same location.",
+    "crumbs": [
+      "Data tools",
+      "<span class='chapter-number'>25</span>  <span class='chapter-title'>Reset to raw data</span>"
+    ]
+  },
+  {
+    "objectID": "saving-data-and-analysis-results.html",
+    "href": "saving-data-and-analysis-results.html",
+    "title": "Saving data and results",
+    "section": "",
+    "text": "Save recorded data\nUse Save Data on the top menu bar to copy or save the displayed channel data.\nData from the currently selected record can be copied using Copy Channel 1 or Copy Channel 2. Alternatively, all records in the file can be saved in .xlsx or .csv format using Save All (Channel 1) or Save All (Channel 2).\nSaving to .csv is faster than to .xlsx and may significantly decrease saving times for large datasets.",
+    "crumbs": [
+      "Saving and export",
+      "<span class='chapter-number'>26</span>  <span class='chapter-title'>Saving data and results</span>"
+    ]
+  },
+  {
+    "objectID": "saving-data-and-analysis-results.html#save-analysis-results",
+    "href": "saving-data-and-analysis-results.html#save-analysis-results",
+    "title": "Saving data and results",
+    "section": "Save analysis results",
+    "text": "Save analysis results\nUse Save Events Analysis to save the results displayed in the Table tab as an .xlsx or .csv file. Saving to Excel includes additional formatting around cell borders, such as between different files in batch mode. Analysis results tables are typically small enough that the difference in saving time between .xlsx and .csv is negligible.\nData can also be copied directly from the analysis results table (select data to copy and right-click).",
+    "crumbs": [
+      "Saving and export",
+      "<span class='chapter-number'>26</span>  <span class='chapter-title'>Saving data and results</span>"
+    ]
+  },
+  {
+    "objectID": "plot-exporter.html",
+    "href": "plot-exporter.html",
+    "title": "Exporting plots",
+    "section": "",
+    "text": "All figures in Easy Electrophysiology are exportable, by right-clicking the plot and selecting the Export option. This window provides the option to export the plot data as a .csv (comma-separated value file), many possible standard image formats (including .jpeg, .png, .tiff, .bmp and more), or as .svg (scalable vector graphics) format.\nThe larger the width and height of the exported image, the better its quality will be. The high-quality and editable .svg format is suitable for small data plots, such as the Ri plot, but not raw data plots displayed on the main plot because the resulting files will be very large and take a long time to save.\n\n\n\nPlot Export Window. Right-click any plot and choose Export to open this window.",
+    "crumbs": [
+      "Saving and export",
+      "<span class='chapter-number'>27</span>  <span class='chapter-title'>Exporting plots</span>"
+    ]
+  },
+  {
+    "objectID": "saving-and-resetting-default-options.html",
+    "href": "saving-and-resetting-default-options.html",
+    "title": "Saving settings",
+    "section": "",
+    "text": "Easy Electrophysiology can save the current settings for later use. Default options can be overwritten using the Save as Default button that appears on certain options panels and windows. Clicking this button will save the settings on this panel or window to file. These settings will be remembered across sessions (i.e. if you close and re-start the software).\nClicking Reset to Default will reset all options on the relevant panel or window to their default settings (e.g. if they were changed after starting the software).\nTo reset settings to the Easy Electrophysiology defaults (that are set when the software is first downloaded), click Options › Reset to Factory Defaults and choose the options to reset.",
+    "crumbs": [
+      "<span class='chapter-number'>28</span>  <span class='chapter-title'>Saving settings</span>"
+    ]
+  },
+  {
+    "objectID": "graph-options.html",
+    "href": "graph-options.html",
+    "title": "Graph options",
+    "section": "",
+    "text": "Y-axis scaling\nThe graphs have a number of customizable display features for clear and convenient data visualization. These can be selected through View › Graph Options.\nThese options can be set independently for the Upper Plot and Lower Plot. Select Limit maximum zoom to prevent excessive y-axis zooming.",
+    "crumbs": [
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Graph options</span>"
+    ]
+  },
+  {
+    "objectID": "graph-options.html#y-axis-scaling",
+    "href": "graph-options.html#y-axis-scaling",
+    "title": "Graph options",
+    "section": "",
+    "text": "All Records – scales the y-axis to the record with the largest range, keeping the scale consistent across the file.\nDisplayed Record – rescales the y-axis whenever the displayed record changes. This can reduce performance when switching between records.",
+    "crumbs": [
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Graph options</span>"
+    ]
+  },
+  {
+    "objectID": "graph-options.html#plot-size-ratio-and-position",
+    "href": "graph-options.html#plot-size-ratio-and-position",
+    "title": "Graph options",
+    "section": "Plot size ratio and position",
+    "text": "Plot size ratio and position\nUse the slider to adjust the relative sizes of the upper and lower plots. Swap Plot Position switches their positions without changing the primary data channel.",
+    "crumbs": [
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Graph options</span>"
+    ]
+  },
+  {
+    "objectID": "graph-options.html#display-options",
+    "href": "graph-options.html#display-options",
+    "title": "Graph options",
+    "section": "Display options",
+    "text": "Display options\n\nUpper Plot Gridlines and Lower Plot Gridlines – show or hide gridlines independently on each plot.\nTrack Values at Cursor – shows data values at the cursor position.\nUpper Plot x-axis values – shows or hides x-axis values on the upper plot.",
+    "crumbs": [
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Graph options</span>"
+    ]
+  },
+  {
+    "objectID": "graph-options.html#graph-line-thickness",
+    "href": "graph-options.html#graph-line-thickness",
+    "title": "Graph options",
+    "section": "Graph line thickness",
+    "text": "Graph line thickness\nUse Width to set the line thickness of the upper and lower plots. Values above the default of 1.0 can significantly reduce graphics performance.",
+    "crumbs": [
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Graph options</span>"
+    ]
+  },
+  {
+    "objectID": "graph-options.html#limit-the-view-range-for-performance",
+    "href": "graph-options.html#limit-the-view-range-for-performance",
+    "title": "Graph options",
+    "section": "Limit the view range for performance",
+    "text": "Limit the view range for performance\nFor single-record voltage-clamp data, the entire dataset can be displayed on the graph at once. Long recordings can contain large amounts of data and reduce performance. Limit view range for performance (Single-record files only) sets a maximum window length so that only a subset of the data is shown.\nThe default limit is 500k samples. You can change the maximum window size or turn this option off. Changes take effect when the next file is loaded.",
+    "crumbs": [
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Graph options</span>"
+    ]
+  },
+  {
+    "objectID": "legacy-options.html",
+    "href": "legacy-options.html",
+    "title": "Legacy options",
+    "section": "",
+    "text": "Options from previous versions (&lt; v2.3.0) of Easy Electrophysiology are provided to allow backwards compatibility with previously analyzed datasets. This also functions to provide additional options that may work better in some specific situations.\n\nLegacy baseline – no enhanced position based on rise time: This option estimates the event baseline, and is the first stage of baseline detection in the current version. When this option is selected, the second stage will not be run (in which the event baseline is shifted to the event foot using the intersection between the baseline and a straight line drawn through the 20-80 rise time (Jonas et al. 1993)) (see Baseline Options (Analyze windows only)). This is how baseline detection was implemented prior to v2.3.0-beta.\nLegacy baseline – no adjustment for prior events: Since v2.3.0-beta, the event baseline is adjusted if the previous event peak is after the current event baseline. This can sometimes occur for very closely spaced events. Selecting this option will turn this feature off.\nLegacy decay detection – closest point to baseline: Selecting this option will use the previous decay endpoint detection method, in which the closest point to the baseline within the decay search period (ms) is used. No adjustment is made for the position of the next event.\nLegacy frequency data bin-sizing: Prior to version v2.3.0-beta, a data range slightly larger than the true range was used for cumulative probability data. This was removed to make bin-sizing clearer to the user.\n\n\n\n\n\nJonas, P., G. Major, and B. Sakmann. 1993. “Quantal Components of Unitary EPSCs at the Mossy Fibre Synapse on CA3 Pyramidal Cells of Rat Hippocampus.” The Journal of Physiology 472: 615–63.",
+    "crumbs": [
+      "<span class='chapter-number'>30</span>  <span class='chapter-title'>Legacy options</span>"
+    ]
+  },
+  {
+    "objectID": "keyboard-shortcuts.html",
+    "href": "keyboard-shortcuts.html",
+    "title": "Keyboard shortcuts",
+    "section": "",
+    "text": "General shortcuts\nThese shortcuts provide quick access to common window, plot-navigation and event-editing actions.",
+    "crumbs": [
+      "<span class='chapter-number'>31</span>  <span class='chapter-title'>Keyboard shortcuts</span>"
+    ]
+  },
+  {
+    "objectID": "keyboard-shortcuts.html#general-shortcuts",
+    "href": "keyboard-shortcuts.html#general-shortcuts",
+    "title": "Keyboard shortcuts",
+    "section": "",
+    "text": "Key\nAction\n\n\n\n\nEsc\nCloses any open window except the main window.\n\n\nU\nUndoes the zoom.\n\n\nZ\nPans the graph one window to the left (useful when zoomed in).\n\n\nX\nPans the graph one window to the right (useful when zoomed in).\n\n\nA or S\nHold while clicking the plot zoom buttons for axis-specific zooming (A: x-axis, S: y-axis).\n\n\nD\nIn Events mode, hold while selecting a region on the plot to delete multiple events at once.",
+    "crumbs": [
+      "<span class='chapter-number'>31</span>  <span class='chapter-title'>Keyboard shortcuts</span>"
+    ]
+  },
+  {
+    "objectID": "keyboard-shortcuts.html#events-specific-shortcuts",
+    "href": "keyboard-shortcuts.html#events-specific-shortcuts",
+    "title": "Keyboard shortcuts",
+    "section": "Events-specific shortcuts",
+    "text": "Events-specific shortcuts\nIn the Events Analysis or Refine Events windows, keyboard shortcuts are available for navigating to and deleting detected events:\n\n\n\nKey\nAction\n\n\n\n\nRight arrow\nScrolls to the next event.\n\n\nLeft arrow\nScrolls to the previous event.\n\n\nUp arrow\nMoves the main plot to center the selected event.\n\n\nSpace\nDeletes the selected event from the analysis.",
+    "crumbs": [
+      "<span class='chapter-number'>31</span>  <span class='chapter-title'>Keyboard shortcuts</span>"
+    ]
+  },
+  {
+    "objectID": "acknowledgements.html",
+    "href": "acknowledgements.html",
+    "title": "Acknowledgements",
+    "section": "",
+    "text": "Neo\nFor those using Easy Electrophysiology in published research, our RRID is RRID:SCR_021190.\nEasy Electrophysiology uses Neo (Garcia et al. 2014), a data-loading package that handles many electrophysiological filetypes.\nWe also thank the contributing authors of the relevant Neo submodules including Forrest Collman, Harald Hentschke (Axon files) and Jeffrey Gill (AxoGraph files).",
+    "crumbs": [
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Acknowledgements</span>"
+    ]
+  },
+  {
+    "objectID": "acknowledgements.html#events-template-matching",
+    "href": "acknowledgements.html#events-template-matching",
+    "title": "Acknowledgements",
+    "section": "Events Template Matching",
+    "text": "Events Template Matching\nThe template matching event detection algorithm with a biexponential template and correlation coefficient threshold was first described by Jonas et al. (1993).\nThe Detection Criterion thresholding method was introduced by Clements and Bekkers (1997).\nThe deconvolution method for template event detection was introduced by Pernia-Andrade et al. (2012).",
+    "crumbs": [
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Acknowledgements</span>"
+    ]
+  },
+  {
+    "objectID": "acknowledgements.html#action-potential-threshold-detection",
+    "href": "acknowledgements.html#action-potential-threshold-detection",
+    "title": "Acknowledgements",
+    "section": "Action potential threshold detection",
+    "text": "Action potential threshold detection\nEasy Electrophysiology provides a number of options for threshold estimation in Action Potential Kinetics analysis, including Method I and II from Sekerli et al. (2004) and maximum curvature threshold detection from Rossokhin and Saakian (1992).",
+    "crumbs": [
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Acknowledgements</span>"
+    ]
+  },
+  {
+    "objectID": "acknowledgements.html#spike-frequency-accommodation-local-variance",
+    "href": "acknowledgements.html#spike-frequency-accommodation-local-variance",
+    "title": "Acknowledgements",
+    "section": "Spike Frequency Accommodation – Local Variance",
+    "text": "Spike Frequency Accommodation – Local Variance\nThe Local Variance measure for spike frequency accommodation is from Shinomoto et al. (2003).",
+    "crumbs": [
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Acknowledgements</span>"
+    ]
+  },
+  {
+    "objectID": "acknowledgements.html#logisi",
+    "href": "acknowledgements.html#logisi",
+    "title": "Acknowledgements",
+    "section": "LogISI",
+    "text": "LogISI\nThe logISI method was introduced and extensively detailed by Pasquale et al. (2010).",
+    "crumbs": [
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Acknowledgements</span>"
+    ]
+  },
+  {
+    "objectID": "acknowledgements.html#pyqtgraph",
+    "href": "acknowledgements.html#pyqtgraph",
+    "title": "Acknowledgements",
+    "section": "PyQtGraph",
+    "text": "PyQtGraph\nWe would also like to thank Luke Campagnola and the PyQtGraph team for their work on the excellent PyQtGraph package that provides high performance, flexible graphing.\n\n\n\n\nClements, J. D., and J. M. Bekkers. 1997. “Detection of Spontaneous Synaptic Events with an Optimally Selected Template.” Biophysical Journal 73 (1): 220–29.\n\n\nGarcia, S., D. Guarino, F. Jaillet, et al. 2014. “Neo: An Object Model for Handling Electrophysiology Data in Multiple Formats.” Frontiers in Neuroinformatics 8: 10.\n\n\nJonas, P., G. Major, and B. Sakmann. 1993. “Quantal Components of Unitary EPSCs at the Mossy Fibre Synapse on CA3 Pyramidal Cells of Rat Hippocampus.” The Journal of Physiology 472: 615–63.\n\n\nPasquale, V., S. Martinoia, and M. Chiappalone. 2010. “A Self-Adapting Approach for the Detection of Bursts and Network Bursts in Neuronal Cultures.” Journal of Computational Neuroscience 29: 213–29.\n\n\nPernia-Andrade, A., S. P. Goswami, Y. Stickler, U. Fröbe, A. Schlögl, and P. Jonas. 2012. “A Deconvolution-Based Method with High Sensitivity and Temporal Resolution for Detection of Spontaneous Synaptic Currents in Vitro and in Vivo.” Biophysical Journal 103 (7): 1429–39.\n\n\nRossokhin, A. V., and I. Z. Saakian. 1992. “Dependence of the Nerve Pulse Generation Threshold on the Ability of Forming an Input Signal Based on the Hodgkin-Huxley Model.” Biofizika 37 (6): 1071–75.\n\n\nSekerli, M., C. A. Del Negro, R. H. Lee, and R. J. Butera. 2004. “Estimating Action Potential Thresholds from Neuronal Time-Series: New Metrics and Evaluation of Methodologies.” IEEE Transactions on Biomedical Engineering 51 (9): 1665–72.\n\n\nShinomoto, S., K. Shima, and J. Tanji. 2003. “Differences in Spiking Patterns Among Cortical Neurons.” Neural Computation 15: 2823–42.",
+    "crumbs": [
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Acknowledgements</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Clements, J. D., and J. M. Bekkers. 1997. “Detection of\nSpontaneous Synaptic Events with an Optimally Selected Template.”\nBiophysical Journal 73 (1): 220–29.\n\n\nCotterill, E., P. Charlesworth, C. W. Thomas, O. Paulsen, and S. J.\nEglen. 2016. “A Comparison of Computational Methods for Detecting\nBursts in Neuronal Spike Trains and Their Application to Human Stem\nCell-Derived Neuronal Networks.” Journal of\nNeurophysiology 116 (2): 306–21.\n\n\nGarcia, S., D. Guarino, F. Jaillet, et al. 2014. “Neo: An Object\nModel for Handling Electrophysiology Data in Multiple Formats.”\nFrontiers in Neuroinformatics 8: 10.\n\n\nGuzman, S. J., A. Schlögl, and C. Schmidt-Hieber. 2014. “Stimfit:\nQuantifying Electrophysiological Data with Python.” Frontiers\nin Neuroinformatics 8: 16.\n\n\nJonas, P., G. Major, and B. Sakmann. 1993. “Quantal Components of\nUnitary EPSCs at the Mossy Fibre Synapse on\nCA3 Pyramidal Cells of Rat Hippocampus.” The\nJournal of Physiology 472: 615–63.\n\n\nPasquale, V., S. Martinoia, and M. Chiappalone. 2010. “A\nSelf-Adapting Approach for the Detection of Bursts and Network Bursts in\nNeuronal Cultures.” Journal of Computational\nNeuroscience 29: 213–29.\n\n\nPernia-Andrade, A., S. P. Goswami, Y. Stickler, U. Fröbe, A. Schlögl,\nand P. Jonas. 2012. “A Deconvolution-Based Method with High\nSensitivity and Temporal Resolution for Detection of Spontaneous\nSynaptic Currents in Vitro and in Vivo.” Biophysical\nJournal 103 (7): 1429–39.\n\n\nRossokhin, A. V., and I. Z. Saakian. 1992. “Dependence of the\nNerve Pulse Generation Threshold on the Ability of Forming an Input\nSignal Based on the Hodgkin-Huxley Model.”\nBiofizika 37 (6): 1071–75.\n\n\nSekerli, M., C. A. Del Negro, R. H. Lee, and R. J. Butera. 2004.\n“Estimating Action Potential Thresholds from Neuronal Time-Series:\nNew Metrics and Evaluation of Methodologies.” IEEE\nTransactions on Biomedical Engineering 51 (9): 1665–72.\n\n\nShinomoto, S., K. Shima, and J. Tanji. 2003. “Differences in\nSpiking Patterns Among Cortical Neurons.” Neural\nComputation 15: 2823–42.",
+    "crumbs": [
+      "<span class='chapter-number'>33</span>  <span class='chapter-title'>References</span>"
+    ]
+  },
+  {
+    "objectID": "mathematical-formulas.html",
+    "href": "mathematical-formulas.html",
+    "title": "Appendix A — Mathematical formulas",
+    "section": "",
+    "text": "Curve fitting functions",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Mathematical formulas</span>"
+    ]
+  },
+  {
+    "objectID": "mathematical-formulas.html#curve-fitting-functions",
+    "href": "mathematical-formulas.html#curve-fitting-functions",
+    "title": "Appendix A — Mathematical formulas",
+    "section": "",
+    "text": "Monoexponential\n\\[\nf(x) = b_0 + b_1 e^{-x / \\tau}\n\\]\n\n\nBiexponential (decay)\n\\[\nf(x) = b_0 + b_1 e^{-x / \\tau_1} + b_2 e^{-x / \\tau_2}\n\\]\n\n\nBiexponential (event)\n\\[\nf(x) = b_0 + b_1 \\left(1 - e^{-x / \\mathrm{rise}}\\right)e^{-x / \\mathrm{decay}}\n\\]\n\n\nTriexponential\n\\[\nf(x) = b_0 + b_1 e^{-x / \\tau_1} + b_2 e^{-x / \\tau_2} + b_3 e^{-x / \\tau_3}\n\\]\nHere, \\(x\\) is a vector of times normalized by subtracting the first time point.\n\n\nStarting estimates for exponential fits\n\\[\nb_0 = \\frac{1}{n}\\sum_{i=1}^{n} D_i\n\\]\n\\[\nb_1 = D_1 - D_n\n\\]\n\\[\n\\tau = \\frac{t_{\\mathrm{half}}}{\\ln(2)}\n\\]\nHere, \\(D_1\\) and \\(D_n\\) are the first and last data values in the region being fitted, respectively, and \\(t_{\\mathrm{half}}\\) is the time from \\(D_1\\) to half-amplitude.\nFor biexponential (decay) fits, the starting estimates are weighted as follows:\n\\[\n\\tau_1 = 0.1\\tau, \\qquad \\tau_2 = 0.9\\tau\n\\]\nFor triexponential fits:\n\\[\n\\tau_1 = \\tau_2 = \\tau_3 = \\frac{\\tau}{3}\n\\]",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Mathematical formulas</span>"
+    ]
+  },
+  {
+    "objectID": "mathematical-formulas.html#action-potential-threshold-methods",
+    "href": "mathematical-formulas.html#action-potential-threshold-methods",
+    "title": "Appendix A — Mathematical formulas",
+    "section": "Action potential threshold methods",
+    "text": "Action potential threshold methods\nHere, \\(v\\) is a vector of recorded membrane-potential samples; \\(v'\\), \\(v''\\), and \\(v'''\\) are its first, second, and third derivatives, respectively; \\(V_{\\mathrm{thr}}\\) is the estimated action-potential threshold; and \\(LB\\) is a lower bound set by the user.\n\nMethod I\nIntroduced by Sekerli et al. (2004):\n\\[\nV_{\\mathrm{thr}} = \\underset{v}{\\arg\\max}\\, f(v) \\quad \\text{where } v' \\ge LB\n\\]\n\\[\nf(v) = \\frac{v''}{v'}\n\\]\n\n\nMethod II\nIntroduced by Sekerli et al. (2004):\n\\[\nV_{\\mathrm{thr}} = \\underset{v}{\\arg\\max}\\, f(v) \\quad \\text{where } v' \\ge LB\n\\]\n\\[\nf(v) = \\frac{v'''v' - (v'')^2}{(v')^3}\n\\]\n\n\nLeading inflection\n\\[\nV_{\\mathrm{thr}} = \\arg\\min_v v'\n\\]\n\n\nMaximum curvature\nIntroduced by Rossokhin and Saakian (1992):\n\\[\nV_{\\mathrm{thr}} = \\arg\\max_v f(v)\n\\]\n\\[\nf(v) = v''\\left(1 + (v')^2\\right)^{-3/2}\n\\]",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Mathematical formulas</span>"
+    ]
+  },
+  {
+    "objectID": "mathematical-formulas.html#polynomials-for-detrending",
+    "href": "mathematical-formulas.html#polynomials-for-detrending",
+    "title": "Appendix A — Mathematical formulas",
+    "section": "Polynomials for detrending",
+    "text": "Polynomials for detrending\nThe polynomial equations used for detrending and Events detection, such as Curve thresholding, have the standard form:\n\\[\na_0 + a_1x + \\cdots + a_nx^n\n\\]",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Mathematical formulas</span>"
+    ]
+  },
+  {
+    "objectID": "mathematical-formulas.html#spike-frequency-accommodation",
+    "href": "mathematical-formulas.html#spike-frequency-accommodation",
+    "title": "Appendix A — Mathematical formulas",
+    "section": "Spike frequency accommodation",
+    "text": "Spike frequency accommodation\nSpike frequency accommodation (\\(SFA\\)) is calculated from the inter-spike intervals in a train of action potentials. \\(ISI_{\\mathrm{first}}\\) is the first inter-spike interval in the spike train, and \\(ISI_{\\mathrm{last}}\\) is the final inter-spike interval.\n\nDivisor method\n\\[\nSFA_{\\mathrm{divisor}} = \\frac{ISI_{\\mathrm{first}}}{ISI_{\\mathrm{last}}}\n\\]\n\n\nLocal variance\nThe local variance (\\(LV\\)) method was introduced by Shinomoto et al. (2003):\n\\[\nSFA_{LV} = \\frac{1}{n - 1}\\sum_{i=1}^{n-1}\\frac{3\\left(ISI_i - ISI_{i+1}\\right)^2}{\\left(ISI_i + ISI_{i+1}\\right)^2}\n\\]\n\n\n\n\nRossokhin, A. V., and I. Z. Saakian. 1992. “Dependence of the Nerve Pulse Generation Threshold on the Ability of Forming an Input Signal Based on the Hodgkin-Huxley Model.” Biofizika 37 (6): 1071–75.\n\n\nSekerli, M., C. A. Del Negro, R. H. Lee, and R. J. Butera. 2004. “Estimating Action Potential Thresholds from Neuronal Time-Series: New Metrics and Evaluation of Methodologies.” IEEE Transactions on Biomedical Engineering 51 (9): 1665–72.\n\n\nShinomoto, S., K. Shima, and J. Tanji. 2003. “Differences in Spiking Patterns Among Cortical Neurons.” Neural Computation 15: 2823–42.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Mathematical formulas</span>"
+    ]
+  }
+]
