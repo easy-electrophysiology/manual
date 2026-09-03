@@ -30,9 +30,9 @@ The first step in template matching is to generate the template event. Click [1.
 
 -   **b0 and b1** -- the offset and amplitude scaling parameters. These coefficients are left free during event detection and so are not important for template generation.
 
--   **Rise** -- the event rise-time (defaults to $0.5\ \mathrm{ms}$ from @jonas1993)
+-   **Rise** -- the biexponential rise time constant (defaults to $0.5\ \mathrm{ms}$ from @jonas1993)
 
--   **Decay** -- the event decay-time (defaults to $5\ \mathrm{ms}$ from @jonas1993)
+-   **Decay** -- the biexponential decay time constant (defaults to $5\ \mathrm{ms}$ from @jonas1993)
 
 -   **Width** -- the width (in $\mathrm{ms}$) of the event template.
 

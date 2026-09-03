@@ -74,7 +74,7 @@ The algorithm proceeds by using a manually set, short ISI ([Max. short ISI (ms)]
 
 The long ISI is calculated from the LogISI histogram using a peak and trough-finding algorithm. First, the intra-burst peak (expected to be dominated by the short ISI of spikes in bursts) is detected. This is expected to be the smallest peak (i.e. within-burst ISI), and so the search range is usually small (e.g. default $100\ \mathrm{ms}$).
 
-Next, all other peaks of the logISI histogram are found. A 'void parameter' is computed between the intra-burst peak and all other peaks, capturing the depth of the trough in between the two peaks. The trough with the highest void parameter (i.e. ISI that best separates the peaks) is taken as the new long ISI threshold (see @pasquale2010 for equations).
+Next, all other peaks of the logISI histogram are found. A 'void parameter' is computed between the intra-burst peak and all other peaks, capturing the depth of the trough in between the two peaks. The first, lowest-ISI trough whose void parameter exceeds the minimum criterion is taken as the new long ISI threshold (see @pasquale2010 for equations).
 
 -   [Min. void parameter]{.ui-label} -- Sets the minimum acceptable void parameter. Lower values increase the chance of accepting a local minimum.
 
