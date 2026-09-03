@@ -7,6 +7,8 @@ project:
     - assets/**
     - versions.json
 
+bibliography: references.bib
+
 book:
   title: "Easy Electrophysiology"
   favicon: assets/favicon.jpg
@@ -31,7 +33,9 @@ book:
     - part: "Analysis"
       chapters:
         - curve-fitting.qmd
-        - event-detection-and-analysis.qmd
+        - href: event-detection-and-analysis.qmd
+          text: "Events detection and kinetics"
+        - events-analysis.qmd
         - href: action-potential-counting.qmd
           text: "AP counting"
         - href: action-potential-kinetics.qmd
@@ -74,8 +78,6 @@ format:
       - styles.scss
     include-after-body: assets/version-selector.html
     toc: true
-    toc-depth: 3
-    toc-expand: true
     number-sections: false
     fig-align: center
     link-external-newwindow: true

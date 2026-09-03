@@ -14,6 +14,28 @@ $font-size-root: 17px;
   white-space: nowrap;
 }
 
+main.content {
+  h2 {
+    font-weight: 700;
+  }
+
+  h3,
+  h4,
+  h5 {
+    color: #26343d;
+    font-weight: 600;
+  }
+
+  h3 {
+    margin-top: 2rem;
+  }
+
+  h4,
+  h5 {
+    margin-top: 1.5rem;
+  }
+}
+
 .ui-label {
   font-weight: 500;
   padding: 0.02em 0.2em;
@@ -21,6 +43,22 @@ $font-size-root: 17px;
   background-color: rgba(44, 110, 155, 0.15);
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
+}
+
+.figure-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 1.4rem;
+  margin-right: 0.35rem;
+  border-radius: 2px;
+  color: #fff;
+  background-color: $primary;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: 0.08em;
 }
 
 .reference-list > p {

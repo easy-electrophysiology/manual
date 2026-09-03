@@ -22,7 +22,7 @@ For most purposes cubic spline interpolation is optimal as it produces the smoot
 
 ## [Downsample]{.ui-label}
 
-Downsampling reduces the data resolution by discarding every nth sample (up to a factor of 12). Prior to downsampling, the primary channel data is low-pass filtered to the Nyquist frequency of the downsampled data. For two-channel data, both the primary and secondary channel are downsampled, but only the primary channel is filtered before downsampling. This is because it is assumed the secondary channel will contain Im and Vm step protocols. Options for choosing the low-pass filter are provided (default 8^th^ order Bessel).
+Downsampling reduces the data resolution by discarding every nth sample (up to a factor of 12). Prior to downsampling, the primary channel data is low-pass filtered to the Nyquist frequency of the downsampled data. For two-channel data, both the primary and secondary channel are downsampled, but only the primary channel is filtered before downsampling. This is because it is assumed the secondary channel will contain $I_\mathrm{m}$ and $V_\mathrm{m}$ step protocols. Options for choosing the low-pass filter are provided (default 8^th^ order Bessel).
 
 ## [Filter]{.ui-label}
 
@@ -32,7 +32,7 @@ Zero-phase shift filtering is achieved by passing the data forwards and backward
 
 Convenient interfaces are provided for checking the results of filtering before applying to the data. The [See Filtered Data]{.ui-label} button will display the currently selected trace overlaid with the filtered trace in red. [Show FFT]{.ui-label} will show the Fourier-transformed data, with the power-spectrum of the filter data overload in red. Finally, clicking [Apply]{.ui-label} will filter all records in the file.
 
-![Filter Data. Data are low-pass filtered at 1000 Hz using an eighth-order Bessel filter. [See Filtered Data]{.ui-label} overlays the filtered trace for inspection before applying the filter.](images/media/image31.PNG){width="6.268055555555556in" height="3.752083333333333in"}
+![Filter Data. Data are low-pass filtered at $1000\ \mathrm{Hz}$ using an eighth-order Bessel filter. [See Filtered Data]{.ui-label} overlays the filtered trace for inspection before applying the filter.](images/media/image31.PNG){width="6.268055555555556in" height="3.752083333333333in"}
 
 ## [Detrend]{.ui-label}
 
@@ -50,7 +50,7 @@ Removing the baseline is accomplished by subtracting a baseline value from the d
 
 Clicking [Apply]{.ui-label} will apply baseline removal for every record in the file. For each record, the baseline is calculated and subtracted separately.
 
-If your file has two channels (i.e. Vm and Im) clicking the checkbox option will also calculate and remove the baseline from the second data channel (across the time window specified on the primary data channel).
+If your file has two channels (i.e. $V_\mathrm{m}$ and $I_\mathrm{m}$) clicking the checkbox option will also calculate and remove the baseline from the second data channel (across the time window specified on the primary data channel).
 
 ## [Average Records]{.ui-label}
 
@@ -92,7 +92,7 @@ All datapoints within the region determined to contain the stimulus artefact are
 
 ## [Reshape Records]{.ui-label}
 
-Selecting [Concatenate all records into a single record]{.ui-label} will combine multiple records into one long record. Note that where recorded time intervals between records are not continuous, because they reflect gaps in the recording schedule (e.g. Record 1, 0 -- 2 s, Record 2, 3 -- 5 s), they will be made continuous (e.g. record 1 and record 2 would be concatenated into a single record between time points 0 -- 4 s).
+Selecting [Concatenate all records into a single record]{.ui-label} will combine multiple records into one long record. Note that where recorded time intervals between records are not continuous, because they reflect gaps in the recording schedule (e.g. Record 1, $0$–$2\ \mathrm{s}$, Record 2, $3$–$5\ \mathrm{s}$), they will be made continuous (e.g. record 1 and record 2 would be concatenated into a single record between time points $0$–$4\ \mathrm{s}$).
 
 Alternatively, a single-record dataset can be split into multiple records if the number of records is known by selecting [Expand data from a single record to multiple records]{.ui-label}. This can be useful as in some instances `.abf` files exported from other software (e.g. Igor, WinWCP) are concatenated into a single-record file, or to increase performance for long single-record files.
 
@@ -104,13 +104,13 @@ Long single record files (containing millions of datapoints) can slow down the s
 
 ## [Normalize Time]{.ui-label}
 
-The time in electrophysiological data may be recorded in two ways. If normalized, the times of each record are the absolute record length (e.g. for 2 second recordings, record 1: 0 -- 2 s, record 2: 0 -- 2 s). Alternatively time may be recorded relative to the start of recording, increasing cumulatively (e.g. record 1: 0 -- 2 s, record 2: 2 -- 4 s). *Normalize Time* applies the time vector from the first record for every record in the recording. Note that this assumes all records in the dataset are the same length.
+The time in electrophysiological data may be recorded in two ways. If normalized, the times of each record are the absolute record length (e.g. for $2\ \mathrm{s}$ recordings, record 1: $0$–$2\ \mathrm{s}$, record 2: $0$–$2\ \mathrm{s}$). Alternatively time may be recorded relative to the start of recording, increasing cumulatively (e.g. record 1: $0$–$2\ \mathrm{s}$, record 2: $2$–$4\ \mathrm{s}$). *Normalize Time* applies the time vector from the first record for every record in the recording. Note that this assumes all records in the dataset are the same length.
 
 ## [Cut Trace Length]{.ui-label}
 
-This gives the option to set new record start and finish times (e.g. cut a trace that is 0 -- 2 s long down to the time period 0.5 -- 1 s). An offset will always be subtracted to ensure the first record starts at time = 0.
+This gives the option to set new record start and finish times (e.g. cut a trace that is $0$–$2\ \mathrm{s}$ long down to the time period $0.5$–$1\ \mathrm{s}$). An offset will always be subtracted to ensure the first record starts at time = 0.
 
-Clicking [Apply]{.ui-label} will change the record length for every record in the file. Options are provided for cumulatively increasing record times after cutting trace length (e.g. record 1: 0 -- 0.5 s, record 2: 0.5 -- 1 s) or normalizing time instead (see *Normalize Time*).
+Clicking [Apply]{.ui-label} will change the record length for every record in the file. Options are provided for cumulatively increasing record times after cutting trace length (e.g. record 1: $0$–$0.5\ \mathrm{s}$, record 2: $0.5$–$1\ \mathrm{s}$) or normalizing time instead (see *Normalize Time*).
 
 ## [Reset to Raw Data]{.ui-label}
 

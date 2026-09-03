@@ -10,4 +10,4 @@ Zero-phase shift filtering is achieved by passing the data forwards and backward
 
 Convenient interfaces are provided for checking the results of filtering before applying to the data. The [See Filtered Data]{.ui-label} button will display the currently selected trace overlaid with the filtered trace in red. [Show FFT]{.ui-label} will show the Fourier-transformed data, with the power-spectrum of the filter data overload in red. Finally, clicking [Apply]{.ui-label} will filter all records in the file.
 
-![Filter Data. Data are low-pass filtered at 1000 Hz using an eighth-order Bessel filter. [See Filtered Data]{.ui-label} overlays the filtered trace for inspection before applying the filter.](images/media/image31.PNG){width="6.268055555555556in" height="3.752083333333333in"}
+![Filter Data. Data are low-pass filtered at $1000\ \mathrm{Hz}$ using an eighth-order Bessel filter. [See Filtered Data]{.ui-label} overlays the filtered trace for inspection before applying the filter.](images/media/image31.PNG){width="6.268055555555556in" height="3.752083333333333in"}
