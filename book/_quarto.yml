@@ -17,7 +17,7 @@ book:
     title: "Easy Electrophysiology<br>Manual"
     logo: assets/logo.jpg
     style: docked
-    collapse-level: 0
+    collapse-level: 1
   page-footer:
     left: "Easy Electrophysiology User Manual"
     right: "Built with [Quarto](https://quarto.org)."
