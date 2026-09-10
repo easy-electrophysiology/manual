@@ -1,0 +1,9 @@
+---
+title: "Cut trace length"
+---
+
+![[Cut Trace]{.ui-label} options.](images/media/data-tools-cut-trace-length.png)
+
+This gives the option to set new record start and finish times (e.g. cut a trace that is `0–2 s` long down to `0.5–1 s`). An offset will always be subtracted to ensure the first record starts at `time = 0`.
+
+Clicking [Apply]{.ui-label} will change the record length for every record in the file. Options are provided for cumulatively increasing record times after cutting trace length (e.g. record 1: `0–0.5 s`, record 2: `0.5–1 s`) or normalizing time instead (see [Normalize Time](normalize-time.qmd){.ui-label}).

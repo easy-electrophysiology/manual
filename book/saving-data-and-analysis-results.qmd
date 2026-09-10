@@ -1,0 +1,17 @@
+---
+title: "Saving data and results"
+---
+
+## Save recorded data
+
+Use [Save Data]{.ui-label} on the top menu bar to copy or save the displayed channel data.
+
+Data from the currently selected record can be copied using [Copy Channel 1]{.ui-label} or [Copy Channel 2]{.ui-label}. Alternatively, all records in the file can be saved in `.xlsx` or `.csv` format using [Save All (Channel 1)]{.ui-label} or [Save All (Channel 2)]{.ui-label}.
+
+Saving to `.csv` is faster than to `.xlsx` and may significantly decrease saving times for large datasets.
+
+## Save analysis results
+
+Use [Save Events Analysis]{.ui-label} to save the results displayed in the [Table]{.ui-label} tab as an `.xlsx` or `.csv` file. Saving to Excel includes additional formatting around cell borders, such as between different files in batch mode. Analysis results tables are typically small enough that the difference in saving time between `.xlsx` and `.csv` is negligible.
+
+Data can also be copied directly from the analysis results table (select data to copy and right-click).

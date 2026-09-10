@@ -1,0 +1,9 @@
+---
+title: "Downsample"
+---
+
+![[Downsample]{.ui-label} options.](images/media/data-tools-downsample.png)
+
+Downsampling reduces the data resolution by discarding every nth sample (up to a factor of 12). Prior to downsampling, the primary channel data is low-pass filtered to the Nyquist frequency of the downsampled data. 
+
+For two-channel data, both the primary and secondary channel are downsampled, but only the primary channel is filtered before downsampling. This is because it is assumed the secondary channel may contain step protocols. Options for choosing the low-pass filter are provided (default 8^th^ order Bessel).

@@ -1,0 +1,25 @@
+---
+title: "Stimulus artefact removal"
+---
+
+![[Stimulus Artefact Removal]{.ui-label} options. Configure artefact detection and search periods, then preview the result before applying it.](images/media/data-tools-stimulus-artefact-removal.png)
+
+Electrophysiological recordings are often contaminated by artefacts from electrical stimuli used to elicit the membrane responses during experimental protocols. Stimulus Artefact Removal can automatically remove such stimulus artefacts from the data.
+
+The data with stimulus artefacts removed can be displayed by clicking the [Preview]{.ui-label} button, which will preview the trace with stimulus-artefact removed in orange. Clicking [Apply]{.ui-label} will apply the stimulus artefact removal to the data, closing the [Stimulus Artefact]{.ui-label} window.
+
+The default parameters typically work out of the box on most datasets, however the details of the algorithm are explored below in case the default parameters need to be adjusted.
+
+![Stimulus Artefact Removal. The orange preview shows the result before it is applied to the trace.](images/media/image33.png){width="6.814987970253719in" height="3.926525590551181in"}
+
+## The stimulus artefact removal algorithm
+
+The first step is to detect the peaks (positive or negative) of the stimulus artefacts. The method used for detection is by default [First Derivative]{.ui-label}. The first derivative is usually optimal because stimulus artefacts typically have a much faster rise times than physiological responses. Therefore, setting a high derivative threshold can selectively pick out stimulus artefact events. However, [Absolute Threshold]{.ui-label} is also available.
+
+Next, the period from the stimulus artefact peak to the end of the artefact in the forward direction (i.e. moving forward in time) is detected. The length of the window that is searched (from the peak to the end of the artifact) is set by [Forward search period (s)]{.ui-label}.
+
+The value taken as the end of the stimulus artefact is determined by the [End of stimulus %]{.ui-label} parameter. This sets the data value at which the stimulus artifact is determined to have reached baseline. This is detected by the crossing of a threshold which takes the value of the baseline signal plus some percentage of the noise of the signal (here, the noise is measured as the median difference between consecutive samples). [End of stimulus %]{.ui-label} sets this percentage. For example, if [End of stimulus %]{.ui-label} is set to `200%`, a datapoint will be considered returned to baseline once it is within twice the noise level.
+
+Finally, the point where the stimulus artefact started is determined. The parameter [Backward search period (s)]{.ui-label} defines the size of the window, starting at the peak, which is searched for the stimulus artefact start. Because stimulus artefacts are characterized by a fast rise time, a derivative threshold is again used. The first sample that crosses [Backward search threshold (derivative)]{.ui-label} is taken at the start of the stimulus artefact.
+
+All datapoints within the region determined to contain the stimulus artefact are replaced with samples randomly drawn from a Gaussian distribution with mean and variance estimated from the data.

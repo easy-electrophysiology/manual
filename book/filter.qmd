@@ -1,0 +1,13 @@
+---
+title: "Filter"
+---
+
+![[Filter]{.ui-label} options.](images/media/data-tools-filter.png)
+
+Options for low-pass, high-pass, bandpass and bandstop modes with Bessel and Butterworth filters are provided.
+
+Zero-phase shift filtering is achieved by passing the data forwards and backwards through a linear digital filter. This process doubles the effective order of the filter, and this is accounted for in the [Filter]{.ui-label} options menu. For example, if an 8^th^ order Bessel is specified, a 4^th^ order filter is designed and the data passed through twice for an effective filter order of 8.
+
+Convenient interfaces are provided for checking the results of filtering before applying to the data. The [See Filtered Data]{.ui-label} button will display the currently selected trace overlaid with the filtered trace in red. [Show FFT]{.ui-label} will show the Fourier-transformed data, with the power-spectrum of the filter data overload in red. Finally, clicking [Apply]{.ui-label} will filter all records in the file.
+
+![Filter Data. Data are low-pass filtered at 1000 Hz using an eighth-order Bessel filter. [See Filtered Data]{.ui-label} overlays the filtered trace for inspection before applying the filter.](images/media/image31.PNG){width="6.268055555555556in" height="3.752083333333333in"}

@@ -1,0 +1,5 @@
+---
+title: "License"
+---
+
+The [Easy Electrophysiology license](https://www.easyelectrophysiology.com/license) is also packaged with the Easy Electrophysiology distribution.
