@@ -7,8 +7,6 @@ project:
     - assets/**
     - versions.json
 
-bibliography: references.bib
-
 book:
   title: "Easy Electrophysiology"
   favicon: assets/favicon.jpg
@@ -19,7 +17,7 @@ book:
     title: "Easy Electrophysiology<br>Manual"
     logo: assets/logo.jpg
     style: docked
-    collapse-level: 1
+    collapse-level: 0
   page-footer:
     left: "Easy Electrophysiology User Manual"
     right: "Built with [Quarto](https://quarto.org)."
@@ -33,9 +31,7 @@ book:
     - part: "Analysis"
       chapters:
         - curve-fitting.qmd
-        - href: event-detection-and-analysis.qmd
-          text: "Events detection and kinetics"
-        - events-analysis.qmd
+        - event-detection-and-analysis.qmd
         - href: action-potential-counting.qmd
           text: "AP counting"
         - href: action-potential-kinetics.qmd
@@ -78,6 +74,8 @@ format:
       - styles.scss
     include-after-body: assets/version-selector.html
     toc: true
+    toc-depth: 3
+    toc-expand: true
     number-sections: false
     fig-align: center
     link-external-newwindow: true

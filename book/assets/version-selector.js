@@ -2,7 +2,7 @@
   "use strict";
 
   const hostedSiteRoot = "/manual/";
-  const fallbackVersions = [{ version: "2.7.3", label: "2.7.3" }];
+  const fallbackVersions = [{ version: "2.8.0", label: "2.8.0" }];
 
   function siteRoot() {
     return window.location.hostname.endsWith("github.io") ? hostedSiteRoot : "./";
