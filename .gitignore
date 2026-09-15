@@ -3,6 +3,7 @@
 /.quarto/
 /book/_site/
 /book/.quarto/
+/book/*.html
 
 # Staging files from docx conversion (safe to delete)
 _full.md
