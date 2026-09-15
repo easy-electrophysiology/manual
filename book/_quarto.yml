@@ -70,8 +70,13 @@ book:
 format:
   html:
     theme:
-      - cosmo
-      - styles.scss
+      light:
+        - cosmo
+        - styles.scss
+      dark:
+        - darkly
+        - styles.scss
+    respect-user-color-scheme: true
     include-after-body: assets/version-selector.html
     toc: true
     toc-depth: 3

@@ -73,6 +73,30 @@
     }
   }
 
+  function moveThemeToggle() {
+    const sidebarControls = document.querySelector("#quarto-sidebar .sidebar-search")?.parentElement;
+    const themeToggle = document.querySelector("#quarto-sidebar .quarto-color-scheme-toggle");
+    const versionSelector = sidebarControls?.querySelector(".manual-version-sidebar");
+    if (!sidebarControls || !themeToggle || !versionSelector) {
+      return;
+    }
+
+    const actions = document.createElement("div");
+    actions.className = "manual-sidebar-actions";
+    actions.append(versionSelector, themeToggle);
+    sidebarControls.appendChild(actions);
+
+    const updateThemeLabel = () => {
+      const isDark = document.body.classList.contains("quarto-dark");
+      const label = isDark ? "Switch to light mode" : "Switch to dark mode";
+      themeToggle.setAttribute("aria-label", label);
+      themeToggle.setAttribute("title", label);
+    };
+
+    updateThemeLabel();
+    themeToggle.addEventListener("click", () => window.setTimeout(updateThemeLabel, 0));
+  }
+
   document.addEventListener("DOMContentLoaded", async function () {
     let versions = fallbackVersions;
     try {
@@ -84,5 +108,6 @@
       // Local file previews cannot fetch JSON; use the embedded current version.
     }
     addSelectors(versions);
+    moveThemeToggle();
   });
 })();
