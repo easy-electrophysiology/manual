@@ -2,24 +2,5 @@
 title: "References"
 ---
 
-::: {.reference-list}
-Clements, J. D., & Bekkers, J. M. (1997). Detection of spontaneous synaptic events with an optimally selected template. *Biophysical Journal*, *73*(1), 220--229.
-
-Cotterill, E., Charlesworth, P., Thomas, C. W., Paulsen, O., & Eglen, S. J. (2016). A comparison of computational methods for detecting bursts in neuronal spike trains and their application to human stem cell-derived neuronal networks. *Journal of Neurophysiology*, *116*(2), 306--321.
-
-Garcia, S., Guarino, D., Jaillet, F., Jennings, T., Pröpper, R., Rautenberg, P. L., Rodgers, C. C., Sobolev, A., Wachtler, T., Yger, P., & Davison, A. P. (2014). Neo: An object model for handling electrophysiology data in multiple formats. *Frontiers in Neuroinformatics*, *8*, 10.
-
-Guzman, S. J., Schlögl, A., & Schmidt-Hieber, C. (2014). Stimfit: Quantifying electrophysiological data with Python. *Frontiers in Neuroinformatics*, *8*, 16.
-
-Jonas, P., Major, G., & Sakmann, B. (1993). Quantal components of unitary EPSCs at the mossy fibre synapse on CA3 pyramidal cells of rat hippocampus. *The Journal of Physiology*, *472*, 615--663.
-
-Pasquale, V., Martinoia, S., & Chiappalone, M. (2010). A self-adapting approach for the detection of bursts and network bursts in neuronal cultures. *Journal of Computational Neuroscience*, *29*, 213--229.
-
-Pernia-Andrade, A., Goswami, S. P., Stickler, Y., Fröbe, U., Schlögl, A., & Jonas, P. (2012). A deconvolution-based method with high sensitivity and temporal resolution for detection of spontaneous synaptic currents in vitro and in vivo. *Biophysical Journal*, *103*(7), 1429--1439.
-
-Rossokhin, A. V., & Saakian, I. Z. (1992). Dependence of the nerve pulse generation threshold on the ability of forming an input signal based on the Hodgkin-Huxley model. *Biofizika*, *37*(6), 1071--1075.
-
-Sekerli, M., Del Negro, C. A., Lee, R. H., & Butera, R. J. (2004). Estimating action potential thresholds from neuronal time-series: New metrics and evaluation of methodologies. *IEEE Transactions on Biomedical Engineering*, *51*(9), 1665--1672.
-
-Shinomoto, S., Shima, K., & Tanji, J. (2003). Differences in spiking patterns among cortical neurons. *Neural Computation*, *15*, 2823--2842.
+::: {#refs}
 :::

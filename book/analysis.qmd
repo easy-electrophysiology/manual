@@ -4,24 +4,60 @@ title: "Statistics"
 
 ## Kolmogorov-Smirnov tests
 
-Kolmogorov-Smirnov (KS) tests for comparing the distribution of one sample (against the normal distribution) or two samples (against each other) are available at [Analysis]{.ui-label} › [Kolmogorov-Smirnov]{.ui-label}. Raw data can be copied directly into the input data table (it is not necessary to calculate the cumulative distribution first).
+Kolmogorov-Smirnov (KS) tests compare one sample with a normal distribution or compare two samples with each other. Open the analysis from [Analysis]{.ui-label} › [Kolmogorov-Smirnov]{.ui-label}. Raw data can be copied directly into the input table; the cumulative distribution does not need to be calculated first.
 
-The KS test compares two distributions by taking the maximum absolute difference of their cumulative (or empirical) distribution functions (CDF), termed *D*. Hypothesis testing is performed against the Kolmogorov distribution.
+The KS statistic, denoted $D$, is the maximum absolute difference between two cumulative distribution functions. For a one-sample test, it compares the sample's empirical CDF with a specified theoretical CDF; for a two-sample test, it compares the empirical CDFs of the two samples.
 
-For one-sample tests, the empirical CDF of the entered data is compared against the normal (i.e. Gaussian) CDF. Where the mean and standard deviation of this Gaussian in estimated from the data, Lilliefors correction is used.
+### Selecting a test
 
-To plot the empirical CDF, click [Plot Data]{.ui-label} and select [Empirical CDF]{.ui-label} from the drop-down menu.
+-   [One Dataset (compare with normal distribution)]{.ui-label} -- Compares the empirical CDF of [Dataset 1]{.ui-label} with a Normal CDF:
 
-Easy Electrophysiology uses the SciPy module `kstest` for Kolmogorov-Smirnvov tests, except for the case in which Lilliefors correction is used, where the statsmodel package function `lilliefors` is used.
+	-   [Estimate M and SD from sample (Lilliefors corrected)]{.ui-label} -- Estimates the mean and standard deviation from the sample and applies the Lilliefors correction.
 
-![Empirical cumulative distribution function plot for two datasets.](images/media/image34.png){width="4.147222222222222in" height="3.9875in"}
+	-   [Supply population M and SD]{.ui-label} -- Uses a supplied population mean and standard deviation.
+
+-   [Two Datasets (compare with each other)]{.ui-label} -- Compares the empirical CDFs of [Dataset 1]{.ui-label} and [Dataset 2]{.ui-label}. Set the alternative hypothesis to [Two-Tailed]{.ui-label}, [Dataset 1 Greater]{.ui-label}, or [Dataset 1 Less]{.ui-label}.
+
+Easy Electrophysiology uses `scipy.stats.kstest` for one-sample tests with supplied population parameters and for two-sample tests. When the mean and standard deviation are estimated from the sample, it uses `statsmodels.stats.diagnostic.lilliefors`.
+
+### Running and plotting the analysis
+
+-   [Run Analysis]{.ui-label} -- Runs the selected KS test. The results show the sample size $n$, KS statistic $D$, and $p$-value.
+
+-   [Plot Data]{.ui-label} -- Opens a plot of [Binned Cumulative Probability]{.ui-label}, [Histogram]{.ui-label}, or [Empirical CDF]{.ui-label} data. For two datasets, display either dataset individually or select [Overlay (1 on top)]{.ui-label} or [Overlay (2 on top)]{.ui-label}.
+
+-   [Bin Options]{.ui-label} -- Configures the bins used for binned cumulative-probability and histogram plots.
+
+-   [Plot Options]{.ui-label} -- Configures the appearance of the current plot.
+
+![Empirical cumulative distribution function plot for two datasets.](images/media/image34.png){width="5.2in"}
 
 ## Summary statistics
 
-Summary statistics can be calculated from data displayed on the results table. Clicking the [summary statistics]{.ui-label} checkbox on the table tab panel will display (by default) the mean, standard deviation and standard error of each parameter, for each file analyzed.
+Summary statistics can be calculated from data displayed in the results table. Selecting [Summary Statistics]{.ui-label} on the [Table]{.ui-label} tab displays the mean, standard deviation, and standard error of each parameter by default.
 
-To change the calculated parameters, click [Analysis]{.ui-label} › [Table Options]{.ui-label}. Parameters with meaningless summary statistics (e.g. record number, event times) are not calculated. In addition, a [count]{.ui-label} column is shown that displays the number of rows that were summarized. For *Events* and *AP Kinetics,* this will equal the number of events and action potentials summarized. For all other analyses, this will equal the number of records summarized.
+### Calculated statistics
 
-This window also provides the option to display results with analyzed files stacked vertically ([per row]{.ui-label}) rather than horizontally ([per column]{.ui-label}).
+Open [Analysis]{.ui-label} › [Table Options]{.ui-label} to select the calculated statistics:
 
-![Options window for table analysis and display.](images/media/image35.PNG){width="3.229617235345582in" height="4.615227471566055in"}
+-   [Mean (M)]{.ui-label}
+-   [Standard Deviation (SD)]{.ui-label}
+-   [Standard Error (SE)]{.ui-label}
+
+At least one statistic must be selected. Parameters for which summary statistics are not meaningful, such as record number and event time, are omitted. A [Count]{.ui-label} column reports the number of rows summarized. For [*Events*](event-detection-and-analysis.qmd) and [*AP Kinetics*](action-potential-kinetics.qmd), this equals the number of events or action potentials; for other analyses, it equals the number of records.
+
+### Calculation and table layout
+
+-   [Calculate Across Records]{.ui-label} -- Calculates summary statistics across records.
+
+-   [Calculate Within Records]{.ui-label} -- Calculates summary statistics separately within records.
+
+-   [Per Row]{.ui-label} -- Stacks analyzed files vertically. [Only show file name once]{.ui-label} prevents repeated file names in this layout.
+
+-   [Per Column]{.ui-label} -- Displays analyzed files horizontally in separate columns. This is the default layout.
+
+For [*Events*](event-detection-and-analysis.qmd) results, [Show Events by Group]{.ui-label} selects [All]{.ui-label} events or [Group 1-5]{.ui-label}. Select [Exclude group]{.ui-label} to show all events except the selected group.
+
+[Reset to Defaults]{.ui-label} restores the default table options. [Save as Default]{.ui-label} saves the current options as the defaults for future use.
+
+![Options window for table analysis and display.](images/media/image35.PNG){width="2.8in" height="4in"}

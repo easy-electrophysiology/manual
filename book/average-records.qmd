@@ -12,4 +12,4 @@ Alternatively, specific records can be selected for averaging by choosing the [A
 
 ![The [Average specific records]{.ui-label} option.](images/media/average-record-select.png)
 
-A single-column table will be displayed. The rows of the table can be used to group records for averaging. For example, in a file containing `10` records, `1,2,3` could be entered into the first row and `4,5,6` into the second. Clicking [Apply]{.ui-label} would generate `2` records (record `1` - average of `1,2,3`; record `2` - average of `4,5,6`, with records `7,8,9,10` discarded).
+A single-column table will be displayed. The rows of the table can be used to group records for averaging. For example, in a file containing 10 records, `1,2,3` could be entered into the first row and `4,5,6` into the second. Clicking [Apply]{.ui-label} would generate 2 records (record 1 - average of `1,2,3`; record 2 - average of `4,5,6`, with records 7, 8, 9 and 10 discarded).

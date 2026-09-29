@@ -26,10 +26,10 @@ Use the slider to adjust the relative sizes of the upper and lower plots. [Swap 
 
 ## Graph line thickness
 
-Use [Width]{.ui-label} to set the line thickness of the upper and lower plots. Values above the default of `1.0` can significantly reduce graphics performance.
+Use [Width]{.ui-label} to set the line thickness of the upper and lower plots. Values above the default of 1.0 can significantly reduce graphics performance.
 
 ## Limit the view range for performance
 
 For single-record voltage-clamp data, the entire dataset can be displayed on the graph at once. Long recordings can contain large amounts of data and reduce performance. [Limit view range for performance (Single-record files only)]{.ui-label} sets a maximum window length so that only a subset of the data is shown.
 
-The default limit is `500k` samples. You can change the maximum window size or turn this option off. Changes take effect when the next file is loaded.
+The default limit is 500k samples. You can change the maximum window size or turn this option off. Changes take effect when the next file is loaded.

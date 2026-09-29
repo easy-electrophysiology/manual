@@ -2,11 +2,11 @@
 title: "GUI overview"
 ---
 
-The [Plot]{.ui-label} and [Table]{.ui-label} views are the two main ways to visualize data and results in Easy Electrophysiology, accessed through the [Plot]{.ui-label} and [Table]{.ui-label} tabs. The [Plot]{.ui-label} tab is used to view voltage (Vm) and current (Im) traces, set up and run analysis, and visualize the results. The [Table]{.ui-label} tab displays results in table format with options for saving to Excel or CSV.
+The [Plot]{.ui-label} and [Table]{.ui-label} views are the two main ways to visualize data and results in Easy Electrophysiology, accessed through the [Plot]{.ui-label} and [Table]{.ui-label} tabs. The [Plot]{.ui-label} tab is used to view voltage ($V_\mathrm{m}$) and current ($I_\mathrm{m}$) traces, set up and run analysis, and visualize the results. The [Table]{.ui-label} tab displays results in table format with options for saving to Excel or CSV.
 
 To choose an analysis to run, select [File]{.ui-label} › [Open Analysis Window]{.ui-label}. When an analysis type is selected, the [Analysis Panel]{.ui-label} on the left-hand side of the [Plot]{.ui-label} tab will show the relevant options for running that analysis.
 
-In the [Table]{.ui-label} view, options for saving analysis results can be found using the dropdown in the [Save Table]{.ui-label} box. Results can be saved as `.xlsx` (includes border formatting) or as `.csv` (no formatting). For some analyses (*Events*, *Action Potential Counting, Input Resistance*), checkboxes in the left-hand panel can be used to select which results to display.
+In the [Table]{.ui-label} view, options for saving analysis results can be found using the dropdown in the [Save Table]{.ui-label} box. Results can be saved as `.xlsx` (includes border formatting) or as `.csv` (no formatting). For some analyses ([*Events*](event-detection-and-analysis.qmd), [*Action Potential Counting*](action-potential-counting.qmd), [*Input Resistance*](input-resistance.qmd)), checkboxes in the left-hand panel can be used to select which results to display.
 
 ![Graphical interface overview. File data and analysis results are displayed in the [Plot]{.ui-label} tab graph, and tabular analysis results are displayed in the [Table]{.ui-label} tab. The [Analysis Panel]{.ui-label} (bottom left) contains options for analysis when an analysis type is selected. The buttons in the [Record]{.ui-label} box (top left) and the scrollbar under the graph can be used to move through records.](images/media/image1.png)
 

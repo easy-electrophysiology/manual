@@ -10,4 +10,4 @@ Record Arithmetic can be performed by a flexible interface that takes text input
 
 Multiple record arithmetic expressions over sets of records can be performed by inputting an expression on each row of the input table. The example below will result in a 2-record file, with the first record being the sum of the first and second record, and the second record being the sum of the second and third record.
 
-![In this example, the resulting dataset contains two records formed from `record 1 + 2` and `record 2 + 3`, respectively.](images/media/image32.png)
+![In this example, the resulting dataset contains two records formed by adding records 1 and 2, and records 2 and 3, respectively.](images/media/image32.png)

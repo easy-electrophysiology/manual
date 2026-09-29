@@ -1,0 +1,14 @@
+---
+title: "Previous versions"
+---
+
+PDF manuals for previous versions of Easy Electrophysiology are available below. The v2.7.3 manual also applies to Easy Electrophysiology v2.8.0.
+
+- [Easy Electrophysiology manual v2.7.3](https://storage.googleapis.com/easy-electrophysiology-distribution/easy_electrophysiology_manual_v2.7.3.pdf)
+- [Easy Electrophysiology manual v2.7.0](https://storage.googleapis.com/easy-electrophysiology-distribution/easy_electrophysiology_manual_v2.7.0.pdf)
+- [Easy Electrophysiology manual v2.6.4](https://storage.googleapis.com/easy-electrophysiology-distribution/easy_electrophysiology_manual_v2.6.4.pdf)
+- [Easy Electrophysiology manual v2.6.3](https://storage.googleapis.com/easy-electrophysiology-distribution/easy_electrophysiology_manual_v2.6.3.pdf)
+- [Easy Electrophysiology manual v2.6.0](https://storage.googleapis.com/easy-electrophysiology-distribution/easy_electrophysiology_manual_v2.6.0.pdf)
+- [Easy Electrophysiology manual v2.5.0](https://storage.googleapis.com/easy-electrophysiology-distribution/easy_electrophysiology_manual_v2.5.0.pdf)
+- [Easy Electrophysiology manual v2.4.0](https://storage.googleapis.com/easy-electrophysiology-distribution/easy_electrophysiology_manual_v2.4.0_combined.pdf)
+- [Easy Electrophysiology manual v2.3.2 beta](https://storage.googleapis.com/easy-electrophysiology-distribution/easy_electrophysiology_manual_v2.3.2-beta-merged.pdf)

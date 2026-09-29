@@ -18,15 +18,15 @@ Please get in contact if you have another file type you would like to see suppor
 
 Files can be dragged and dropped directly onto the main window or loaded by selecting [File]{.ui-label} › [Open File]{.ui-label}. Note that the sampling frequency must be identical for all records in the file. Multiple files can also be loaded at once, and they will be concatenated together. A window for selecting the order and method by which the files are concatenated will appear.
 
-For some `.abf` files, all records may be erroneously concatenated to a single record (typically if exported from software that is not pClamp). If this occurs, see [Reshape Records]{.ui-label} or [Large File Settings]{.ui-label} in this manual.
+For some `.abf` files, all records may be erroneously concatenated to a single record (typically if exported from software that is not pClamp). If this occurs, see [Reshape Records](reshape-records.qmd){.ui-label} or [Large File Settings](#improve-performance-for-large-files){.ui-label} in this manual.
 
-The following default file-loading options can be set under [File]{.ui-label} › [File Loading Options]{.ui-label}.
+The following default file-loading options can be set under [File]{.ui-label} › [File Loading Options]{.ui-label}:
 
-![[File Loading Options]{.ui-label}. Set the default behaviour when loading files.](images/media/image2.PNG){width="4.277843394575678in" height="4.285283245844269in"}
+![[File Loading Options]{.ui-label}. Set the default behaviour when loading files.](images/media/image2.PNG){width="5.005076772553543in" height="5.013781397637795in"}
 
 ## Select channels to load
 
-Data from up to two channels can be loaded at once. The [Primary data channel]{.ui-label} is used for all analysis (e.g. *Curve Fitting*) and displayed in the upper graph. By default, the first channel in the file is selected as the primary data channel. The [Secondary data channel]{.ui-label} is typically used for current or voltage injection protocols. In *Action Potential Counting* and *Input Resistance* analysis, Im values are calculated from the secondary data channel.
+Data from up to two channels can be loaded at once. The [Primary data channel]{.ui-label} is used for all analysis and displayed in the upper graph. By default, the first channel in the file is selected as the primary data channel. The [Secondary data channel]{.ui-label} is typically used for current or voltage injection protocols. In [*Action Potential Counting*](action-potential-counting.qmd) and [*Input Resistance*](input-resistance.qmd) analysis, $I_\mathrm{m}$ values are calculated from the secondary data channel.
 
 If the file contains more than two channels, default channels to load can be selected from the dropdown. To load only one channel, set [Secondary data channel]{.ui-label} to [None]{.ui-label}.
 
@@ -34,55 +34,61 @@ If the file contains more than two channels, default channels to load can be sel
 
 ## Specify default units
 
-Analysis routines expect units in seconds (s), picoamperes (pA) and millivolts (mV). If time units are detected as milliseconds (ms) in the file header, they will be automatically converted to seconds. If units are not in mV or pA, a window will warn that the file contains unexpected units. To load the file, select [Specify default values]{.ui-label} and choose the source units from the dropdown (e.g. if the file units are in A, select conversion from A).
+Analysis routines expect units in seconds ($\mathrm{s}$), picoamperes ($\mathrm{pA}$) and millivolts ($\mathrm{mV}$). If time units are detected as milliseconds ($\mathrm{ms}$) in the file header, they will be automatically converted to seconds. If units are not in $\mathrm{mV}$ or $\mathrm{pA}$, a window will warn that the file contains unexpected units. To load the file, select [Specify default values]{.ui-label} and choose the source units from the dropdown (e.g. if the file units are in $\mathrm{A}$, select conversion from $\mathrm{A}$).
 
-In some cases, the units specified in the file header do not match the true values. In this case, the dialog will also show a warning and an estimate of the true unit scaling. Again select [Specify default values]{.ui-label} and choose the appropriate source units, or select [Assume pA / mV]{.ui-label} (e.g. if the file header is in units A and V but the data is scaled to pA or mV).
+In some cases, the units specified in the file header do not match the true values. In this case, the dialog will also show a warning and an estimate of the true unit scaling. Again select [Specify default values]{.ui-label} and choose the appropriate source units, or select [Assume pA / mV]{.ui-label} (e.g. if the file header is in units $\mathrm{A}$ and $\mathrm{V}$ but the data is scaled to $\mathrm{pA}$ or $\mathrm{mV}$).
 
-These options only have an effect when the file header is not in pA or mV.
+These options only have an effect when the file header is not in $\mathrm{pA}$ or $\mathrm{mV}$.
 
 ![[Channel Units Error]{.ui-label}. The warning shown when the units in the file header are not pA or mV.](images/media/image3.png)
 
 ## Normalize cumulative record times
 
-Enable [Always normalize time on file load]{.ui-label} when time is recorded as cumulatively increasing across records. See [Normalize Time]{.ui-label} in this manual for more details.
+Enable [Always normalize time on file load]{.ui-label} when time is recorded as cumulatively increasing across records. See [Normalize Time](normalize-time.qmd){.ui-label} in this manual for more details.
 
 ## Correct non-zero time offsets
 
-Enable [Always correct time offset on load]{.ui-label} to correct a non-zero starting timepoint automatically. On some recording setups, a small offset is added (e.g. Record 1: 0.02 -- 1.52 s); if detected, a window will warn the user. Automatic correction is recommended because an unnoticed offset can introduce errors when user-input times are required. For example, a stimulus entered as starting at 0.1 s may occur on the trace at 0.12 s.
+Enable [Always correct time offset on load]{.ui-label} to correct a non-zero starting timepoint automatically. On some recording setups, a small offset is added (e.g. Record 1 starts at $0.02\ \mathrm{s}$); if detected, a window will warn the user. Automatic correction is recommended because an unnoticed offset can introduce errors when user-input times are required. For example, a stimulus entered as starting at $0.1\ \mathrm{s}$ may occur on the trace at $0.12\ \mathrm{s}$.
 
 ## Force analysis mode (voltage or current clamp)
 
-By default, [Recording type]{.ui-label} (current-clamp or voltage-clamp) is automatically detected from the primary and secondary channel units in the file header. This determines which analyses are available to run (e.g. *Action Potential* analysis is only possible for current-clamp recordings). Here automatic detection can be overridden and the selected analysis options will be available no matter the loaded filetype. Note that this may result in undefined behavior if incorrect analyses are conducted (e.g. *Action Potential Counting* on voltage-clamp data).
+By default, [Recording type]{.ui-label} (current-clamp or voltage-clamp) is automatically detected from the primary and secondary channel units in the file header. This determines which analyses are available to run; for example, action-potential analysis is only possible for current-clamp recordings. 
+
+Here automatic detection can be overridden and the selected analysis options will be available no matter the loaded filetype. Note that this may result in undefined behavior if incorrect analyses are conducted (e.g. [*Action Potential Counting*](action-potential-counting.qmd) on voltage-clamp data).
 
 ## Improve performance for large files
 
-Use [Large File Settings]{.ui-label} to reshape a large single-record file into multiple smaller records on loading. Large single-record files may run slowly, and splitting them can significantly improve performance.
+Use [Large File Settings]{.ui-label} to reshape a large single-record file into multiple smaller records on loading. Large single-record files may run slowly, and splitting them can significantly improve performance:
 
 ![The [Large File Settings]{.ui-label} window. Options configure how a single-record file is reshaped on loading.](images/media/image4.PNG){width="4.125575240594926in" height="2.604529746281715in"}
 
-To keep large files as a single record, turn off reshaping by clearing [Split single long recording into multiple records]{.ui-label}. Alternatively, set how large a file must be before it is reshaped using [Only when data is larger than]{.ui-label}.
+To keep large files as a single record, turn off reshaping by unchecking [Split single long recording into multiple records]{.ui-label}. 
 
-The number of records that the file is reshaped into can be selected from the drop-down menu. The options include:
+Set how large a file must be before it is reshaped using [Only when data is larger than]{.ui-label}.
 
--   [Samples per record]{.ui-label}: The number of samples per record the loaded file will have (i.e. after reshaping, default 500k).
+The method used to determine the number of records that the file is reshaped into can be selected from the drop-down menu. The options include:
 
--   [Num. records]{.ui-label}: The number of records after reshaping.
+-   [Samples per record]{.ui-label}: The number of samples each record in the file will have after reshaping (default 500k).
 
--   [Optimal performance]{.ui-label}: Find the record size closest to 500k samples (within 400--700k range) that minimizes the number of discarded samples.
+-   [Num. records]{.ui-label}: The number of records the file will have after reshaping.
 
--   [Time (s) per record]{.ui-label}: The length of each record in seconds after reshaping.
+-   [Optimal performance]{.ui-label}: Find the record size closest to 500k samples (within the 400–700k range) that minimizes the number of discarded samples.
+
+-   [Time (s) per record]{.ui-label}: The length of each record (in seconds) after reshaping.
 
 By default, a warning is shown whenever a file's records are reshaped on loading. This can be turned off using [Show warning each time a large file is loaded]{.ui-label}.
 
 ## Load CSV files
 
-Use [Load CSV Settings]{.ui-label} to describe the layout of a comma-separated value (`.csv`) file. Because CSV layouts vary, this window is shown when configuring CSV loading. Defaults can be set by opening [Load CSV Settings]{.ui-label} from [File Loading Options]{.ui-label}, avoiding the need to configure each file individually.
+Use [Load CSV Settings]{.ui-label} to describe the layout of a comma-separated value (`.csv`) file. Because CSV layouts vary, this window is shown when configuring CSV loading to help determine the file layout:
 
 ![The [Load CSV Settings]{.ui-label} window. Options configure CSV loading to match the layout of the file.](images/media/image5.PNG){width="4.552083333333333in" height="3.6145833333333335in"}
 
-The first step is to indicate the channels in the file and their order. Channels may only be of type voltage, current or time. If there is not time data in the file, it can be created from a supplied sampling rate. As well as the type of channel in the data file, the order they are arranged in must also be specified (for example, if the CSV file is organized first all voltage channel data, then current channel data, the order will be *voltage* then *current*).
+The first step is to indicate the data types in the file and their order. The file may contain voltage, current or time data. For each selected data type, use [Units]{.ui-label} to specify the source units used in the CSV file. If the file does not contain time data, select [Time from fs]{.ui-label} and enter the sampling rate in [Sampling Rate (fs)]{.ui-label}.
 
-- [Interleaved or consecutive]{.ui-label}: Specifies whether channel data are interleaved across records or arranged consecutively in groups. For example, a five-record recording with voltage (v), current (c), and time (t) channels would be interleaved as v1, c1, t1, v2, c2, t2, ..., v5, c5, t5, or consecutive as v1, v2, ..., v5, c1, c2, ..., c5, t1, t2, ..., t5.
+The order in which the channel data are arranged must also be specified (for example if the voltage channel data is first, then current channel data, the order will be *voltage* then *current*):
+
+- [Interleaved or consecutive]{.ui-label}: Specifies whether channel data are interleaved across records or arranged consecutively in groups. For example, a five-record recording with voltage, current, and time channels would be interleaved as $v_1$, $c_1$, $t_1$, $v_2$, $c_2$, $t_2$, ..., $v_5$, $c_5$, $t_5$, or consecutive as $v_1$, $v_2$, ..., $v_5$, $c_1$, $c_2$, ..., $c_5$, $t_1$, $t_2$, ..., $t_5$.
 
 - [Column-wise vs. row-wise]{.ui-label}: Specifies the orientation of channels and records. If column-wise, each channel or record is a separate column and time increases along rows. If row-wise, each channel or record is a separate row and time increases along columns.
 

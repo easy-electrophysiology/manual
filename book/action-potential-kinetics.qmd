@@ -2,95 +2,104 @@
 title: "Action potential kinetics"
 ---
 
-*Action Potential Kinetics* analysis calculates AP threshold, amplitude, half-width, rise and decay-time, fast- and medium- after-hyperpolarization (fAHP, mAHP respectively).
+*Action Potential Kinetics* analysis calculates:
 
-Options for automatic detection and manual selection of APs are available. For details on automatic spike detection, please see the *Action Potential Counting* section of this manual.
+-   AP threshold
+-   amplitude
+-   half-width
+-   rise and decay time
+-   fast and medium afterhyperpolarization (fAHP and mAHP, respectively)
+-   maximum rise and decay slopes
+
+Options for automatic detection and manual selection of APs are available. For details on automatic spike detection, see [*Action potential counting*](action-potential-counting.qmd).
 
 ## Action potential detection
 
-The action potential kinetics algorithm works by first identifying the action potential peak, calculating the threshold, then calculating the additional measures.
+The action potential kinetics algorithm first identifies the action potential peak, calculates the threshold, and then calculates the additional kinetic measures. AP peaks are detected using the same spike-detection methods and settings as [*Action potential counting*](action-potential-counting.qmd#spike-detection-methods), including the amplitude, rise, fall, width, and minimum-distance criteria. Changes to these detection settings therefore apply to both analyses.
 
-![Action Potential Kinetics Analysis. Calculation of action-potential threshold, rise time, decay time, half-width, fAHP, and mAHP with customizable analysis options.](images/media/image28.PNG){width="6.695833333333334in" height="4.010416666666667in"}
+![Action Potential Kinetics Analysis. Calculation of action-potential threshold, rise time, decay time, half-width, fAHP, and mAHP with customizable analysis options.](images/media/image28.PNG){width="8.6in" height="4.7in"}
 
 ## Action potential kinetics overview
 
-![Action Potential Kinetics. An analyzed action potential with 200 kHz interpolation for rise time, decay time, and half-width.](images/media/image29.png)
+![Action Potential Kinetics. An analyzed action potential with $200\ \mathrm{kHz}$ interpolation for rise time, decay time, and half-width.](images/media/image29.png){width="50%"}
 
-**A** *Threshold --* The threshold value for the AP. The period to search for the threshold (prior to the peak) can be set in *Threshold Search Region (ms)*. The method used to detect the threshold can be set in *Threshold Detection Method*.
+[A]{.figure-key} **Threshold** -- The threshold value for the AP. The period before the peak to search for the threshold is set by [Threshold search region (before peak)](#threshold-search-region){.ui-label}. The detection method is set under [Thresholding](#thresholding){.ui-label}.
 
-**B** *Rise-time --* The rise-time is calculated as the time between two samples specified as a percentage of the AP amplitude (displayed with the purple cross; default 10-90). The percentage cut-offs can be set using the *Rise-time % Cutoff* option.
+[A & D]{.figure-key} **Amplitude** -- The AP peak voltage minus the threshold voltage.
 
-***C** Half-width* *--* This is the time between the two half-amplitude samples (on the rise and decay; displayed on the plot with black-bordered filled yellow circles). The nearest samples to the 'true' half-amplitude are used to calculate the FWHM; as such *Interpolate to 200 kHz for rise, decay and half-width* can greatly improve accuracy.
+[B]{.figure-key} **Rise time** -- The time between two samples specified as percentages of the AP amplitude (displayed with purple crosses; default $10$–$90\%$). The percentages are set by [Rise-time % cutoff (min/max)](#rise-time-cutoff){.ui-label}.
 
-**D** *Peak --* The action potential peak
+[C]{.figure-key} **Half-width** -- The time between the two half-amplitude samples on the rise and decay, displayed with black-bordered filled yellow circles. The nearest samples to the true half-amplitude are used to calculate the full width at half maximum (FWHM); [Interpolate to 200kHz for rise, decay and half-width](#interpolate-to-200-khz){.ui-label} can greatly improve accuracy.
 
-**E** *Decay-time --* The decay time is measured as the time between two samples specified as a percentage of AP amplitude (displayed with the blue cross, default 10-90). The percentage cutoffs can be specified with *Decay-time % cutoff* and the decay endpoint can be specified using *Measure decay time from peak to threshold (rather than fAHP)*.
+[D]{.figure-key} **Peak** -- The maximum voltage of the action potential.
 
-**F** *Afterhyperpolarization --* The fast- (fAHP) and medium (mAHP) afterhyperpolarization is calculated as baseline minus fAHP or mAHP value. The fAHP or mAHP value (displayed using an open green circle) is the minimum value within a search region that can be specified using the *After-hyperpolarization (AHP) options*.
+[E]{.figure-key} **Decay time** -- The time between two samples specified as percentages of the decay amplitude (displayed with blue crosses; default $10$–$90\%$). The percentages are set by [Decay-time % cutoff (min/max)](#decay-time-cutoff){.ui-label}. The decay endpoint is controlled by [Measure decay time from peak to threshold (rather than fAHP)](#measure-decay-time-from-peak-to-threshold){.ui-label}.
 
-## [Action Potential Kinetics Options]{.ui-label}
+[F]{.figure-key} **fAHP and mAHP** -- The fast and medium afterhyperpolarizations are calculated as the  minimum AHP voltage minus AP threshold voltage. Each voltage, displayed with an open green circle, is the minimum within the corresponding search period set under [After-hyperpolarization (AHP) Options](#ahp-options){.ui-label}.
 
-Options can be accessed from the [Action Potential Kinetics Options]{.ui-label} button at the bottom of the *Action Potential Kinetics* panel or by clicking [Options]{.ui-label} › [Action Potential Kinetics Options]{.ui-label}.
+[B & E]{.figure-key} **Maximum rise / decay slope** -- The maximum slopes during the AP rise and decay, calculated as linear regressions over $n$ samples. Enable and configure these results with [Calculate max slope](#calculate-max-slope){.ui-label}.
 
-*Threshold Detection Method*
+## Action Potential Kinetics Options
 
-A number of threshold detection methods are available from the [Thresholding]{.ui-label} dropdown menu (see *Appendix I* for mathematical formulas). Once an AP peak is detected, the detection method is applied to a region prior to the peak with window size specified in *threshold search region.* The detected threshold is plot on the AP with a closed red circle. The threshold is calculated as the Vm which maximizes or minimizes the following functions (see *Appendix I* for details):
+Options can be accessed from the [AP Kinetics Options]{.ui-label} button at the bottom of the *Action Potential Kinetics* panel or by clicking [Options]{.ui-label} › [Action Potential Kinetics Options]{.ui-label}.
 
--   *First Derivative* --
+### [Thresholding]{.ui-label} {#thresholding}
 
-    -   *Maximum* -- The maximum of the first derivative.
+A number of threshold detection methods are available from the [Thresholding]{.ui-label} dropdown menu (see [*Appendix I*](mathematical-formulas.qmd) for mathematical formulas). Once an AP peak is detected, the method is applied to the region before the peak set by [Threshold search region (before peak)](#threshold-search-region){.ui-label}. The detected threshold is plotted on the AP with a filled red circle. The threshold is calculated as the $V_\mathrm{m}$ that maximizes or minimizes the relevant function:
 
-    -   *Cutoff* -- The first sample that the first derivative passes the cutoff value*.* A value of 20 mV/ms usually works well.
+-   [First Derivative]{.ui-label}
 
--   *Third Derivative* --
+    -   **Max** -- The maximum of the first derivative.
 
-    -   *Maximum* -- The maximum of the third derivative.
+    -   **Cutoff** -- The first sample at which the first derivative passes the cutoff. A value of $20\ \mathrm{mV/ms}$ usually works well.
 
-    -   *Cutoff* -- The first sample that the third derivative passes the cutoff value.
+-   [Third Derivative]{.ui-label}
 
--   *Method I (Sekerli et al., 2004)* -- Method I of the phase-space methods introduced in Sekerli et al., 2004). Samples with first derivative under the lower value are excluded as potential thresholds; the default value typically works well.
+    -   **Max** -- The maximum of the third derivative.
 
--   *Method II (Sekerli et al., 2004).* First derivative lower bound may be specified similar to *Method I*.
+    -   **Cutoff** -- The first sample at which the third derivative passes the cutoff.
 
--   *Leading Inflection --* minimum of the first derivative.
+-   [Method I (Sekerli et al., 2004)]{.ui-label} -- Method I of the phase-space methods introduced by @sekerli2004. Samples with a first derivative below [1st Diff. Lower Bound]{.ui-label} are excluded as potential thresholds; the default value typically works well.
 
--   *Maximum Curvature --* introduced in Rossokhin and Saakian (1992).
+-   [Method II (Sekerli et al., 2004)]{.ui-label} -- The [1st Diff. Lower Bound]{.ui-label} may be specified as for Method I.
 
-*Threshold Search Region (ms)*
+-   [Leading Inflection]{.ui-label} -- The minimum of the first derivative.
 
-The period prior to the peak (in ms) to search the Vm data for the AP threshold .
+-   [Maximum Curvature]{.ui-label} -- The maximum-curvature method introduced by @rossokhin1992.
 
-*Half-width, rise- and decay-times*
+### [Threshold search region (before peak)]{.ui-label} {#threshold-search-region}
 
-The decay-time can be measured from the peak to fAHP (default) or to the closest sample in the repolarizing phase to the action potential threshold (when box checked).
+The period before the peak, in milliseconds, in which to search the $V_\mathrm{m}$ data for the AP threshold.
 
-*Interpolate to 200 kHz for rise, decay and half-width*
+### [Interpolate to 200kHz for rise, decay and half-width]{.ui-label} {#interpolate-to-200-khz}
 
-Interpolate the data (linear) to a sampling rate of 200 kHz prior to calculation of the half-width, rise and decay-times. This is recommended to improve accuracy of measured kinetics.
+Linearly interpolates the data to a sampling rate of $200\ \mathrm{kHz}$ before calculating half-width, rise time, and decay time. This is recommended to improve the accuracy of measured kinetics.
 
-*Measure decay-time from peak to threshold (rather than fAHP)*
+### [Measure decay time from peak to threshold (rather than fAHP)]{.ui-label} {#measure-decay-time-from-peak-to-threshold}
 
-When this option is set, the decay amplitude is measured from the AP peak to the fAHP. By default (i.e. when this option is unchecked), the decay amplitude is measured from the AP peak to the first sample that the decay crosses the AP threshold. The *Decay-time % cutoff* is calculated on the decay amplitude.
+When selected, the decay amplitude is measured from the AP peak to the first sample at which the repolarizing phase reaches the AP threshold. By default, when this option is not selected, the decay amplitude is measured from the AP peak to the fAHP. [Decay-time % cutoff (min/max)](#decay-time-cutoff){.ui-label} is applied to this decay amplitude.
 
-*Rise-time % Cutoff*
+### [Rise-time % cutoff (min/max)]{.ui-label} {#rise-time-cutoff}
 
-By default, the 10-90 rise-time is calculated. The percentage cutoff values for the rise-time can be changed using this option.
+By default, the $10$–$90\%$ rise time is calculated. The minimum and maximum percentage cutoffs can be changed with this option.
 
-*Decay-time % Cutoff*
+### [Decay-time % cutoff (min/max)]{.ui-label} {#decay-time-cutoff}
 
-By default, a 10-90 decay-time is calculated from the decay amplitude (time from peak to fAHP or threshold value, depending on settings). These percentage cutoff values for the decay-time can be changed using this option.
+By default, the $10$–$90\%$ decay time is calculated from the decay amplitude, measured from the peak to the fAHP or threshold according to the selected endpoint option. The minimum and maximum percentage cutoffs can be changed with this option.
 
-*Calculate Max Slope*
+### [Calculate max slope]{.ui-label} {#calculate-max-slope}
 
-The maximum rise and decay for each AP will be calculated if this option is selected (it is not calculated by default as it can increase analysis time).
+The maximum rise and decay slopes for each AP are calculated when this option is selected. It is disabled by default because it can increase analysis time.
 
-The maximum slope is calculated as a regression over n points. The number of samples to calculate the regression over can be specified separately for the rise and decay.
+The maximum slope is calculated as a linear regression over $n$ points. [Number of samples (rise / decay)]{.ui-label} sets $n$ separately for the rise and decay.
 
-*After-hyperpolarization (AHP) options*
+### [After-hyperpolarization (AHP) Options]{.ui-label} {#ahp-options}
 
-Set the time period to search for the fast- and medium- afterhyperpolarization (fAHP and mAHP respectively). The fAHP and mAHP are plot on the AP with open green circles.
+Set the periods after the AP peak in which to search for the fast and medium afterhyperpolarizations with [fAHP search period (ms; start/stop)]{.ui-label} and [mAHP search period (ms; start/stop)]{.ui-label}. The fAHP and mAHP are plotted on the AP with open green circles.
 
-The mAHP is defined as the period after the AP peak (to measure the voltage sag at end of a current injection to which mAHP sometimes refers, see *Input Resistance,* Sag / Hump analysis).
+The mAHP is defined as the voltage during period after the AP peak. To measure the voltage sag at the end of a current injection, to which mAHP sometimes refers, see [*Sag and hump analysis*](input-resistance.qmd#sag-and-hump-analysis) in *Input resistance*.
+
+[Reset to Defaults]{.ui-label} restores the default Action Potential Kinetics options. [Save as Default]{.ui-label} saves the current options as the defaults for future use.
 
 ## Phase plot analysis
 
@@ -98,42 +107,51 @@ Phase plot analysis of action potentials is available under *AP Kinetics* analys
 
 The phase plot analysis window contains two panels. On the left panel is displayed the currently selected AP, while the right panel contains the phase-space plot of the currently selected AP.
 
-*Selecting APs*
+### Selecting APs
 
-All analyzed APs can be selected for phase-space analysis. APs can be selected by iterating through all APs using the [<]{.ui-label} or [>]{.ui-label} buttons, or directly inputting the Record / AP number into the [Record / AP number]{.ui-label} boxes.
+All analyzed APs can be selected for phase-space analysis. Use the [<]{.ui-label} and [>]{.ui-label} buttons to move through the APs, or enter a value directly in the [Record]{.ui-label} or [AP]{.ui-label} box.
 
-The window size (+/-) (ms) allows adjustment of the windowing for the selected AP. Increasing or decreasing the AP window will change both the AP plot and the phase-space plot, affecting the phase-plot results. In practice, this is often used to adjust the start-point of the analysis close to the AP threshold.
+[Window Size (R / L) (ms)]{.ui-label} adjusts the periods shown to the right and left of the selected AP. Changing this window updates both the AP plot and the phase-space plot and can affect the phase-plot results. In practice, the left window is often adjusted to place the start of the analysis close to the AP threshold.
 
 In theory, it is also possible to increase the window to create phase-space plots of multiple APs. However, the phase-space plot parameters will be calculated only once on a phase-space plot.
 
-![Phase Analysis Dialog. The action potential is shown on the left, windowed by 1.7 ms on either side of the peak. The phase-space plot is shown on the right.](images/media/image30.PNG){width="5.934763779527559in" height="3.576388888888889in"}
+![Phase Analysis Dialog. The action potential is shown on the left, windowed by $1.7\ \mathrm{ms}$ on either side of the peak. The phase-space plot is shown on the right.](images/media/image30.PNG){width="7.7in" height="4.6in"}
 
-## *Phase plot analysis*
+For HEKA `.dat` files, [Add zero offset (HEKA)]{.ui-label} applies the recorded channel offset to the displayed AP. [Delete AP]{.ui-label} removes the selected AP from the analysis.
 
-Phase-space plot graphs the first derivative of the Vm (ΔVm, in mV/ms) (y-axis) against the Vm (x-axis). This is interpreted as the rate at which the Vm changes at each voltage level.
+### Analysis
 
-When the Vm increases (left-to-right on the x-axis) the positive first derivative indicates the rate-of-increase in the positive direction (i.e. the rising phase of the AP), and we can see the dynamics of the AP rise. The negative first derivative indicates the negative rate-of-change (i.e. the falling phase of the AP). We can see the AP hyperpolarization, the negative rate-of Vm change occurring at voltages smaller than \~-40 mV.
+A phase-space plot graphs the first derivative of $V_\mathrm{m}$ ($\mathrm{d}V_\mathrm{m}/\mathrm{d}t$, in $\mathrm{mV/ms}$) on the y-axis against $V_\mathrm{m}$ on the x-axis. This represents the rate at which $V_\mathrm{m}$ changes at each voltage.
 
-*Phase Plot Parameters*
 
-The calculated parameters from the phase-space plot are the Threshold (see above), maximum ΔVm, minimum ΔVm and maximum Vm. Note the threshold and maximum Vm are equivalent to the AP threshold and peak.
+### Phase plot parameters
 
-Results can be obtained in a number of ways:
+The phase-space plot provides the following parameters:
 
-Right-click the plot, select [Copy Parameters]{.ui-label} to copy the Record, AP number, AP peak time, and (ΔVm, Vm) coordinates (i.e. x, y coordinates) of the Threshold, maximum ΔVm, minimum ΔVm and maximum Vm to clipboard.
+-   **Threshold** -- The $V_\mathrm{m}$ at which the first derivative, $\mathrm{d}V_\mathrm{m}/\mathrm{d}t$, first crosses the cutoff set by [Threshold]{.ui-label}. This provides a phase-plot estimate of the AP threshold.
 
-[Copy Data]{.ui-label} will copy the above parameters, as well as the raw values of all plots (i.e. the AP (time and Vm) and phase-space plot (ΔVm and Vm). Note the Vm will be equivalent unless interpolated.
+-   **Maximum $\mathrm{d}V_\mathrm{m}/\mathrm{d}t$** -- The maximum positive rate of $V_\mathrm{m}$ change.
 
-[Save All Data]{.ui-label} will save the AP phase plot parameters, AP and phase-plot values for every analyzed AP into an excel or `.csv` file.
+-   **Minimum $\mathrm{d}V_\mathrm{m}/\mathrm{d}t$** -- The maximum negative rate of $V_\mathrm{m}$ change.
 
-*Analysis Options*
+-   **Maximum $V_\mathrm{m}$** -- The maximum AP voltage, equivalent to the AP peak.
 
-[Cubic Spline Interpolation:]{.ui-label} Interpolates the phase-space plot, in a smooth manner (ensuring up to 3rd derivatives at interpolated 'knots' are continuous, interpolation factor 100). This can be useful when the AP is not well sampled.
+### Exporting results
 
-[Threshold (mV/ms):]{.ui-label} A simple thresholding approach is used to calculate the AP threshold from the phase-space plot. The AP threshold is taken as the Vm at which the first derivative crosses this threshold setting (mV/ms).
+-   [Copy Parameters]{.ui-label} -- Right-click the plot and select this action to copy the record, AP number, AP peak time, and $(V_\mathrm{m}, \mathrm{d}V_\mathrm{m}/\mathrm{d}t)$ coordinates of the threshold, maximum $V_\mathrm{m}$, maximum $\mathrm{d}V_\mathrm{m}/\mathrm{d}t$, and minimum $\mathrm{d}V_\mathrm{m}/\mathrm{d}t$.
 
-*Graph Options*
+-   [Copy Data]{.ui-label} -- Copies the parameters above, the AP-plot data (time and $V_\mathrm{m}$), and the phase-space data ($V_\mathrm{m}$ and $\mathrm{d}V_\mathrm{m}/\mathrm{d}t$). Without interpolation, the phase-space $V_\mathrm{m}$ values equal the AP-plot $V_\mathrm{m}$ values. With interpolation enabled, the phase-space values are cubic-spline interpolated.
 
-[Show Grid:]{.ui-label} Toggle on and off the AP plot and phase-plot grid
+-   [Save All Data]{.ui-label} -- Saves the parameters, AP-plot data, and phase-space data described above for every analyzed AP to an `.xlsx` or `.csv` file.
 
-[Graph Line Thickness:]{.ui-label} Adjust the thickness of the AP plot and phase-plot graph lines. Note due to a bug in the underlying graphing software, line thickness > 1 may reduce performance.
+### Analysis options
+
+-   [Cubic Spline Interpolation]{.ui-label} -- Smoothly interpolates the phase-space plot with an interpolation factor of $100$, ensuring continuity through the second derivative at interpolated knots. This can be useful when the AP is not well sampled.
+
+-   [Threshold]{.ui-label} -- Sets the first-derivative cutoff, in $\mathrm{mV/ms}$, used to calculate the AP threshold from the phase-space plot. The AP threshold is the $V_\mathrm{m}$ at which the first derivative crosses this value.
+
+### Graph options
+
+-   [Show Grid]{.ui-label} -- Toggles the grid on the AP and phase-space plots.
+
+-   [Graph Line Thickness]{.ui-label} -- Adjusts the AP and phase-space plot line widths. Due to a limitation in the underlying graphing software, line thicknesses $> 1$ may reduce performance.

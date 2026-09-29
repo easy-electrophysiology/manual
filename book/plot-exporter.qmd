@@ -2,8 +2,8 @@
 title: "Exporting plots"
 ---
 
-All figures in Easy Electrophysiology are exportable, through right-clicking the plot and selecting the [Export]{.ui-label} option. This window provides the option to export the plot data as a `.csv` (comma-separated value file), many possible standard image formats (including `.jpeg`, `.png`, `.tiff`, `.bmp` and more), or as `.svg` (scalable vector graphics) format.
+All figures in Easy Electrophysiology are exportable, by right-clicking the plot and selecting the [Export]{.ui-label} option. This window provides the option to export the plot data as a `.csv` (comma-separated value file), many possible standard image formats (including `.jpeg`, `.png`, `.tiff`, `.bmp` and more), or as `.svg` (scalable vector graphics) format.
 
 The larger the width and height of the exported image, the better its quality will be. The high-quality and editable `.svg` format is suitable for small data plots, such as the Ri plot, but not raw data plots displayed on the main plot because the resulting files will be very large and take a long time to save.
 
-![Plot Export Window. Right-click any plot and choose [Export]{.ui-label} to open this window.](images/media/image40.png){width="4.865671478565179in" height="3.6491196412948383in"}
+![Plot Export Window. Right-click any plot and choose [Export]{.ui-label} to open this window.](images/media/image40.png){width="5.8in" height="4.4in"}
