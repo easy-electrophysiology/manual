@@ -15,3 +15,10 @@ In the [Table]{.ui-label} view, options for saving analysis results can be found
 There are two zoom and pan modes available when using the [Plot]{.ui-label} tab graph to explore your data. By default, [One Button]{.ui-label} mode is selected and you can zoom by clicking anywhere on the plot and dragging the mouse to draw a box to zoom in to. To unzoom, right-click the graph and select [Undo Zoom]{.ui-label}.
 
 In the second mode, both mouse buttons can be used to navigate the graph. To access it, right-click anywhere on the graph and select [Mouse Mode]{.ui-label} › [Two button (pan left, zoom right)]{.ui-label}. To zoom, hold down the right mouse button and drag the mouse to dynamically zoom in and out. To pan, click and hold down the left mouse button and drag to move the plot. You can still use [Undo Zoom]{.ui-label} in this mode.
+
+## Dark mode
+
+![*[AP kinetics](action-potential-kinetics.qmd)* in dark mode.](images/media/dark-mode-example.png)
+
+
+Dark mode can be enabled by selecting [View]{.ui-label} › [Dark Mode]{.ui-label}. This applies a dark theme to the interface and plots.
