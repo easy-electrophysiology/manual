@@ -28,8 +28,16 @@ Use the slider to adjust the relative sizes of the upper and lower plots. [Swap 
 
 Use [Width]{.ui-label} to set the line thickness of the upper and lower plots. Values above the default of 1.0 can significantly reduce graphics performance.
 
-## Limit the view range for performance
+## Performance
 
-For single-record voltage-clamp data, the entire dataset can be displayed on the graph at once. Long recordings can contain large amounts of data and reduce performance. [Limit view range for performance (Single-record files only)]{.ui-label} sets a maximum window length so that only a subset of the data is shown.
+### Adaptive Display Downsampling
+
+Downsamples the data shown on the main plot (as well as the plots in [Detrend](detrend.qmd){.ui-label} and [Filter](filter.qmd){.ui-label}) when zoomed out. As you zoom in, the downsampling factor is reduced until the data are displayed at full resolution. This affects only the display and does not alter the underlying data.
+
+It substantially improves plotting performance and makes [Limit view range for performance]{.ui-label} and [Split single long recording into multiple records](loading-files.qmd#improve-performance-for-large-files){.ui-label} somewhat redundant.
+
+### Limit the view range for performance
+
+For single-record voltage-clamp data, the entire dataset can be displayed on the graph at once. Long recordings can contain large amounts of data and reduce performance. [Limit view range for performance]{.ui-label} sets a maximum window length so that only a subset of the data is shown.
 
 The default limit is 500k samples. You can change the maximum window size or turn this option off. Changes take effect when the next file is loaded.

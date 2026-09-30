@@ -58,6 +58,8 @@ Here automatic detection can be overridden and the selected analysis options wil
 
 ## Improve performance for large files
 
+These settings are now largely redundant following the introduction of [Adaptive Display Downsampling](graph-options.qmd#adaptive-display-downsampling){.ui-label} in `v2.9.0`, which greatly improves performance when displaying large files. Automatic splitting of large files is therefore turned off by default from `v2.9.0`.
+
 Use [Large File Settings]{.ui-label} to reshape a large single-record file into multiple smaller records on loading. Large single-record files may run slowly, and splitting them can significantly improve performance:
 
 ![The [Large File Settings]{.ui-label} window. Options configure how a single-record file is reshaped on loading.](images/media/image4.PNG){width="4.125575240594926in" height="2.604529746281715in"}
