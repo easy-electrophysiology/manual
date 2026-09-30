@@ -39,10 +39,12 @@ one of two methods:
 
 The [Window]{.ui-label} provides a selection of standard windows (or no window)
 to be applied to the signal before calculating the spectrum, to reduce
-spectral leakage. [Axis as dB]{.ui-label} displays power in decibels,
+spectral leakage. 
+
+[Axis as dB]{.ui-label} displays power in decibels,
 calculated as $10 \times \log_{10}(\mathrm{power})$.
 
-Welch's method has the following additional parameters:
+Welch's method also has the following additional parameters:
 
 - [Samples per segment]{.ui-label} -- Sets the segment length for
   [Welch's method]{.ui-label}. Longer segments increase frequency resolution,
@@ -64,7 +66,7 @@ computing the power spectral density for each segment.
 
 ![](images/media/spectral-analysis-spectrogram-data.png){width="100%"}
 
-![](images/media/spectral-analysis-example-data.png){width="70%"}
+![](images/media/spectral-analysis-example-data.png){style="display: block; width: 87.27%; margin-left: 3.27%; margin-right: auto;"}
 
 Spectrogram example. Power spectral density is displayed across time and
 frequency. The selected data from which the spectrogram is computed from is shown below it.

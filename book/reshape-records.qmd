@@ -9,7 +9,6 @@ Selecting [Concatenate all records into a single record]{.ui-label} will combine
 Alternatively, a single-record dataset can be split into multiple records by selecting [Expand data from a single record to multiple records]{.ui-label}. This is useful for improving performance when plotting long records, or handling `.abf` files exported from other software (e.g. Igor or WinWCP) that automatically concatenate all records.
 
 ::: {.callout-warning}
-Long single record files (containing millions of datapoints) can slow down the software due to the overhead associated with displaying the data on the graph. A simple workaround is to reshape the single record into multiple, smaller records. 
 
 This may affect *Events* analysis. When the resulting record times are non-contiguous, inter-event intervals used for frequency cumulative-probability and histogram plots are not calculated across record boundaries. If all $N$ records contain events, this removes $N - 1$ intervals. Intervals continue to be calculated across records when their times are contiguous. In large files with hundreds or thousands of events, omitting these boundary intervals is unlikely to meaningfully affect the results.
 :::
