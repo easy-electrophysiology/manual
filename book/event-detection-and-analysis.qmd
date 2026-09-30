@@ -182,7 +182,7 @@ The minimum inter-event interval (IEI) between event peaks in milliseconds. For 
 
 ![Event Detection Results. Detected event peaks are marked with filled red circles. The lower threshold is shown in red and the baseline in blue. Event baselines and decay endpoints can be adjusted in [Edit Kinetics]{.ui-label} mode.](images/media/image14.PNG){width="8.6in" height="4.7in"}
 
-When fitting a monoexponential function to the event decay, the end of the event is estimated as the closest datapoint to the baseline (using a weighting and smoothing algorithm to account for noise and complex waveforms). This end-of-event point is indicated with a closed purple circle on the graph. The monoexponential function is fit between the event peak and the end-of-event datapoint. Here, the *decay search period* indicates the period to search for the end-of-event datapoint.
+Sets the search period after the event peak used to determine the end of an event (see [Decay Endpoint search method](#decay-endpoint-search-method){.ui-label}). This end-of-event point is indicated with a closed purple circle on the graph. The monoexponential function is fit between the event peak and the end-of-event datapoint. Here, the *decay search period* indicates the period to search for the end-of-event datapoint.
 
 If a monoexponential curve is not fit to the decay, [Decay Search Period (ms)]{.ui-label} defines the search region, starting at the event peak, for the *Decay* times value.
 
