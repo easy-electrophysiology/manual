@@ -96,4 +96,4 @@ The order in which the channel data are arranged must also be specified (for exa
 
 - [Has header]{.ui-label}: Select when channels or records have a header row (for column-wise data) or header column (for row-wise data). The header is ignored when loading. Only one header row or column is supported; multi-line headers must be deleted before loading.
 
-- [Has indices]{.ui-label}: Select when the time dimension has an index column (for row-wise data) or index row (for column-wise data). The indices are ignored when loading.
+- [Has indices]{.ui-label}: Select when the time dimension has an index row (for row-wise data) or index column (for column-wise data). The indices are ignored when loading.
