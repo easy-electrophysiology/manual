@@ -20,8 +20,7 @@ subset of the data selected using a region:
   This option is available only when the records are time-contiguous.
 
 - [Current record]{.ui-label} uses only the data within the displayed region on
-  the current record will be used for power spectrum or spectrogram
-  computation.
+  the current record for power spectrum or spectrogram computation.
 
 ## Power spectrum
 
@@ -69,7 +68,7 @@ computing the power spectral density for each segment.
 ![](images/media/spectral-analysis-example-data.png){style="display: block; width: 87.27%; margin-left: 3.27%; margin-right: auto;"}
 
 Spectrogram example. Power spectral density is displayed across time and
-frequency. The selected data from which the spectrogram is computed from is shown below it.
+frequency. The selected data from which the spectrogram is computed is shown below it.
 
 :::
 
