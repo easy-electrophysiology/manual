@@ -36,7 +36,7 @@ The first step in template matching is to generate the template event. Click [1.
 
 -   **Width** -- the width (in $\mathrm{ms}$) of the event template.
 
-The best way to generate a template event is to fit the biexponential function to a recorded event from the dataset. An event from the data can be selected by clicking [Select Data]{.ui-label} and drawing around an event to fit. When selecting an event it is helpful to change the graph zoom settings to [Two Button (Pan Left, Zoom Right)]{.ui-label} by right-clicking on the plot and choosing [Mouse Mode]{.ui-label} › [Two Button (Pan Left, Zoom Right)]{.ui-label}. This allows the left button to zoom while selecting data with the right button.
+The best way to generate a template event is to fit the biexponential function to a recorded event from the dataset. An event from the data can be selected by clicking [Select Data]{.ui-label} and drawing around an event to fit. When selecting an event it is helpful to change the graph zoom settings to [Two Button (Pan Left, Zoom Right)]{.ui-label} by right-clicking on the plot and choosing [Mouse Mode]{.ui-label} › [Two Button (Pan Left, Zoom Right)]{.ui-label}. This allows you to zoom with the right mouse button while selecting data with the left mouse button.
 
 ![Generate Template. Selected data are shown in red and the current template fit in black. Coefficients for the fit are displayed in the input boxes.](images/media/image9.png)
 
@@ -182,7 +182,7 @@ The minimum inter-event interval (IEI) between event peaks in milliseconds. For 
 
 ![Event Detection Results. Detected event peaks are marked with filled red circles. The lower threshold is shown in red and the baseline in blue. Event baselines and decay endpoints can be adjusted in [Edit Kinetics]{.ui-label} mode.](images/media/image14.PNG){width="8.6in" height="4.7in"}
 
-When fitting a monoexponential function to the event decay, the end of the event is estimated as the closest datapoint to the baseline (using a weighting and smoothing algorithm to account for noise and complex waveforms). This end-of-event point is indicated with a closed purple circle on the graph. The monoexponential function is fit between the event peak and the end-of-event datapoint. Here, the *decay search period* indicates the period to search for the end-of-event datapoint.
+Sets the search period after the event peak used to determine the end of an event (see [Decay Endpoint search method](#decay-endpoint-search-method){.ui-label}). This end-of-event point is indicated with a closed purple circle on the graph. The monoexponential function is fit between the event peak and the end-of-event datapoint. Here, the *decay search period* indicates the period to search for the end-of-event datapoint.
 
 If a monoexponential curve is not fit to the decay, [Decay Search Period (ms)]{.ui-label} defines the search region, starting at the event peak, for the *Decay* times value.
 

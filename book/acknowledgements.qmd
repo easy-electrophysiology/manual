@@ -6,7 +6,7 @@ For those using Easy Electrophysiology in published research, our RRID is [RRID:
 
 ## Neo
 
-Easy Electrophysiology uses Neo [@garcia2014], a data-loading package that handles many electrophysiological filetypes.
+Easy Electrophysiology uses Neo [@garcia2014], a data-loading package that handles many electrophysiological filetypes. Please also [cite Neo](https://neo.readthedocs.io/en/stable/read_and_analyze.html#citing-neo) when publishing research that uses Easy Electrophysiology.
 
 We also thank the contributing authors of the relevant Neo submodules including Forrest Collman, Harald Hentschke (Axon files) and Jeffrey Gill (AxoGraph files).
 

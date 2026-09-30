@@ -11,3 +11,5 @@ Options from previous versions (< `v2.3.0`) of Easy Electrophysiology are provid
 - [Legacy decay detection -- closest point to baseline]{.ui-label}: Selecting this option will use the previous decay endpoint detection method, in which the closest point to the baseline within the [decay search period (ms)]{.ui-label} is used. No adjustment is made for the position of the next event.
 
 - [Legacy frequency data bin-sizing]{.ui-label}: Prior to version `v2.3.0-beta`, a data range slightly larger than the true range was used for cumulative probability data. This was removed to make bin-sizing clearer to the user.
+
+- [Use legacy styling (dark mode will not be available)]{.ui-label}: On Windows, this restores the interface styling used before `v2.9.0` changed to to `Fusion`. 

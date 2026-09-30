@@ -45,6 +45,8 @@ The *Events Overlay* window displays all detected events on the same plot, provi
 
 In the *Events Overlay* window, the currently selected individual event is shown in blue. When the window first opens, the individual event mode is set to [Selected]{.ui-label}. Clicking the left or right arrow buttons in [Selected]{.ui-label} mode will scroll through all events in numerical order. Changing the selected event through the *Events Overlay* window also scrolls through the individual events shown on the *Events Analysis* window, and vice versa.
 
+[Show Events by Group]{.ui-label} displays only events assigned to a selected [group](event-detection-and-analysis.qmd#grouping-detected-events) (or all events except that group when [Exclude group]{.ui-label} is selected).
+
 ![Events Overlay. All detected events are overlaid in black. The selected event is shown in blue in Most Distant mode and has the greatest L2 distance from the average event.](images/media/image20.PNG){width="100%"}
 
 Alternatively, individual events can be scrolled through in [Most Distant]{.ui-label} mode. The selected event will become the most distant event; here, distance is measured as the L2 norm from the average of all events. Clicking the left or right buttons will scroll through selected events based on their distance (in the order most to least distant). This can be a very useful way to detect and remove outlier events.

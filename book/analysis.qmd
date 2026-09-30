@@ -6,7 +6,7 @@ title: "Statistics"
 
 Kolmogorov-Smirnov (KS) tests compare one sample with a normal distribution or compare two samples with each other. Open the analysis from [Analysis]{.ui-label} › [Kolmogorov-Smirnov]{.ui-label}. Raw data can be copied directly into the input table; the cumulative distribution does not need to be calculated first.
 
-The KS statistic, denoted $D$, is the maximum absolute difference between two cumulative distribution functions. For a one-sample test, it compares the sample's empirical CDF with a specified theoretical CDF; for a two-sample test, it compares the empirical CDFs of the two samples.
+For a two-tailed test, the KS statistic, denoted $D$, is the maximum absolute difference between two cumulative distribution functions (CDFs). One-sided tests use the maximum difference in the selected direction. For a one-sample test, the sample's empirical CDF is compared with a specified theoretical CDF; for a two-sample test, the empirical CDFs of the two samples are compared.
 
 ### Selecting a test
 
@@ -16,7 +16,9 @@ The KS statistic, denoted $D$, is the maximum absolute difference between two cu
 
 	-   [Supply population M and SD]{.ui-label} -- Uses a supplied population mean and standard deviation.
 
--   [Two Datasets (compare with each other)]{.ui-label} -- Compares the empirical CDFs of [Dataset 1]{.ui-label} and [Dataset 2]{.ui-label}. Set the alternative hypothesis to [Two-Tailed]{.ui-label}, [Dataset 1 Greater]{.ui-label}, or [Dataset 1 Less]{.ui-label}.
+-   [Two Datasets (compare with each other)]{.ui-label} -- Compares the empirical CDFs of [Dataset 1]{.ui-label} and [Dataset 2]{.ui-label}. Set the alternative hypothesis to [Two-Tailed]{.ui-label}, [Dataset 1 CDF Greater]{.ui-label}, or [Dataset 1 CDF Less]{.ui-label}.
+
+    “Greater” and “Less” refer to the CDFs. For a distribution shifted towards smaller measured values, its CDF is greater; for a distribution shifted towards larger values, its CDF is smaller.
 
 Easy Electrophysiology uses `scipy.stats.kstest` for one-sample tests with supplied population parameters and for two-sample tests. When the mean and standard deviation are estimated from the sample, it uses `statsmodels.stats.diagnostic.lilliefors`.
 

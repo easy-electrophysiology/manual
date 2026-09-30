@@ -42,6 +42,7 @@ book:
           text: "AP kinetics"
         - input-resistance.qmd
         - burst-analysis.qmd
+        - spectral-analysis.qmd
         - analysis.qmd
         - analyzing-in-batch-mode.qmd
     - part: "Data tools"
