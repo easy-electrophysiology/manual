@@ -30,39 +30,34 @@ quarto render book    # one-off build into book/_site/
 The site keeps the newest manual at the root URL and stores each released
 manual under `/versions/<version>/`.
 
-- Commits and pushes to `main` do **not** publish or freeze documentation.
-- Creating a tag alone does **not** publish or freeze documentation.
-- Publishing a GitHub Release whose tag is `manual-vX.Y.Z` publishes **Latest**,
-  creates `/versions/X.Y.Z/`, and adds that release to the version dropdown.
-- Existing versioned snapshots are preserved by later deployments.
+- Commits and pushes to `main` do not publish documentation.
+- Pushing a version tag such as `v2.9.0` runs the `Publish manual` workflow.
+- The workflow publishes Latest, creates `/versions/2.9.0/`, and adds the
+  version to the manifest while preserving previous versions and their entries.
+  The version dropdown is currently hidden, and the 2.8.0 web snapshot is retired.
+- Publishing a GitHub Release is optional and does not trigger another deployment.
 
 ### Release a new manual version
 
 1. Update the files under `book/` and preview them locally.
-2. Commit and push the finished documentation to `main`.
+2. Commit and push the finished documentation and workflow to `main`.
 3. Create and push a version tag from that exact commit:
 
 ```bash
-git tag manual-v2.8.0
-git push origin manual-v2.8.0
+git tag v2.9.0
+git push origin refs/tags/v2.9.0
 ```
 
-4. On GitHub, open **Releases → Draft a new release**.
-5. Choose the existing `manual-v2.8.0` tag, add release notes, and click
-   **Publish release**. Do not select **Set as a pre-release** unless intended.
-6. Check the **Actions** tab. When the `Publish manual` workflow completes, the
-   root URL shows 2.8.0 as Latest and the dropdown links to the frozen 2.8.0
-   snapshot.
+4. Check **Actions → Publish manual** for successful completion.
+5. Optionally publish a GitHub Release using that existing tag.
 
-The equivalent GitHub CLI command for steps 4–5 is:
+For an existing tag that has not been deployed, run **Actions → Publish manual
+→ Run workflow** from `main`, supplying the tag (for example `v2.9.0`) as
+`release_tag`. This uses the current workflow to render the tagged source.
+For documentation corrections without moving a release tag, optionally supply
+`source_ref` with the corrected commit or branch. This updates Latest and that
+version's web snapshot while leaving the Git tag and GitHub Release unchanged.
 
-```bash
-gh release create manual-v2.8.0 --title "Manual 2.8.0" --generate-notes
-```
-
-Use a new version number for every release. A published version is treated as
-immutable; fix documentation for an old application version by releasing a new
-patch version instead of replacing its existing snapshot.
-
-The site is served at the live URL above. Deployment status is visible under
-the repository's **Actions** tab.
+Use a new version number for each release. Manual redeployment replaces that
+version's snapshot and makes it Latest, so only redeploy an older version when
+that is intentional.

@@ -8,4 +8,4 @@ Removing the baseline is accomplished by subtracting a baseline value from the d
 
 Clicking [Apply]{.ui-label} will apply baseline removal for every record in the file. For each record, the baseline is calculated and subtracted separately.
 
-If your file has two channels (i.e. Vm and Im) clicking the checkbox option will also calculate and remove the baseline from the second data channel (across the time window specified on the primary data channel).
+If your file has two channels (i.e. $V_\mathrm{m}$ and $I_\mathrm{m}$) and the bottom checkbox is clicked, it will also calculate and remove the baseline from the second data channel (across the time window specified on the primary data channel).

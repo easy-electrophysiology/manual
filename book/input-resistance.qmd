@@ -4,62 +4,52 @@ title: "Input resistance"
 
 *Input Resistance* analysis provides a convenient interface for measuring the input resistance and voltage sag and hump in current-clamp mode.
 
-To calculate input resistance the Vm change (ΔVm) and Im change (ΔIm) must be determined from the data (in the case of ΔIm these can also be input manually). The input resistance is calculated as the slope of a linear ordinary least squares fit, X = ΔIm, y = ΔVm (calculated with SciPy's *linregress,* modelling the intercept*).* If only one record is analyzed, Ri is calculated as V / I.
+To calculate input resistance, the changes in membrane voltage ($\Delta V_\mathrm{m}$) and membrane current ($\Delta I_\mathrm{m}$) must be determined from the data; $I_\mathrm{m}$ injections can also be entered manually. Input resistance is calculated as the slope of an ordinary least-squares linear fit, where $x = \Delta I_\mathrm{m}$ and $y = \Delta V_\mathrm{m}$, using SciPy's `linregress` with a fitted intercept. If only one record is analyzed, $R_\mathrm{i}$ is calculated as $\Delta V_\mathrm{m} / \Delta I_\mathrm{m}$.
 
-For input resistance calculations, voltage is specified in mV and current in nA so that input resistance is in MOhms.
+For input resistance calculations, voltage is specified in $\mathrm{mV}$ and current in $\mathrm{nA}$, giving input resistance in $\mathrm{M\Omega}$.
 
-Options for analyzing the voltage sag (for negative Im injections) or hump (for positive Im injections) are also provided.
+Options for analyzing the voltage sag (for negative $I_\mathrm{m}$ injections) or hump (for positive $I_\mathrm{m}$ injections) are also provided.
 
 ## Calculating ΔVm and ΔIm
 
-Two methods to calculate ΔVm and *ΔIm* from the data are provided:
+The [Im Period to Average]{.ui-label} menu provides three methods for obtaining $\Delta I_\mathrm{m}$ and $\Delta V_\mathrm{m}$:
 
-[From Data (Bounds)]{.ui-label}
+-   [From Data (Bounds)]{.ui-label} -- Calculates $\Delta V_\mathrm{m}$ and $\Delta I_\mathrm{m}$ as the difference between data in the [Baseline]{.ui-label} and [Measure]{.ui-label} regions. These regions are displayed automatically on the $V_\mathrm{m}$ and $I_\mathrm{m}$ plots. The baseline is the mean between the two baseline-region boundaries and is displayed as a horizontal red line. The measured value is the mean of the data within the measure region.
 
-The ΔVm and ΔIm are calculated as the difference between the data calculated within the [measure]{.ui-label} and [baseline]{.ui-label} regions. Baseline and measure regions are automatically displayed on the Vm and Im graphs. The baseline is calculated as the mean between the two boundaries of the baseline region -- the baseline is displayed on the graph as a horizontal red line. The measured data (Im or Vm) is calculated as the mean of the data contained within the [measure]{.ui-label} boundary region.
+	Alternatively, the current-injection protocol start and stop times can be used to position the baseline and measure regions.
 
-Alternatively, the Im injection protocol start and stop times can be used to set the baseline and measure regions.
+-   [From Data (Start/Stop)]{.ui-label} -- Uses the known start and stop times of the current injection. Select this mode and click [Set Im]{.ui-label} to enter the times. The baseline is averaged from the start of the record to the start of the $I_\mathrm{m}$ injection, and the measured data are averaged from the start of the injection to its end.
 
-[From Data (Start / Stop)]{.ui-label}
+	A padding of $n$ samples around the injection start and stop times accounts for a non-instantaneous $\Delta I_\mathrm{m}$. Set the padding under [Options]{.ui-label} › [Misc. Options]{.ui-label} › [Current Clamp User-Im Protocol Options]{.ui-label}; the default is $10$ samples.
 
-The known start and stop times of the current injection can be input directly (by clicking [From Data (Start / Stop)]{.ui-label} in the dropdown menu and [Set Im]{.ui-label}). The baseline is calculated as the average from the start of the record to the start of the Im injection. The measured data is calculated as the average from the start of the Im injection to the end. A padding of *n* samples around the Im injection start and stop times is included to account for the non-
+-   [User-Input]{.ui-label} -- Allows current-injection steps to be entered directly in the case the trace is not available. Select this mode, click [Set Im]{.ui-label}, and enter the $I_\mathrm{m}$ injection for each record. The number of entered injections must match the number of records selected for analysis.
 
-instantaneous ΔIm. The number of samples to pad the calculation can be set by clicking [Options]{.ui-label} › [Misc. Options]{.ui-label} › [User-Im Protocol Options]{.ui-label} (default 10).
+	For rheobase analysis in [*Action potential counting*](action-potential-counting.qmd), a ramp protocol can be specified for exact rheobase calculation by selecting the [Ramp]{.ui-label} tab and entering the current-stimulation protocol.
 
-![Input Resistance Analysis. Regions used to calculate the changes in membrane voltage and current are displayed on the graph. Each change is measured between the baseline and experimental regions.](images/media/image26.png)
+![Input Resistance Analysis. Regions used to calculate the changes in membrane voltage and current are displayed on the graph. Each change is measured between the baseline and experimental regions.](images/media/image26.png){width="100%"}
 
-## User input Im
+## Region and current options
 
-[User-Input]{.ui-label}
+-   [Round Im]{.ui-label} -- When current is calculated from the data, the measured $I_\mathrm{m}$ steps can be rounded according to the injection protocol. Select [Round Im]{.ui-label} from the [Im Options]{.ui-label} menu on the [Table]{.ui-label} tab. Although the rounding algorithm accounts for noise using the injection protocol, cross-check the rounded values for stray $I_\mathrm{m}$ measurements.
 
-Im injection steps can be input directly (rather than measured from the data). This is particularly useful if only the Vm channel was recoded. Switch to the [User-Input]{.ui-label} option in the dropdown menu on the *Input Resistance* panel and click [Set Im]{.ui-label}. The Im injection for each record can be input per row -- the number of Im injections input must match the number of records to analyze.
+-   [Link Im to Vm]{.ui-label} -- When region boundaries are shown on both $V_\mathrm{m}$ and $I_\mathrm{m}$ plots, select [View]{.ui-label} › [Region Options]{.ui-label} › [Link Im to Vm]{.ui-label} to link their positions. Moving a $V_\mathrm{m}$ boundary then moves the corresponding $I_\mathrm{m}$ boundary, and vice versa. This option is off by default.
 
-For rheobase analysis (*Action Potential Counting*), a ramp protocol can also be specified for exact rheobase calculation by clicking the [Ramp]{.ui-label} tab and inputting the current stimulation protocol.
+-   [Link Across Records]{.ui-label} -- This option links region-boundary positions across records. Moving a boundary on one record, such as Record $1$, moves the corresponding boundary on other records. When this option is off, each record's boundaries can be moved independently. Change it under [View]{.ui-label} › [Region Options]{.ui-label} › [Link Across Records]{.ui-label}. It is on by default.
 
-## Additional options
-
-*Round Im Injections*
-
-If current is calculated from the data, the measured Im steps can be rounded based on the Im injection protocol using the drop-down menu on the [Table]{.ui-label} tab panel. Although the rounding algorithm tries to account for noise by incorporating the current injection protocol, it is recommended to cross-check these rounded values in case of stray Im measurements.
-
-*Link Im to Vm*
-
-When region boundaries are shown on both Vm and Im plots, their positions can be linked using [Options]{.ui-label} › [Boundary Options]{.ui-label} › [Link Im to Vm]{.ui-label}. In this mode, Im and Vm regions will be aligned and moving the Vm region boundaries will move the Im region boundaries, and vice-versa. By default, this option is turned off.
-
-*Link Across Records*
-
-![Input Resistance Results displayed on the [Table]{.ui-label} tab. [Plot Fit]{.ui-label} displays the linear fit used to calculate input resistance together with the line coefficients.](images/media/image27.PNG){width="5.495485564304462in" height="3.9472222222222224in"}
-
-This option will link the position of region boundaries across records. That is, moving a region boundary on one record (e.g. Record 1) will also move its position on another record (e.g. Record 2). If off, moving a region boundary on one record will not affect its position on another record. This option can be changed at [Options]{.ui-label} › [Boundary Options]{.ui-label} › [Link Across records]{.ui-label} and is turned on by default.
+![Input Resistance Results displayed on the [Table]{.ui-label} tab. [Plot Fit]{.ui-label} displays the linear fit used to calculate input resistance together with the line coefficients.](images/media/image27.PNG){width="100%"}
 
 ## Sag and hump analysis
 
-Many neuronal types display a pronounced Vm deflection following negative (sag) or positive (hump) current injection that decays to the steady-state response. Options are provided for finding the sag or hump peak within a specified time window (the [Calculate Sag / Hump]{.ui-label} box).
+Many neuronal types display a pronounced $V_\mathrm{m}$ deflection following negative (sag) or positive (hump) current injection that decays to the steady-state response. Options are provided for finding the sag or hump peak within a specified time window (the [Calculate Sag / Hump]{.ui-label} box).
 
-The peak detected can be in the same direction as the current injection (e.g. minimum if the Im injection is negative, maximum if positive) or forced always maximum or minimum. The desired option can be selected from the drop-down menu found in the [Calculate Sag]{.ui-label} box.
+The detected peak can follow the direction of the voltage deflection or be forced to always use a minimum or maximum. Select the method from [Calculate Sag / Hump]{.ui-label}:
 
-The Sag / Hump position is signified on the plot with a red circle. The sag or hump peak voltage deflection is calculated as the difference between peak Vm and steady state Vm response. The Sag / Hump ratio is defined as the sag (or hump) divided by the minimum (or maximum) voltage deflection from baseline.
+-   [Peak - Direction of Current]{.ui-label} -- Uses a minimum for a negative $I_\mathrm{m}$ deflection and a maximum for a positive deflection.
+-   [Peak - Always Minimum]{.ui-label} -- Always uses the minimum value in the search period.
+-   [Peak - Always Maximum]{.ui-label} -- Always uses the maximum value in the search period.
+
+The sag or hump position is marked on the plot with a red circle. Its peak voltage deflection is the difference between peak $V_\mathrm{m}$ and the steady-state $V_\mathrm{m}$ response. The sag or hump ratio is the sag or hump divided by the peak voltage deflection from baseline.
 
 ## Input resistance plot
 
-A ΔI / ΔV plot with line of best fit and displayed coefficients is available by clicking [Plot Ri]{.ui-label} on the panel in the [Table]{.ui-label} tab. Note that this is only available if more than 1 record is analyzed.
+A plot of $\Delta V_\mathrm{m}$ (y-axis) against $\Delta I_\mathrm{m}$ (x-axis), with the fitted line and coefficients, is available by clicking [Plot Fit]{.ui-label} on the [Table]{.ui-label} tab. This plot is available only when more than one record is analyzed.

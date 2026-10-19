@@ -41,7 +41,7 @@ b_1 = D_1 - D_n
 $$
 
 $$
-\tau = \frac{t_{\mathrm{half}}}{\log(2)}
+\tau = \frac{t_{\mathrm{half}}}{\ln(2)}
 $$
 
 Here, $D_1$ and $D_n$ are the first and last data values in the region being fitted, respectively, and $t_{\mathrm{half}}$ is the time from $D_1$ to half-amplitude.
@@ -64,7 +64,7 @@ Here, $v$ is a vector of recorded membrane-potential samples; $v'$, $v''$, and $
 
 ### Method I
 
-Introduced by Sekerli et al. (2004):
+Introduced by @sekerli2004:
 
 $$
 V_{\mathrm{thr}} = \underset{v}{\arg\max}\, f(v) \quad \text{where } v' \ge LB
@@ -76,7 +76,7 @@ $$
 
 ### Method II
 
-Introduced by Sekerli et al. (2004):
+Introduced by @sekerli2004:
 
 $$
 V_{\mathrm{thr}} = \underset{v}{\arg\max}\, f(v) \quad \text{where } v' \ge LB
@@ -94,7 +94,7 @@ $$
 
 ### Maximum curvature
 
-Introduced by Rossokhin and Saakian (1992):
+Introduced by @rossokhin1992:
 
 $$
 V_{\mathrm{thr}} = \arg\max_v f(v)
@@ -124,7 +124,7 @@ $$
 
 ### Local variance
 
-The local variance ($LV$) method was introduced by Shinomoto et al. (2003):
+The local variance ($LV$) method was introduced by @shinomoto2003:
 
 $$
 SFA_{LV} = \frac{1}{n - 1}\sum_{i=1}^{n-1}\frac{3\left(ISI_i - ISI_{i+1}\right)^2}{\left(ISI_i + ISI_{i+1}\right)^2}

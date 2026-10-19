@@ -2,6 +2,8 @@
 title: "Batch mode"
 ---
 
+*Batch Mode* retains analysis results from multiple files in a single results table, allowing the same analysis to be run and compared across a series of recordings.
+
 When *Batch Mode* is off, loading a new file will clear all analyses from the previous file.
 
 Turning *Batch Mode* on ([File]{.ui-label} › [Batch Mode]{.ui-label} › [On]{.ui-label}) causes a file's analysis results to be saved in the [Table]{.ui-label} tab results table. If analysis is run on a file then a new file is loaded, all results from this new file are appended to the end of the table. For each file, re-analysis will overwrite the results for that file only (unless a *Data Tools* method has been run between the two analyses in which case they are both displayed).
