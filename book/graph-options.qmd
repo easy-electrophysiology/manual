@@ -33,7 +33,7 @@ Use [Width]{.ui-label} to set the line thickness of the upper and lower plots. V
 ### Adaptive Display Downsampling
 
 Downsamples the data shown on the main plot (as well as the plots in [Detrend](detrend.qmd){.ui-label} and [Filter](filter.qmd){.ui-label}) when zoomed out. As you zoom in, the downsampling factor is reduced until the data are displayed at full resolution. This affects only the display and does not alter the underlying data.
-'Automatic' by default, which applies adaptive downsampling when there are more than 500k samples per record in the recording.
+This option is set to [Automatic]{.ui-label} by default, which enables adaptive display downsampling for recordings with 500k samples or more per record.
 
 ### Limit the view range for performance
 

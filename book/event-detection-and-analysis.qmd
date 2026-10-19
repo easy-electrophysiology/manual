@@ -136,7 +136,7 @@ Note that if a new file is loaded which is longer than the currently drawn thres
 
     When selecting [RMS]{.ui-label} from the drop-down menu, clicking [Settings]{.ui-label} will open a window allowing choice of settings for calculating the RMS. The multiplier $n$ used to scale the RMS (e.g. $2 \times \mathrm{RMS}$) can be typed into the input box.
 
-    If [All Data (Per Record)]{.ui-label} is selected, the RMS is calculated separately for each record, using the currently selected event baseline as the calculation baseline. For [Auto.]{.ui-label}, this is the mean of the entire record.
+    If [All Data (Per Record)]{.ui-label} is selected, the RMS is calculated separately for each record, using data from the entire record. Otherwise, if [Within Selected Region]{.ui-label} is selected, the RMS is calculated using only the data within the region that is displayed on screen.
 
     Selecting the option [Baseline used: mean]{.ui-label} will use the mean of the data within this region as the calculation baseline for the RMS. Otherwise, if [Baseline used: selected baseline]{.ui-label} then the currently selected baseline will be used as the calculation baseline during RMS calculation. In [Baseline used: selected baseline]{.ui-label} mode, for [Linear]{.ui-label}, [Curve]{.ui-label}, and [Drawn]{.ui-label} baselines, the RMS is calculated as the root mean square error between the baseline and data. For [Auto.]{.ui-label}, the calculation baseline is the mean of the entire record (not the data within the bounds).
 

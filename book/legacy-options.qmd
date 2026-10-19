@@ -2,7 +2,7 @@
 title: "Legacy options"
 ---
 
-Options from previous versions (< `v2.3.0`) of Easy Electrophysiology are provided to allow backwards compatibility with previously analyzed datasets. This also functions to provide additional options that may work better in some specific situations.
+Options from previous versions of Easy Electrophysiology are provided for compatibility with previously analyzed datasets and to restore earlier behaviour or interface styling.
 
 - [Legacy baseline -- no enhanced position based on rise time]{.ui-label}: This option estimates the event baseline, and is the first stage of baseline detection in the current version. When this option is selected, the second stage will not be run (in which the event baseline is shifted to the event foot using the intersection between the baseline and a straight line drawn through the 20-80 rise time [@jonas1993]) (see [Baseline Options (Analyze windows only)](event-detection-and-analysis.qmd#baseline-options-analyze-windows-only){.ui-label}). This is how baseline detection was implemented prior to `v2.3.0-beta`.
 
@@ -12,4 +12,4 @@ Options from previous versions (< `v2.3.0`) of Easy Electrophysiology are provid
 
 - [Legacy frequency data bin-sizing]{.ui-label}: Prior to version `v2.3.0-beta`, a data range slightly larger than the true range was used for cumulative probability data. This was removed to make bin-sizing clearer to the user.
 
-- [Use legacy styling (dark mode will not be available)]{.ui-label}: On Windows, this restores the interface styling used before `v2.9.0` changed to to `Fusion`. 
+- [Use legacy styling (dark mode will not be available)]{.ui-label}: On Windows, this restores the interface styling used before `v2.9.0` changed to `Fusion`.
