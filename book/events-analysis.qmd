@@ -77,6 +77,14 @@ The [Shift]{.ui-label} and [Scale]{.ui-label} options shift (add a constant) and
 
 Note that the shift and scale operations are identical to those in the [*Average Event*](#average-event) window.
 
+## Subsample events
+
+The [Subsample Events]{.ui-label} option removes events using one of three methods:
+
+- [First N]{.ui-label} keeps the first N detected events.
+- [Last N]{.ui-label} keeps the last N detected events.
+- [Uniform random]{.ui-label} samples N events to keep from a discrete uniform distribution (over all event indices).
+
 ## Cumulative probability and histograms
 
 Frequency data (as Histograms or Cumulative Probabilities) for all analyzed parameters can be calculated by selecting the check boxes on the Events [Table]{.ui-label} tab.

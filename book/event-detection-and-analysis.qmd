@@ -136,9 +136,11 @@ Note that if a new file is loaded which is longer than the currently drawn thres
 
     When selecting [RMS]{.ui-label} from the drop-down menu, clicking [Settings]{.ui-label} will open a window allowing choice of settings for calculating the RMS. The multiplier $n$ used to scale the RMS (e.g. $2 \times \mathrm{RMS}$) can be typed into the input box.
 
-    If [All Data (Per Record)]{.ui-label} is selected, the RMS will be calculated separately for each record, using the mean of the record as calculation baseline. Alternatively, selecting [Within Selected Region]{.ui-label} will allow calculation of the RMS within a movable region on the graph.
+    If [All Data (Per Record)]{.ui-label} is selected, the RMS is calculated separately for each record, using the currently selected event baseline as the calculation baseline. For [Auto.]{.ui-label}, this is the mean of the entire record.
 
     Selecting the option [Baseline used: mean]{.ui-label} will use the mean of the data within this region as the calculation baseline for the RMS. Otherwise, if [Baseline used: selected baseline]{.ui-label} then the currently selected baseline will be used as the calculation baseline during RMS calculation. In [Baseline used: selected baseline]{.ui-label} mode, for [Linear]{.ui-label}, [Curve]{.ui-label}, and [Drawn]{.ui-label} baselines, the RMS is calculated as the root mean square error between the baseline and data. For [Auto.]{.ui-label}, the calculation baseline is the mean of the entire record (not the data within the bounds).
+
+    Clicking [Set amplitude threshold]{.ui-label} copies the current $n \times \mathrm{RMS}$ value into the [Amplitude Threshold (pA)](#amplitude-threshold-pa){.ui-label} setting. This is a fixed value, subsequent RMS changes or loading a new file do not automatically update it.
 
 #### [Baseline Options (Analyze windows only)]{.ui-label}
 
@@ -295,6 +297,8 @@ All current settings (e.g., smoothing and search periods) apply to manually sele
 ### Reject events
 
 To discard detected events, click twice on the filled circle at the peak of an event. The first click will prime the event for deletion (the circle will turn blue) and the second click will delete the event from analysis. Alternatively, holding [D]{.ui-label} while selecting multiple event peaks by click-and-dragging the mouse on the main plot will delete multiple events at once.
+
+If deleting multiple events removes the currently selected event or any earlier event, the individual-event browser returns to the first remaining event.
 
 ### Edit kinetics
 

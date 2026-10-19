@@ -30,11 +30,13 @@ The [Power Spectrum]{.ui-label} tab calculates power spectral density using
 one of two methods:
 
 - [Periodogram]{.ui-label} uses the Fourier transform of the complete selection
-  to compute the power spectral density of the signal.
+  to compute the power spectral density of the signal. Under the hood this uses SciPy's
+  [periodogram](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.periodogram.html) function.
 
 - [Welch's method]{.ui-label} divides the selection into overlapping segments
   and averages their spectra. Averaging reduces variability in the estimate,
-  while shorter segments reduce frequency resolution.
+  while shorter segments reduce frequency resolution. This uses SciPy's
+  [welch](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.welch.html) function.
 
 The [Window]{.ui-label} provides a selection of standard windows (or no window)
 to be applied to the signal before calculating the spectrum, to reduce
@@ -59,7 +61,8 @@ plot.
 
 The spectrogram can show how the frequency content of a signal changes over
 time. It works by dividing the selected data into consecutive segments and
-computing the power spectral density for each segment.
+computing the power spectral density for each segment. This is implemented using SciPy's
+[spectrogram](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.spectrogram.html) function.
 
 ::: {#fig-spectrogram-example layout-ncol="1"}
 
@@ -88,3 +91,5 @@ The spectrogram has the following available parameters:
   $10 \times \log_{10}(\mathrm{power})$, rather than on a linear scale.
 
 As with the power spectrum, click [Calculate]{.ui-label} to update the plot.
+
+After calculating a spectrogram, right-click and select [Plot Frequencies at Time Point]{.ui-label}, then left-click at the time of interest. This opens the spectrum for the segment whose centre is nearest to the selected time.

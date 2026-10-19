@@ -117,12 +117,11 @@ In theory, it is also possible to increase the window to create phase-space plot
 
 ![Phase Analysis Dialog. The action potential is shown on the left, windowed by $1.7\ \mathrm{ms}$ on either side of the peak. The phase-space plot is shown on the right.](images/media/image30.PNG){width="7.7in" height="4.6in"}
 
-For HEKA `.dat` files, [Add zero offset (HEKA)]{.ui-label} applies the recorded channel offset to the displayed AP. [Delete AP]{.ui-label} removes the selected AP from the analysis.
+For HEKA `.dat` files, [Add zero offset (HEKA)]{.ui-label} applies the recorded channel offset to the displayed AP. [Delete AP]{.ui-label} removes the selected AP from the analysis. HEKA zero-offset adjustment is disabled after applying any [Data Tool]{.ui-label}, concatenating files, or automatically reshaping records on load.
 
 ### Analysis
 
 A phase-space plot graphs the first derivative of $V_\mathrm{m}$ ($\mathrm{d}V_\mathrm{m}/\mathrm{d}t$, in $\mathrm{mV/ms}$) on the y-axis against $V_\mathrm{m}$ on the x-axis. This represents the rate at which $V_\mathrm{m}$ changes at each voltage.
-
 
 ### Phase plot parameters
 

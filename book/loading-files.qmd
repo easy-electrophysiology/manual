@@ -58,7 +58,7 @@ Here automatic detection can be overridden and the selected analysis options wil
 
 ## Improve performance for large files
 
-These settings are now largely redundant following the introduction of [Adaptive Display Downsampling](graph-options.qmd#adaptive-display-downsampling){.ui-label} in `v2.9.0`, which greatly improves performance when displaying large files. Automatic splitting of large files is therefore turned off by default from `v2.9.0`.
+[Adaptive Display Downsampling](graph-options.qmd#adaptive-display-downsampling){.ui-label} speeds up trace rendering, so automatic splitting was turned off by default in v2.9.0. However, splitting particularly large files into multiple records can still improve performance.
 
 Use [Large File Settings]{.ui-label} to reshape a large single-record file into multiple smaller records on loading. Large single-record files may run slowly, and splitting them can significantly improve performance:
 
@@ -78,7 +78,7 @@ The method used to determine the number of records that the file is reshaped int
 
 -   [Time (s) per record]{.ui-label}: The length of each record (in seconds) after reshaping.
 
-By default, a warning is shown whenever a file's records are reshaped on loading. This can be turned off using [Show warning each time a large file is loaded]{.ui-label}.
+By default, a warning is shown when loading a single-record file with 10 million samples or more, even when automatic splitting is off. The threshold is set by [Only when data is larger than]{.ui-label}. This can be turned off using [Show warning each time a large file is loaded]{.ui-label}.
 
 ## Load CSV files
 
@@ -97,3 +97,5 @@ The order in which the channel data are arranged must also be specified (for exa
 - [Has header]{.ui-label}: Select when channels or records have a header row (for column-wise data) or header column (for row-wise data). The header is ignored when loading. Only one header row or column is supported; multi-line headers must be deleted before loading.
 
 - [Has indices]{.ui-label}: Select when the time dimension has an index row (for row-wise data) or index column (for column-wise data). The indices are ignored when loading.
+
+CSV data must be regularly sampled, i.e. the time between consecutive samples must be constant within each record, and all records must use the same sampling rate.
